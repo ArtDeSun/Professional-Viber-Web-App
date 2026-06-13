@@ -2,7 +2,7 @@ This web application features a digital marketing platform for an independent mu
 
 The core product is powered by [Next.js](https://nextjs.org) bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-The [Next.js](https://nextjs.org) framework is an excellent introduction to end-an-end development of a functional website for a variety of use cases. For reference, you can create a sleek landing page to attract more clients for professional service. More excitingly, you can design online portolio showcasing the talents of an artist.
+The [Next.js](https://nextjs.org) framework is an excellent introduction to end-an-end development of a functional website for a variety of use cases. For reference, you can create a sleek landing page to attract more clients for professional service. More excitingly, you can design an online portolio showcasing the talents of an artist.
 
 ## Prioritized features
 
@@ -38,4 +38,5 @@ Then follow the [instructions](https://github.com/ArtDeSun/Professional_Viber_We
 
 ## Progress Snapshots
 
+Date: 2026-06-12
 ![screenshots_20260612](screenshots/screenshot_20260612.png)
