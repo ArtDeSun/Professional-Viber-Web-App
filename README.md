@@ -38,4 +38,4 @@ Then follow the [instructions](https://github.com/ArtDeSun/Professional_Viber_We
 
 ## Progress Snapshots
 
-![screenshots_20260612](images/screenshots_20260612.png)
+![screenshots_20260612](screenshots/screenshots_20260612.png)
