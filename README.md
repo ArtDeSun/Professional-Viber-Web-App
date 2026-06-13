@@ -12,7 +12,7 @@ Personalization, customization, and ease of access are paramount to the design p
 
 Consequently, the proposed features need to adapt to the bandwidth of a solo developer. If complex features are to be implemented, then they should be maintainable by one person at all times. The static contents and interactive components within webpages are expected to be rendered responsively to the end user. When uploading music videos to the website, the developer will be a special end user who receives administrative privileges. Therefore for regular user and developer alike, the UI navigation must be intuitive and free of contradictions.
 
-During the early stages of the application post-deployment, only a small database will be necessary while handling low subscriber count. Scaling will be considered only when site traffic reaches a critical threshold beyond the carrying capacity of the application.
+During the early stages of running the app post-deployment, only a small database will be necessary while handling low subscriber count. Scaling will be considered only after site traffic reaches a critical threshold beyond the carrying capacity of the application.
 
 ### Features
 
