@@ -22,7 +22,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-/* CONSIDER THESE FONTS: Great_Vibes, Roboto, Playfair_Display, Red_Hat_Display, Poppins */
+/* CONSIDER THESE FONTS: Great_Vibes, Roboto, Playfair_Display, Red_Hat_Display, Poppins 
+                         Manrope, Tahoma, Verdana, Georgia */
 
 const greatVibes = Great_Vibes({
   variable: "--font-great-vibes",
