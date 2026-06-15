@@ -3,15 +3,29 @@
 import { Piano } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 export default function Navbar() {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
 
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     /* border-b border-gray-200  */
-    <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xs bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent">
+    /* <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xs bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent"> */
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-xs 
+                     bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent
+                     fixed top-0 left-0 right-0 transition-all duration-2000 
+                     ease-[cubic-bezier(0.22,1,0.36,1)]
+                     ${visible ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"}`}
+    >
       <div className="container mx-auto flex items-center h-24 px-4 justify-between font-playfairDisplay">
         <Link
           href="/"
@@ -65,7 +79,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex">
-          <Link href="/teaching">
+          <Link href="/lessons">
             <Button className="h-10 w-28 bg-amber-600 text-gray-300 text-xl rounded-xl hover:bg-amber-600/70 cursor-pointer">
               Lessons
             </Button>

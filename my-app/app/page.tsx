@@ -88,28 +88,27 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/70" />
           <div className="flex flex-col justify-center container mx-auto max-w-4xl text-center relative z-10">
             <h1
-              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-8 text-8xl [text-shadow:0_10px_20px_rgba(255,215,0,0.5),10px_0_20px_rgba(255,215,0,0.5)]`}
+              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-8 text-8xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
             >
               Steven Sun
             </h1>
             {/* text-amber-100 */}
-            <h2 className="font-poppins font-bold text-white italic mb-6 text-2xl">
+            <h2 className="font-poppins font-bold text-gray-300 italic mb-6 text-2xl">
               Keywords · describing · Steven's · Core · Skills
             </h2>
             {/* text-amber-100 */}
-            <h1 className="font-poppins text-white mb-6 text-xl">
-              Something about Professional Vibemaster
+            <h1 className="font-poppins text-gray-300 mb-3 text-xl">
+              Something about Steven's role as Professional Vibemaster
             </h1>
             {/* text-amber-100 */}
-            <p className="font-poppins text-white mb-6 text-xl">
-              15-word-max location-based introduction to Steven's personal
-              background
+            <p className="font-poppins text-gray-300 mb-6 text-xl">
+              15-word-max introduction to Steven's artistry
             </p>
             <div className="font-redHatDisplay flex flex-col items-center gap-6">
               <Link href="/music">
                 <Button
                   /* size="lg" */
-                  className="h-12 px-8 text-xl font-bold bg-destructive hover:text-black cursor-pointer rounded-full"
+                  className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full"
                 >
                   Music <ArrowRight className="ml-2" />
                 </Button>
@@ -119,7 +118,7 @@ export default function Home() {
                   <Button
                     /* size="lg" */
                     /* border border-solid border-black/[.08] */
-                    className="h-9 px-6 text-base bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                    className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
                   >
                     Updates
                   </Button>
@@ -128,7 +127,7 @@ export default function Home() {
                 {/* asChild makes the Link look like a Button */}
                 <Button
                   asChild
-                  className="h-9 px-6 text-base bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                  className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
                 >
                   <Link
                     href="/#contact"
