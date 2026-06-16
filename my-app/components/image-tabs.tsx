@@ -1,14 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 export default function ImageTabs() {
-  const [activeTab, setActiveTab] = useState("organize"); //organize, hired, boards, MV_UI_Cards_Inspiration, Stay_In_Touch_Template
+  // const [activeTab, setActiveTab] = useState("organize"); //organize, hired, boards, MV_UI_Cards_Inspiration, Stay_In_Touch_Template
+
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+
+  useEffect(() => {
+    const savedTab = localStorage.getItem("activeTab");
+    setActiveTab(savedTab ?? "organize");
+  }, []);
+
+  useEffect(() => {
+    if (activeTab !== null) {
+      localStorage.setItem("activeTab", activeTab);
+    }
+  }, [activeTab]);
+
+  /* if (activeTab === null) {
+    return null; // or a loading spinner/skeleton
+  } */
 
   return (
-    <section className="border-t bg-white px-4 py-16">
+    <section className="border-t bg-white px-4 py-16 min-h-[850px]">
       <div className="container mx-auto max-w-6xl">
         {/* Tabs */}
         {/* CONSIDER THIS: className="md:grid-cols-4" */}
@@ -70,7 +87,7 @@ export default function ImageTabs() {
             Mock Sign Up
           </Button>
         </div>
-        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-lg border border-gray-200 shadow-2xl">
+        <div className="relative mx-auto max-h-[700px] max-w-5xl overflow-hidden rounded-lg border border-gray-200 shadow-2xl">
           {activeTab === "organize" && (
             <Image
               src="/hero-images/hero1.png"

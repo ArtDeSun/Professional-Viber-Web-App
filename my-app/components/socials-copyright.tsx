@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FaFacebook, FaInstagram, FaSpotify, FaYoutube } from "react-icons/fa";
 
-export default function Socials_Copyright() {
+export default function SocialsCopyright() {
   return (
     <section id="contact" className="border-t bg-black py-12">
       <div className="container mx-auto px-4 text-center font-roboto">

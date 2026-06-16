@@ -10,17 +10,48 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
+import { signUp } from "@/lib/auth/auth-client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 
 export default function SignUp() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
+
+  async function handleSubmit(e: React.SubmitEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true); //needs to accept Boolean
+
+    try {
+      const result = await signUp.email({ name, email, password });
+      if (result.error) {
+        setError(result.error.message ?? "Failed to sign up");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
         <section className="mx-auto py-32 px-4">
           <div className="mx-auto">
             {/* TEMPORARY */}
-            <div className="container mx-auto max-w-6xl mb-8">
+            {/* <div className="container mx-auto max-w-6xl mb-8">
               <div className="flex justify-center mb-8">
                 <Button
                   className={`rounded-lg px-6 py-3 text-sm font-medium 
@@ -37,7 +68,7 @@ export default function SignUp() {
                   height={800}
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="flex justify-center p-16">
               {/* overflow-visible  */}
@@ -50,8 +81,13 @@ export default function SignUp() {
                     Create an account to start tracking your job applications
                   </CardDescription>
                 </CardHeader>
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <CardContent className="space-y-4">
+                    {error && (
+                      <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                        {error}
+                      </div>
+                    )}
                     <div className="grid gap-2">
                       <label htmlFor="name" className="text-gray-700">
                         Name
@@ -60,6 +96,8 @@ export default function SignUp() {
                         id="name"
                         type="text"
                         placeholder="John Doe"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                         className="border-gray-300 transition-all duration-300 focus-visible:border-amber-400 focus-visible:ring-amber-400"
                       />
@@ -72,6 +110,8 @@ export default function SignUp() {
                         id="email"
                         type="email"
                         placeholder="John@example.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         className="border-gray-300 transition-all duration-300 focus-visible:border-amber-400 focus-visible:ring-amber-400"
                       />
@@ -84,6 +124,8 @@ export default function SignUp() {
                         id="password"
                         type="password"
                         placeholder="John Doe"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         minLength={8}
                         className="border-gray-300 transition-all duration-300 focus-visible:border-amber-400 focus-visible:ring-amber-400"
@@ -94,8 +136,9 @@ export default function SignUp() {
                     <Button
                       type="submit"
                       className="w-full bg-amber-400 hover:cursor-pointer hover:bg-amber-400/70"
+                      disabled={loading}
                     >
-                      Sign Up
+                      {loading ? "Creating account..." : "Sign Up"}
                     </Button>
                     <p className="text-center text-sm text-gray-600">
                       Already have an account?{" "}

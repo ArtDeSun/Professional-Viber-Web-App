@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar";
-import Socials_Copyright from "@/components/socials_copyright";
+import Socials_Copyright from "@/components/socials-copyright";
 import type { Metadata } from "next";
 import {
   Geist,

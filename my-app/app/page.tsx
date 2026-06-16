@@ -1,15 +1,25 @@
 "use client";
 
 import ImageTabs from "@/components/image-tabs";
+import SignUpSection from "@/components/sign-up-section";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const scrollToSection = (id: string) => {
   document.getElementById(id)?.scrollIntoView();
 };
 
 export default function Home() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVisible(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
   /* return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -86,7 +96,11 @@ export default function Home() {
             bg-cover bg-center"
           />
           <div className="absolute inset-0 bg-black/70" />
-          <div className="flex flex-col justify-center container mx-auto max-w-4xl text-center relative z-10">
+          <div
+            className={`flex flex-col justify-center container mx-auto max-w-4xl text-center relative z-10
+                          transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
+                          `}
+          >
             <h1
               className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-8 text-8xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
             >
@@ -114,16 +128,34 @@ export default function Home() {
                 </Button>
               </Link>
               <div className="flex gap-4">
-                <Link href="/updates">
+                {/* <Link href="/updates">
                   <Button
-                    /* size="lg" */
-                    /* border border-solid border-black/[.08] */
+                    size="lg"
+                    border border-solid border-black/[.08]
                     className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
                   >
                     Updates
                   </Button>
-                </Link>
+                </Link> */}
 
+                {/* asChild makes the Link look like a Button */}
+                <Button
+                  asChild
+                  className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                >
+                  <Link
+                    href="/#signup"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.pushState(null, "", "#signup");
+                      document.getElementById("signup")?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                    }}
+                  >
+                    Sign Up
+                  </Link>
+                </Button>
                 {/* asChild makes the Link look like a Button */}
                 <Button
                   asChild
@@ -197,6 +229,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Sign Up Section */}
+        <SignUpSection />
       </main>
     </div>
   );
