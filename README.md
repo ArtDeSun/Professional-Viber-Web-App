@@ -6,7 +6,7 @@ The [Next.js](https://nextjs.org) framework introduces end-to-end development of
 
 ## Prioritized features
 
-The main purpose of this project is to develop, manage, and expand the online presence of Steven's music business.
+The main purpose of this project is to develop, manage, and expand the online presence of Steven's music content business.
 
 Personalization, customization, and ease of access are paramount to the design philosophy of the individual content creator who also takes on the responsibility of the webmaster.
 
