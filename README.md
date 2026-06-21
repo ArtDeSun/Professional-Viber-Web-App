@@ -16,7 +16,7 @@ During the early stages of running the app post-deployment, only a small databas
 
 ### Features
 
-- Webpages describing Steven's background as a musician.
+- Webpages describing Steven's background as a content creator specializing in music videos.
 - Links to Steven's social media profiles such as Youtube
 - Mechanism for uploading music videos as an admin.
 - Contact information for booking shows and piano lessons.
