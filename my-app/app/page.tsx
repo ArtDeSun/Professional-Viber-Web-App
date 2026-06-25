@@ -120,7 +120,7 @@ export default function Home() {
             </h1>
             {/* text-amber-100 */}
             <h2 className="font-poppins font-bold text-gray-300 italic mb-6 text-2xl">
-              Keywords · describing · Steven's · Core · Skills
+              Keywords · Describing · Steven's · Core · Skills
             </h2>
             {/* text-amber-100 */}
             <h1 className="font-poppins text-gray-300 mb-3 text-xl">

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   FaCopyright,
   FaFacebook,
@@ -18,7 +17,7 @@ export default function SocialsCopyright() {
           </span>
         </p>
         <div className="mx-auto flex items-center justify-center h-18 gap-5">
-          <Link
+          <a
             href="https://youtube.com"
             target="_blank"
             className="text-gray-300"
@@ -29,8 +28,8 @@ export default function SocialsCopyright() {
               hover:text-amber-400
               hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]"
             />
-          </Link>
-          <Link
+          </a>
+          <a
             href="https://spotify.com"
             target="_blank"
             className="text-gray-300"
@@ -41,8 +40,8 @@ export default function SocialsCopyright() {
               hover:text-amber-400
               hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]"
             />
-          </Link>
-          <Link
+          </a>
+          <a
             href="https://instagram.com"
             target="_blank"
             className="text-gray-300"
@@ -53,8 +52,8 @@ export default function SocialsCopyright() {
               hover:text-amber-400
               hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]"
             />
-          </Link>
-          <Link
+          </a>
+          <a
             href="https://facebook.com"
             target="_blank"
             className="text-gray-300"
@@ -65,7 +64,7 @@ export default function SocialsCopyright() {
               hover:text-amber-400
               hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]"
             />
-          </Link>
+          </a>
         </div>
         <div className="flex items-center justify-center gap-2">
           <FaCopyright className="text-gray-300" />

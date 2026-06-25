@@ -36,7 +36,7 @@ export default function Navbar() {
     /* <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xs 
     bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent"> */
     <nav
-      className={`fixed top-0 left-0 right-0 w-full z-50 backdrop-blur-xs 
+      className={`fixed top-0 left-0 w-[100vw] z-50 backdrop-blur-xs
                   bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent
                   ${
                     animate
