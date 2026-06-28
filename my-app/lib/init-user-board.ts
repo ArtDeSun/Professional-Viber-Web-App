@@ -32,8 +32,9 @@ export async function initializeUserBoard(userId: string) {
         Column.create({
           name: col.name,
           order: col.order,
+          userId: userId,
           boardId: board._id,
-          jobApplication: [],
+          jobApplications: [],
         }),
       ),
     );

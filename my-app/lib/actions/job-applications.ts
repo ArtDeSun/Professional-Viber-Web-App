@@ -9,6 +9,7 @@ interface JobApplicationData {
   company: string;
   position: string;
   location?: string;
+  status?: string;
   notes?: string;
   salary?: string;
   jobUrl?: string;

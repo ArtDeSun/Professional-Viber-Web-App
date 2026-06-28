@@ -47,6 +47,17 @@ const additionalJobs = Array.from({ length: ADDITIONAL_JOB_COUNT }, (_, i) => {
 
 SAMPLE_JOBS.push(...additionalJobs);
 
+const DEFAULT_COLUMNS = [
+  {
+    name: "Wish List",
+    order: 0,
+  },
+  { name: "Applied", order: 1 },
+  { name: "Interviewing", order: 2 },
+  { name: "Offer", order: 3 },
+  { name: "Rejected", order: 4 },
+];
+
 async function seed() {
   if (!USER_ID) {
     console.error("❌ Error: SEED_USER_ID environment variable is required");
@@ -77,13 +88,36 @@ async function seed() {
     const columns = await Column.find({ boardId: board._id }).sort({
       order: 1,
     });
+
+    /* for (const column of columns) {
+      if (!column.userId) {
+        column.userId = USER_ID;
+        await column.save();
+      }
+    } */
+
     console.log(`✅ Found ${columns.length} columns`);
 
     if (columns.length === 0) {
-      console.error(
+      // Create default columns
+      const defaultColumns = await Promise.all(
+        DEFAULT_COLUMNS.map((col) =>
+          Column.create({
+            name: col.name,
+            order: col.order,
+            userId: USER_ID,
+            boardId: board._id,
+            jobApplications: [],
+          }),
+        ),
+      );
+      board.columns = defaultColumns.map((col) => col._id);
+      await board.save();
+
+      /* console.error(
         "❌ No columns found. Please ensure the board has default columns.",
       );
-      process.exit(1);
+      process.exit(1); */
     }
 
     // Map column names to column IDs
@@ -99,6 +133,15 @@ async function seed() {
         `🗑️  Deleting ${existingJobs.length} existing job applications...`,
       );
       await JobApplication.deleteMany({ userId: USER_ID });
+
+      /* await Column.updateMany(
+        { boardId: board._id }, //or { userId: USER_ID },
+        {
+          $set: {
+            jobApplications: [],
+          },
+        },
+      ); */
 
       // Clear job applications from columns
       for (const column of columns) {
@@ -144,7 +187,7 @@ async function seed() {
           boardId: board._id,
           userId: USER_ID,
           status: columnName.toLowerCase().replace(" ", "-"),
-          order: i,
+          order: i * 100,
         });
 
         column.jobApplications.push(jobApplication._id);

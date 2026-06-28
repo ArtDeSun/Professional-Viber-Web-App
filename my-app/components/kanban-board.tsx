@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteColumn } from "@/lib/actions/columns";
 import { useBoard } from "@/lib/hooks/useBoard";
 import { Board, Column, JobApplication } from "@/lib/models/models.types";
 import {
@@ -21,14 +22,20 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 import {
   Award,
+  Briefcase,
   Calendar,
   CheckCircle2,
+  Clock,
+  Flame,
   Mic,
   MoreVertical,
+  Music,
+  Star,
   Trash2,
   XCircle,
 } from "lucide-react";
 import React, { useState } from "react";
+import CreateColumnDialog from "./create-column-dialog";
 import CreateJobApplicationDialog from "./create-job-application-dialog";
 import JobApplicationCard from "./job-application-card";
 import { Button } from "./ui/button";
@@ -50,28 +57,54 @@ interface ColConfig {
   icon: React.ReactNode;
 }
 
-const COLUMN_CONFIG: Array<ColConfig> = [
-  {
+const DEFAULT_COLUMN_CONFIG: Record<string, ColConfig> = {
+  "Wish List": {
     color: "bg-cyan-500",
     icon: <Calendar className="h-4 w-4" />,
   },
-  {
+  Applied: {
     color: "bg-purple-500",
     icon: <CheckCircle2 className="h-4 w-4" />,
   },
-  {
+  Interviewing: {
     color: "bg-green-500",
     icon: <Mic className="h-4 w-4" />,
   },
-  {
+  Offer: {
     color: "bg-yellow-500",
     icon: <Award className="h-4 w-4" />,
   },
-  {
+  Rejected: {
     color: "bg-red-500",
     icon: <XCircle className="h-4 w-4" />,
   },
-];
+};
+
+const COLOR_CONFIG: Record<string, string> = {
+  cyan: "bg-cyan-500",
+  purple: "bg-purple-500",
+  green: "bg-green-500",
+  yellow: "bg-yellow-500",
+  red: "bg-red-500",
+  blue: "bg-blue-500",
+  pink: "bg-pink-500",
+  orange: "bg-orange-500",
+  emerald: "bg-emerald-500",
+  neutral: "bg-neutral-500",
+};
+
+const ICON_CONFIG: Record<string, React.ReactNode> = {
+  calendar: <Calendar className="h-4 w-4" />,
+  check: <CheckCircle2 className="h-4 w-4" />,
+  mic: <Mic className="h-4 w-4" />,
+  award: <Award className="h-4 w-4" />,
+  x: <XCircle className="h-4 w-4" />,
+  music: <Music className="h-4 w-4" />,
+  briefcase: <Briefcase className="h-4 w-4" />,
+  star: <Star className="h-4 w-4" />,
+  clock: <Clock className="h-4 w-4" />,
+  flame: <Flame className="h-4 w-4" />,
+};
 
 function DroppableColumn({
   column,
@@ -91,8 +124,18 @@ function DroppableColumn({
       columnId: column._id,
     },
   });
+
   const sortedJobs =
     column.jobApplications?.sort((a, b) => a.order - b.order) || [];
+
+  async function handleDelete() {
+    try {
+      const result = await deleteColumn(column._id);
+    } catch (err) {
+      console.error("Failed to delete column ", err);
+    }
+  }
+
   return (
     <Card className="min-w-[300px] flex-shrink-0 shadow-md p-0 rounded-b-lg">
       <CardHeader className={`${config.color} text-white pb-3 pt-3`}>
@@ -114,7 +157,10 @@ function DroppableColumn({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem
+                className="text-destructive"
+                onClick={() => handleDelete()}
+              >
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete Column
               </DropdownMenuItem>
@@ -190,7 +236,12 @@ function SortableJobCard({
 export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const { columns, moveJob } = useBoard(board);
+  const { columns, addColumn, moveJob } = useBoard(board);
+
+  //New Column UI Configuration
+  const [columnUiConfig, setColumnUiConfig] = useState<
+    Record<string, { colorKey: string; iconKey: string }>
+  >({});
 
   const sortedColumns = columns?.sort((a, b) => a.order - b.order) || [];
 
@@ -306,16 +357,45 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
+      <div className="mb-6 flex justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-neutral-100">{board.name}</h1>
+          <p className="text-neutral-400">Track your job applications</p>
+        </div>
+        <div className="flex items-end">
+          <CreateColumnDialog
+            board={board}
+            onColumnCreated={({ column, colorKey, iconKey }) => {
+              addColumn(column);
+
+              setColumnUiConfig((prev) => ({
+                ...prev,
+                [column._id]: { colorKey, iconKey },
+              }));
+            }}
+          />
+        </div>
+      </div>
+
       <div className="space-y-4">
         <div className="flex gap-4 overflow-x-auto pb-4">
-          {sortedColumns.map((col, key) => {
-            const config = COLUMN_CONFIG[key] || {
-              color: "bg-neutral-500",
-              icon: <Calendar className="h-4 w-4" />,
-            };
+          {sortedColumns.map((col) => {
+            const uiConfig = columnUiConfig[col._id];
+            const config = uiConfig
+              ? {
+                  color: COLOR_CONFIG[uiConfig.colorKey] ?? "bg-neutral-500",
+                  icon: ICON_CONFIG[uiConfig.iconKey] ?? (
+                    <Calendar className="h-4 w-4" />
+                  ),
+                }
+              : DEFAULT_COLUMN_CONFIG[col.name] || {
+                  color: "bg-neutral-500",
+                  icon: <Calendar className="h-4 w-4" />,
+                };
+
             return (
               <DroppableColumn
-                key={key}
+                key={col._id}
                 column={col}
                 config={config}
                 boardId={board._id}

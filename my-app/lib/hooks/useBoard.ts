@@ -14,11 +14,17 @@ export function useBoard(initialBoard?: Board | null) {
     }
   }, [initialBoard]);
 
+  function addColumn(column: Column) {
+    setColumns((prev) => [...prev, column].sort((a, b) => a.order - b.order));
+  }
+
   async function moveJob(
     jobApplicationId: string,
     newColumnId: string,
     newOrder: number,
   ) {
+    console.log(jobApplicationId);
+
     setColumns((prev) => {
       const newColumns = prev.map((col) => ({
         ...col,
@@ -79,10 +85,16 @@ export function useBoard(initialBoard?: Board | null) {
         columnId: newColumnId,
         order: newOrder,
       });
+
+      if (result?.error) {
+        setError(result.error);
+      }
     } catch (err) {
       console.error("Error ", err);
+      setError("Failed to move job");
     }
   }
 
-  return { board, columns, error, moveJob };
+  //addColumn
+  return { board, columns, error, addColumn, moveJob };
 }

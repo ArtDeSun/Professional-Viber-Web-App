@@ -3,6 +3,7 @@ import mongoose, { Document, Schema } from "mongoose";
 export interface IColumn extends Document {
   name: string;
   boardId: mongoose.Types.ObjectId;
+  userId: string;
   order: number;
   jobApplications: mongoose.Types.ObjectId[];
   createdAt: Date;
@@ -23,6 +24,11 @@ const ColumnSchema = new Schema<IColumn>(
     boardId: {
       type: Schema.Types.ObjectId,
       ref: "Board",
+      required: true,
+      index: true,
+    },
+    userId: {
+      type: String,
       required: true,
       index: true,
     },

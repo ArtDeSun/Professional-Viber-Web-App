@@ -32,10 +32,6 @@ async function DashboardPage() {
 
   return (
     <div className="container mx-auto px-6 py-32">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-neutral-100">{board.name}</h1>
-        <p className="text-neutral-400">Track your job applications</p>
-      </div>
       <KanbanBoardClient board={board} userId={session.user.id} />
     </div>
   );
