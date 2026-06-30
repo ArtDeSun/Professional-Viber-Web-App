@@ -34,7 +34,7 @@ import {
   Trash2,
   XCircle,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CreateColumnDialog from "./create-column-dialog";
 import CreateJobApplicationDialog from "./create-job-application-dialog";
 import JobApplicationCard from "./job-application-card";
@@ -111,12 +111,23 @@ function DroppableColumn({
   config,
   boardId,
   sortedColumns,
+  onColumnDeleted,
+  open,
+  onOpenChange,
+  boardScrollRef,
 }: {
   column: Column;
   config: ColConfig;
   boardId: string;
   sortedColumns: Column[];
+  onColumnDeleted: (columnId: string) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  boardScrollRef: React.RefObject<HTMLDivElement | null>;
 }) {
+  const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+  const [menuAlign, setMenuAlign] = useState<"start" | "end">("end");
+
   const { setNodeRef, isOver } = useDroppable({
     id: column._id,
     data: {
@@ -128,9 +139,34 @@ function DroppableColumn({
   const sortedJobs =
     column.jobApplications?.sort((a, b) => a.order - b.order) || [];
 
+  function updateMenuAlign() {
+    const triggerRect = triggerRef.current?.getBoundingClientRect();
+    const boardRect = boardScrollRef.current?.getBoundingClientRect();
+
+    if (!triggerRect || !boardRect) return;
+
+    const menuWidth = 160;
+
+    const spaceLeft = triggerRect.left - boardRect.left;
+    const spaceRight = boardRect.right - triggerRect.right;
+
+    if (spaceLeft < menuWidth && spaceRight >= menuWidth) {
+      setMenuAlign("start");
+    } else {
+      setMenuAlign("end");
+    }
+  }
+
+  function handleMenuOpenChange(open: boolean) {
+    onOpenChange(open);
+  }
+
   async function handleDelete() {
     try {
       const result = await deleteColumn(column._id);
+      if (!result.error) {
+        onColumnDeleted(column._id);
+      }
     } catch (err) {
       console.error("Failed to delete column ", err);
     }
@@ -147,18 +183,26 @@ function DroppableColumn({
             </CardTitle>
           </div>
 
-          <DropdownMenu modal={false}>
+          <DropdownMenu
+            modal={false}
+            open={open}
+            onOpenChange={handleMenuOpenChange}
+          >
             <DropdownMenuTrigger asChild>
               <Button
+                ref={triggerRef}
                 size="icon"
-                className="h-6 w-6 text-white hover:bg-white/20"
+                onPointerDown={updateMenuAlign}
+                className="h-6 w-6 text-white hover:bg-white/20 cursor-pointer"
               >
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+
+            {/* const menuWidth = 160; matches className="w-40" */}
+            <DropdownMenuContent align={menuAlign} className="w-40">
               <DropdownMenuItem
-                className="text-destructive"
+                className="text-destructive cursor-pointer"
                 onClick={() => handleDelete()}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
@@ -235,13 +279,34 @@ function SortableJobCard({
 
 export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [openColumnMenuId, setOpenColumnMenuId] = useState<string | null>(null);
 
   const { columns, addColumn, moveJob } = useBoard(board);
 
   //New Column UI Configuration
+  const STORAGE_KEY = `kanban-column-ui-config-${board._id}`;
   const [columnUiConfig, setColumnUiConfig] = useState<
     Record<string, { colorKey: string; iconKey: string }>
   >({});
+
+  const boardScrollRef = React.useRef<HTMLDivElement | null>(null);
+
+  //load
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      setColumnUiConfig(JSON.parse(saved));
+    }
+    setLoaded(true);
+  }, [STORAGE_KEY]);
+
+  //save
+  useEffect(() => {
+    if (!loaded) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(columnUiConfig));
+  }, [STORAGE_KEY, columnUiConfig]);
 
   const sortedColumns = columns?.sort((a, b) => a.order - b.order) || [];
 
@@ -350,6 +415,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
   const activeJob = sortedColumns
     .flatMap((col) => col.jobApplications || [])
     .find((job) => job._id === activeId);
+
   return (
     <DndContext
       sensors={sensors}
@@ -373,12 +439,21 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
                 [column._id]: { colorKey, iconKey },
               }));
             }}
+            open={dialogOpen}
+            onOpenChange={setDialogOpen}
           />
         </div>
       </div>
 
       <div className="space-y-4">
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        {/* className="flex gap-4 overflow-x-auto pb-4" */}
+        <div
+          ref={boardScrollRef}
+          onScroll={() => setOpenColumnMenuId(null)}
+          className={`flex gap-4 pb-4 ${
+            dialogOpen ? "overflow-x-hidden" : "overflow-x-auto"
+          }`}
+        >
           {sortedColumns.map((col) => {
             const uiConfig = columnUiConfig[col._id];
             const config = uiConfig
@@ -400,6 +475,18 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
                 config={config}
                 boardId={board._id}
                 sortedColumns={sortedColumns}
+                onColumnDeleted={(columnId) => {
+                  setColumnUiConfig((prev) => {
+                    const copy = { ...prev };
+                    delete copy[columnId];
+                    return copy;
+                  });
+                }}
+                open={openColumnMenuId === col._id}
+                onOpenChange={(open) =>
+                  setOpenColumnMenuId(open ? col._id : null)
+                }
+                boardScrollRef={boardScrollRef}
               />
             );
           })}

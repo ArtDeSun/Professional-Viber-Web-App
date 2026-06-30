@@ -88,7 +88,7 @@ export default function JobApplicationCard({
   return (
     <>
       <Card
-        className="cursor-pointer transition-shadow hover:shadow-lg bg-white group shadow-sm"
+        className="transition-shadow hover:shadow-lg bg-white group shadow-sm"
         {...dragHandleProps}
       >
         <CardContent className="p-4">
@@ -132,13 +132,16 @@ export default function JobApplicationCard({
                 <DropdownMenuTrigger asChild>
                   <Button
                     size="icon"
-                    className="h-6 w-6 text-neutral-500 hover:bg-neutral-500/20"
+                    className="h-6 w-6 text-neutral-500 hover:bg-neutral-500/20 cursor-pointer"
                   >
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setIsEditing(true)}>
+                <DropdownMenuContent align="end" className="min-w-40">
+                  <DropdownMenuItem
+                    onClick={() => setIsEditing(true)}
+                    className="cursor-pointer"
+                  >
                     <Edit2 className="mr-2 h-4 w-4" />
                     Edit
                   </DropdownMenuItem>
@@ -150,6 +153,7 @@ export default function JobApplicationCard({
                           <DropdownMenuItem
                             key={key}
                             onClick={() => handleMove(column._id)}
+                            className="cursor-pointer"
                           >
                             Move to {column.name}
                           </DropdownMenuItem>
@@ -158,7 +162,7 @@ export default function JobApplicationCard({
                   )}
 
                   <DropdownMenuItem
-                    className="text-destructive"
+                    className="text-destructive cursor-pointer"
                     onClick={() => handleDelete()}
                   >
                     <Trash2 className="mr-2 h-4 w-4" />

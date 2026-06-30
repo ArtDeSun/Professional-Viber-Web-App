@@ -34,6 +34,8 @@ interface CreateColumnDialogProps {
     colorKey: string;
     iconKey: string;
   }) => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
 }
 
 const INITIAL_FORM_DATA = {
@@ -70,9 +72,11 @@ const ICON_OPTIONS = [
 
 export default function CreateColumnDialog({
   board,
+  open,
+  onOpenChange,
   onColumnCreated,
 }: CreateColumnDialogProps) {
-  const [open, setOpen] = useState<boolean>(false);
+  //const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
   async function handleSubmit(e: React.SubmitEvent) {
@@ -92,7 +96,7 @@ export default function CreateColumnDialog({
         });
 
         setFormData(INITIAL_FORM_DATA);
-        setOpen(false);
+        onOpenChange(false);
       } else {
         console.error("Failed to create column: ", result.error);
       }
@@ -102,9 +106,9 @@ export default function CreateColumnDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="bg-neutral-700 text-neutral-200 text-md hover:bg-neutral-600">
+        <Button className="bg-neutral-700 text-neutral-200 text-md hover:bg-neutral-600 cursor-pointer">
           <Plus className="mr-2 h-4 w-4" />
           Add Column
         </Button>
@@ -135,7 +139,9 @@ export default function CreateColumnDialog({
                     onClick={() =>
                       setFormData({ ...formData, colorKey: color.key })
                     }
-                    className={`h-9 rounded-md border-2 transition-all
+                    className={`h-9 rounded-md border-2 
+                                 transition-all duration-100
+                                 cursor-pointer
                                  ${color.className} 
                                  ${
                                    formData.colorKey === color.key
@@ -158,7 +164,9 @@ export default function CreateColumnDialog({
                     setFormData({ ...formData, iconKey: option.key })
                   }
                   className={`
-                              flex h-10 items-center justify-center rounded-md border transition-all
+                              flex h-10 items-center justify-center rounded-md border
+                              transition-all duration-100
+                              cursor-pointer
                               ${
                                 formData.iconKey === option.key
                                   ? "border-black bg-neutral-200"
@@ -175,12 +183,15 @@ export default function CreateColumnDialog({
             <Button
               type="button"
               variant="outline"
-              className="hover:text-destructive"
-              onClick={() => setOpen(false)}
+              className="hover:text-destructive cursor-pointer"
+              onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button type="submit" className="bg-green-400 hover:bg-green-600">
+            <Button
+              type="submit"
+              className="bg-green-400 hover:bg-green-600 cursor-pointer"
+            >
               Add Column
             </Button>
           </DialogFooter>

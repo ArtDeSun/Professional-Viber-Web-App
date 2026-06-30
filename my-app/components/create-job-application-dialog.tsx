@@ -70,7 +70,7 @@ export default function CreateJobApplicationDialog({
         <Button
           variant="outline"
           className="w-full mb-4 justify-start border-dashed border-2 bg-neutral-100 
-                     hover:border-solid hover:bg-neutral-200"
+                     hover:border-solid hover:bg-neutral-200 cursor-pointer"
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Job
@@ -181,12 +181,15 @@ export default function CreateJobApplicationDialog({
             <Button
               type="button"
               variant="outline"
-              className="hover:text-destructive"
+              className="hover:text-destructive cursor-pointer"
               onClick={() => setOpen(false)}
             >
               Cancel
             </Button>
-            <Button type="submit" className="bg-green-400 hover:bg-green-600">
+            <Button
+              type="submit"
+              className="bg-green-400 hover:bg-green-600 cursor-pointer"
+            >
               Add Application
             </Button>
           </DialogFooter>

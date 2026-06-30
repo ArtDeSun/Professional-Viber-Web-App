@@ -98,12 +98,16 @@ export default function NavbarRightCorner() {
               >
                 <Avatar className="w-12 h-12">
                   <AvatarFallback className="bg-amber-600 text-black text-xl font-bold">
-                    <span
-                      className="inline-block transition-transform duration-300 group-hover:scale-125
+                    {session?.user?.name ? (
+                      <span
+                        className="inline-block transition-transform duration-300 group-hover:scale-125
                                  group-data-[state=open]:scale-125"
-                    >
-                      {session?.user.name[0].toUpperCase()}
-                    </span>
+                      >
+                        {session.user.name[0].toUpperCase()}
+                      </span>
+                    ) : (
+                      <span className="h-6 w-6 animate-spin rounded-full border-3 border-black/30 border-t-black" />
+                    )}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -130,20 +134,38 @@ export default function NavbarRightCorner() {
 
               <DropdownMenuLabel className="font-playfairDisplay border-b border-gray-300/30 py-8">
                 <div className="flex flex-col items-center space-y-4">
-                  <Avatar className="w-14 h-14">
-                    <AvatarFallback className="bg-amber-600 text-black text-2xl font-bold">
-                      {session?.user.name[0].toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  {session?.user?.name ? (
+                    <>
+                      <Avatar className="w-14 h-14">
+                        <AvatarFallback className="bg-amber-600 text-black text-2xl font-bold">
+                          {session?.user.name[0].toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col items-center text-center gap-1">
+                        <p className="text-xl text-gray-100">
+                          {session?.user.name}
+                        </p>
+                        <p className="text-base text-gray-100/80">
+                          {session?.user.email}
+                        </p>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <Avatar className="w-14 h-14">
+                        <AvatarFallback className="bg-amber-600 text-black text-2xl font-bold">
+                          <span className="h-6 w-6 animate-spin rounded-full border-3 border-black/30 border-t-black" />
+                        </AvatarFallback>
+                      </Avatar>
 
-                  <div className="flex flex-col items-center text-center gap-1">
-                    <p className="text-xl text-gray-100">
-                      {session?.user.name}
-                    </p>
-                    <p className="text-base text-gray-100/80">
-                      {session?.user.email}
-                    </p>
-                  </div>
+                      <div className="flex flex-col items-center text-center gap-1">
+                        <p className="text-xl text-gray-100">Loading...</p>
+                        <p className="text-base text-gray-100/80">
+                          Please wait
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               </DropdownMenuLabel>
 
