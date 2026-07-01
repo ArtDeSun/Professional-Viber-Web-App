@@ -24,8 +24,8 @@ export default function NavbarRightCorner() {
       setInitialAuthChecked(true);
     }
   }, [isPending, initialAuthChecked]);
+
   const isLoggedIn = Boolean(session?.user);
-  const showLoggedOutButtons = initialAuthChecked && !isLoggedIn;
 
   const pathname = usePathname();
 
@@ -56,7 +56,9 @@ export default function NavbarRightCorner() {
 
   return (
     <>
-      {showLoggedOutButtons ? (
+      {!initialAuthChecked ? (
+        <></>
+      ) : !isLoggedIn ? (
         <>
           {/* <Link href="/lessons">
                 <Button className="h-10 w-28 bg-amber-600 text-black text-xl rounded-xl 

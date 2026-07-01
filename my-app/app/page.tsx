@@ -8,9 +8,9 @@ import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const scrollToSection = (id: string) => {
+/* const scrollToSection = (id: string) => {
   document.getElementById(id)?.scrollIntoView();
-};
+}; */
 
 export default function Home() {
   const { data: session, isPending } = useSession();
@@ -22,9 +22,8 @@ export default function Home() {
       setInitialAuthChecked(true);
     }
   }, [isPending, initialAuthChecked]);
+
   const isLoggedIn = Boolean(session?.user);
-  const showLoggedOutButtons = initialAuthChecked && !isLoggedIn;
-  //const showLoggedOutButtons = !isPending && !session?.user;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -150,25 +149,28 @@ export default function Home() {
                   </Button>
                 </Link> */}
 
-                {/* asChild makes the Link behave like a Button */}
-                {showLoggedOutButtons && (
-                  <Button
-                    asChild
-                    className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
-                  >
-                    <Link
-                      href="/#signup"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        history.pushState(null, "", "#signup");
-                        document.getElementById("signup")?.scrollIntoView({
-                          behavior: "smooth",
-                        });
-                      }}
+                {!initialAuthChecked ? (
+                  <></>
+                ) : (
+                  !isLoggedIn && (
+                    <Button
+                      asChild
+                      className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
                     >
-                      Sign Up
-                    </Link>
-                  </Button>
+                      <Link
+                        href="/#signup"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          history.pushState(null, "", "#signup");
+                          document.getElementById("signup")?.scrollIntoView({
+                            behavior: "smooth",
+                          });
+                        }}
+                      >
+                        Sign Up
+                      </Link>
+                    </Button>
+                  )
                 )}
 
                 {/* asChild makes the Link look like a Button */}
@@ -191,17 +193,21 @@ export default function Home() {
                 </Button>
               </div>
 
-              {showLoggedOutButtons && (
-                <Link href="/lessons">
-                  <div className="h-11 flex items-center">
-                    <Button
-                      /* size="lg" */
-                      className="h-9 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:h-11 hover:px-8 hover:text-xl cursor-pointer rounded-full"
-                    >
-                      Lessons
-                    </Button>
-                  </div>
-                </Link>
+              {!initialAuthChecked ? (
+                <></>
+              ) : (
+                !isLoggedIn && (
+                  <Link href="/lessons">
+                    <div className="h-11 flex items-center">
+                      <Button
+                        /* size="lg" */
+                        className="h-9 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:h-11 hover:px-8 hover:text-xl cursor-pointer rounded-full"
+                      >
+                        Lessons
+                      </Button>
+                    </div>
+                  </Link>
+                )
               )}
               {/* <p className="text-sm text-muted-foreground">
                 professionalvibemaster@stevensun.com
@@ -293,7 +299,7 @@ export default function Home() {
         </section>
 
         {/* Sign Up Section */}
-        {showLoggedOutButtons && <SignUpSection />}
+        {initialAuthChecked && !isLoggedIn && <SignUpSection />}
         {/* {session?.user ? <></> : <SignUpSection />} */}
         {/*<SignUpSection />*/}
       </main>
