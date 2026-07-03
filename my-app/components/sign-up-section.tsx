@@ -86,7 +86,7 @@ export default function SignUpSection() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="h-10 text-lg placeholder:text-lg
+                    className="h-10 md:text-lg placeholder:text-lg
                                bg-neutral-50 border-gray-300 transition-all duration-300
                                focus-visible:border-amber-500
                                focus-visible:ring-2 focus-visible:ring-amber-500"
@@ -103,7 +103,7 @@ export default function SignUpSection() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-10 text-lg placeholder:text-lg
+                    className="h-10 md:text-lg placeholder:text-lg
                                bg-neutral-50 border-gray-300 transition-all duration-300
                                focus-visible:border-amber-500
                                focus-visible:ring-2 focus-visible:ring-amber-500"
@@ -121,7 +121,7 @@ export default function SignUpSection() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
-                    className="h-10 text-lg placeholder:text-lg
+                    className="h-10 md:text-lg placeholder:text-lg
                                bg-neutral-50 border-gray-300 transition-all duration-300
                                focus-visible:border-amber-500
                                focus-visible:ring-2 focus-visible:ring-amber-500"
