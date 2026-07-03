@@ -61,7 +61,16 @@ export default function getAbout() {
 "use client";
 
 //import { Button } from "@/components/ui/button";
-import { GraduationCap, MicVocal, Music2 } from "lucide-react"; //ArrowRight, BookOpen, GraduationCap, MicVocal, Music2
+import {
+  GraduationCap,
+  Guitar,
+  Laptop,
+  MicVocal,
+  Music2,
+  Notebook,
+  Piano,
+  Sparkles,
+} from "lucide-react"; //ArrowRight, BookOpen, GraduationCap, MicVocal, Music2
 import Image from "next/image";
 //import Link from "next/link";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -98,6 +107,15 @@ function Reveal({
 }
 
 export default function getAbout() {
+  const bullets = [
+    { text: "Pianist · Singer", icon: MicVocal },
+    { text: "Music Educator", icon: GraduationCap },
+    { text: "Tech-Savvy Content Creator", icon: Laptop },
+    { text: "Accompanist · Collaborative Artist", icon: Guitar },
+    { text: "Blending Music, Education, and Technology", icon: Sparkles },
+  ];
+  const textSizes = ["text-3xl", "text-2xl", "text-xl", "text-lg", "text-base"];
+
   return (
     <div className="min-h-screen bg-black text-neutral-100">
       <main className="mx-auto max-w-7xl px-6 py-32 font-redHatDisplay">
@@ -108,8 +126,8 @@ export default function getAbout() {
                        "
           >
             <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14">
-              <Reveal>
-                <div className="space-y-10">
+              <div className="space-y-10">
+                <Reveal>
                   <div className="rounded-[2rem] bg-neutral-850 p-8 shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center">
                     <p className="mb-8 text-5xl font-black leading-tight text-amber-500">
                       About Steven Sun
@@ -118,17 +136,56 @@ export default function getAbout() {
                       Meet Your Professional Vibemaster
                     </h1>
                     <p className="mt-4 text-xl leading-8 text-neutral-400">
-                      As a software developer who earned an RCM Grade 10
-                      Certification in Piano Performance, Steven excels at
-                      performing and digitalizing immersive entertainment
-                      experiences.
+                      As a trained software developer and as an RCM-certified
+                      pianist, Steven excels at performing, digitalizing, and
+                      coaching immersive entertainment experiences.
                     </p>
                   </div>
+                </Reveal>
+                <Reveal delay="delay-400">
                   <ul
-                    className="space-y-7 rounded-[2rem] bg-neutral-850 p-8 text-3xl font-bold leading-tight 
-                                 text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]"
+                    className="relative overflow-hidden
+                                 space-y-7 rounded-[2rem] p-8 text-xl font-bold leading-tight 
+                                 text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]
+                                 bg-gradient-to-tr from-red-950 via-amber-950 to-neutral-850"
                   >
-                    {[
+                    {/* Top-right decoration */}
+                    <Piano
+                      className="absolute top-6 right-6 h-20 w-20
+                                text-amber-300/20"
+                    />
+
+                    {/* Bottom-left decoration */}
+                    <Notebook
+                      className="absolute bottom-6 left-6 h-16 w-16
+                                text-red-300/20"
+                    />
+
+                    {bullets.map((item, i) => {
+                      const Icon = item.icon;
+                      return (
+                        <li
+                          key={item.text}
+                          className="flex items-center gap-5 mb-8"
+                          style={{
+                            marginLeft: `${i * 2}rem`,
+                          }}
+                        >
+                          <Icon
+                            className="h-8 w-8 shrink-0
+                            text-amber-400
+                            drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+                          />
+                          <span
+                            className={`${textSizes[i]} [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]`}
+                          >
+                            {item.text}
+                          </span>
+                        </li>
+                      );
+                    })}
+
+                    {/* {[
                       "Pianist - Singer",
                       "Music Educator",
                       "Accompanist, Collaborative Artist",
@@ -139,12 +196,12 @@ export default function getAbout() {
                         <span className="text-amber-400">•</span>
                         <span>{item}</span>
                       </li>
-                    ))}
+                    ))} */}
                   </ul>
-                </div>
-              </Reveal>
+                </Reveal>
+              </div>
 
-              <Reveal delay="delay-150">
+              <Reveal delay="delay-200">
                 <div className="relative min-h-[720px] overflow-hidden rounded-[2rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
                   <Image
                     src="/hero-images/AI_Generated_Basement_Studio.png"
@@ -180,12 +237,12 @@ export default function getAbout() {
               <p className="text-lg leading-8 text-neutral-300">
                 You can find Steven singing jazz standards in live venues while
                 accompanying himself on the piano. Steven mixes and produces all
-                of his music videos in house.
+                of his music videos independently.
               </p>
             </div>
           </Reveal>
 
-          <Reveal delay="delay-150">
+          <Reveal delay="delay-200">
             <div
               className="
                 absolute inset-0
@@ -204,16 +261,15 @@ export default function getAbout() {
               </h2>
               <p className="text-lg leading-8 text-neutral-300">
                 Striving to reinvent the independent artist in the streaming
-                era, Steven leverages his unique background to craft a rich
-                fusion sound informed by popular culture and music legends of
-                the past.
+                era, Steven draw from his unique background to craft a rich
+                sound informed by popular culture and music legends of the past.
               </p>
             </div>
           </Reveal>
         </section>
 
         <section className="py-16">
-          <Reveal delay="delay-150">
+          <Reveal delay="delay-200">
             <div
               className="
                 absolute inset-0
@@ -236,12 +292,12 @@ export default function getAbout() {
                                p-6 shadow-lg ring-1 ring-amber-500/20"
                 >
                   <p className="text-gray-700 text-xl font-semibold">
-                    Steven holds{" "}
+                    Started piano at age 5, Steven earned{" "}
                     <span className="font-black">
                       RCM Grade 10 Piano Certification
                     </span>{" "}
-                    and has over three years of experience teaching piano to
-                    students of all ages and levels.
+                    and has 3+ years of experience teaching students of all ages
+                    and levels.
                   </p>
                 </div>
 
@@ -254,8 +310,8 @@ export default function getAbout() {
                     <span className="font-black">
                       BSc in Computer Science from the University of Ottawa
                     </span>
-                    , he connects music learning with digital creativity,
-                    production, and practical problem-solving.
+                    , he connects music learning with digital creativity and
+                    intentional problem-solving.
                   </p>
                 </div>
 
@@ -264,12 +320,12 @@ export default function getAbout() {
                                p-6 shadow-lg ring-1 ring-amber-500/20"
                 >
                   <p className="text-gray-700 text-xl font-semibold">
-                    He can teach practical and theory{" "}
+                    He teaches{" "}
                     <span className="font-black">
-                      courses from the RCM syllabus
+                      all course and grades from the RCM syllabus
                     </span>
                     , including exam preparation, while keeping lessons beginner
-                    friendly and creatively useful.
+                    friendly and aligned with student goals.
                   </p>
                 </div>
 
@@ -279,8 +335,8 @@ export default function getAbout() {
                 >
                   <p className="text-gray-700 text-xl font-semibold">
                     <span className="font-black">Hour-long lessons</span> can
-                    include popular songs, accompaniment, ear training, theory,
-                    jazz, weddings, and other real musical settings.
+                    include popular songs, accompaniment, improvisation, ear
+                    training, theory, weddings, and other live musical settings.
                   </p>
                 </div>
               </div>

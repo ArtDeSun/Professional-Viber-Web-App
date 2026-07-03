@@ -23,12 +23,33 @@ export default function ImageTabs() {
   } */
 
   const tabs = [
-    { id: "AI_Basement_Music_Studio_1", label: "Studio" },
-    { id: "MV_UI_Cards_Inspiration_2", label: "MV Card Template" },
-    { id: "AI_Basement_Music_Studio_3", label: "Studio" },
-    { id: "MV_UI_Cards_Inspiration_4", label: "MV Card Template" },
-    { id: "AI_Basement_Music_Studio_5", label: "Studio" },
+    {
+      id: "AI_Basement_Music_Studio_1",
+      label: "Studio",
+      imgName: "AI_Generated_Basement_Studio",
+    },
+    {
+      id: "MV_UI_Cards_Inspiration_2",
+      label: "MV Card Template",
+      imgName: "MV_UI_Cards_Inspiration",
+    },
+    {
+      id: "AI_Basement_Music_Studio_3",
+      label: "Studio",
+      imgName: "AI_Generated_Basement_Studio",
+    },
+    {
+      id: "MV_UI_Cards_Inspiration_4",
+      label: "MV Card Template",
+      imgName: "MV_UI_Cards_Inspiration",
+    },
+    {
+      id: "AI_Basement_Music_Studio_5",
+      label: "Studio",
+      imgName: "AI_Generated_Basement_Studio",
+    },
   ];
+  const activeImage = tabs.find((tab) => tab.id === activeTab);
 
   return (
     <section className="bg-black px-4 py-16 min-h-[850px]">
@@ -133,55 +154,65 @@ export default function ImageTabs() {
                         "
             />
 
-            {activeTab === "AI_Basement_Music_Studio_1" && (
-              <Image
-                src="/hero-images/AI_Generated_Basement_Studio.png"
-                alt="AI_Basement_Music_Studio"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[580px] w-auto object-contain"
-              />
-            )}
-
-            {activeTab === "MV_UI_Cards_Inspiration_2" && (
-              <Image
-                src="/hero-images/MV_UI_Cards_Inspiration.png"
-                alt="MV_UI_Cards_Inspiration"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[580px] w-auto object-contain"
-              />
-            )}
-
-            {activeTab === "AI_Basement_Music_Studio_3" && (
-              <Image
-                src="/hero-images/AI_Generated_Basement_Studio.png"
-                alt="AI_Basement_Music_Studio"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[580px] w-auto object-contain"
-              />
-            )}
-
-            {activeTab === "MV_UI_Cards_Inspiration_4" && (
-              <Image
-                src="/hero-images/MV_UI_Cards_Inspiration.png"
-                alt="MV_UI_Cards_Inspiration"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[580px] w-auto object-contain"
-              />
-            )}
-
-            {activeTab === "AI_Basement_Music_Studio_5" && (
-              <Image
-                src="/hero-images/AI_Generated_Basement_Studio.png"
-                alt="AI_Basement_Music_Studio"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[580px] w-auto object-contain"
-              />
-            )}
+            <div
+              className="relative z-10 overflow-hidden rounded-3xl
+                            shadow-[0_0_30px_rgba(245,158,11,0.25)]"
+            >
+              {activeImage && (
+                <Image
+                  src={`/hero-images/${activeImage.imgName}.png`}
+                  alt={activeImage.imgName}
+                  width={1200}
+                  height={800}
+                  className="max-h-[580px] w-auto object-contain"
+                />
+              )}
+              {/* {activeTab === "AI_Basement_Music_Studio_1" && (
+                <Image
+                  src="/hero-images/AI_Generated_Basement_Studio.png"
+                  alt="AI_Basement_Music_Studio"
+                  width={1200}
+                  height={800}
+                  className="max-h-[580px] w-auto object-contain"
+                />
+              )}
+              {activeTab === "MV_UI_Cards_Inspiration_2" && (
+                <Image
+                  src="/hero-images/MV_UI_Cards_Inspiration.png"
+                  alt="MV_UI_Cards_Inspiration"
+                  width={1200}
+                  height={800}
+                  className="relative z-10 max-h-[580px] w-auto object-contain"
+                />
+              )}
+              {activeTab === "AI_Basement_Music_Studio_3" && (
+                <Image
+                  src="/hero-images/AI_Generated_Basement_Studio.png"
+                  alt="AI_Basement_Music_Studio"
+                  width={1200}
+                  height={800}
+                  className="relative z-10 max-h-[580px] w-auto object-contain"
+                />
+              )}
+              {activeTab === "MV_UI_Cards_Inspiration_4" && (
+                <Image
+                  src="/hero-images/MV_UI_Cards_Inspiration.png"
+                  alt="MV_UI_Cards_Inspiration"
+                  width={1200}
+                  height={800}
+                  className="relative z-10 max-h-[580px] w-auto object-contain"
+                />
+              )}
+              {activeTab === "AI_Basement_Music_Studio_5" && (
+                <Image
+                  src="/hero-images/AI_Generated_Basement_Studio.png"
+                  alt="AI_Basement_Music_Studio"
+                  width={1200}
+                  height={800}
+                  className="relative z-10 max-h-[580px] w-auto object-contain"
+                />
+              )} */}
+            </div>
           </div>
         </div>
       </div>

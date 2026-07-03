@@ -92,14 +92,14 @@ export default function Navbar() {
               About
             </Button>
           </Link>
-          <Link href="/youtube">
+          <a href="https://www.youtube.com/@stevensun2000" target="_blank">
             <Button
               className="h-10 w-28 bg-destructive text-gray-300 text-xl rounded-xl 
                          hover:text-black cursor-pointer"
             >
               Youtube
             </Button>
-          </Link>
+          </a>
           {/* <Link href="/youtube">
             <Button
               variant="ghost"

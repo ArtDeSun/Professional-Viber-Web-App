@@ -177,36 +177,40 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black/70" />
           <div
-            className={`flex flex-col justify-center container mx-auto max-w-4xl text-center relative z-10
+            className={`flex flex-col justify-center items-center container mx-auto max-w-4xl text-center relative z-10
                           transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
                           `}
           >
+            <div className="min-h-[8vh]" />
             <h1
-              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-6 text-8xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
+              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-8 text-9xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
             >
               Steven Sun
             </h1>
-            {/* text-amber-100 */}
-            <h2 className="font-poppins font-bold text-gray-300 italic mb-5 text-2xl">
-              {/* Keywords · Describing · Steven's · Core · Skills */}
+            <h2 className="font-poppins font-semibold text-gray-300 italic mb-7 text-4xl">
               Piano · Professional Vibemaster · Creative Voice
             </h2>
-            {/* text-amber-100 */}
-            <h1 className="font-poppins text-gray-300 mb-3 text-xl">
+            <h1
+              className="font-poppins mb-3 text-2xl
+                           bg-gradient-to-r
+                           from-gray-300 via-amber-500 to-gray-300 bg-clip-text
+                           text-transparent"
+            >
               Reimagining Musical Creativity Beyond Expectations
             </h1>
-            {/* text-amber-100 */}
-            <p className="font-poppins text-gray-300 mb-5 text-lg">
-              An Ottawa-Based Pianist-Vocalist Fusing Tradition, Modern
-              Creativity, and Diverse Cultures Into a Distinctly Personal
-              Artistic Voice
-            </p>
-            <div className="font-redHatDisplay flex flex-col items-center gap-4">
+
+            <div className="max-w-2xl">
+              {" "}
+              {/* 42rem */}
+              <p className="font-poppins text-gray-300 mb-6 text-base font-light">
+                An Ottawa-Based Musician, Educator, Content Creator, and
+                Software Developer Fusing Modern Creativity and Diverse Cultures
+                into a Distinctly Personal Artistic Voice
+              </p>
+            </div>
+            <div className="font-redHatDisplay flex flex-col items-center gap-3">
               <Link href="/music">
-                <Button
-                  /* size="lg" */
-                  className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full"
-                >
+                <Button className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full">
                   Music <ArrowRight className="ml-2" />
                 </Button>
               </Link>
@@ -296,95 +300,132 @@ export default function Home() {
           <div className="container mx-auto px-4">
             {/* Apply md only when the screen is at least the Medium breakpoint (768px and wider). */}
             <div className="grid gap-12 md:grid-cols-3 font-redHatDisplay">
-              {/* Teaching */}
-              <div
-                className="group flex flex-col rounded-3xl p-6
-                   bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200
-                   border border-amber-300/50
-                   ring-1 ring-amber-300/50
-                   transition-all duration-300
-                   hover:-translate-y-2
-                   hover:shadow-[0_0_36px_rgba(245,158,11,0.95)]"
-              >
+              <div className="group relative">
+                {/* hidden layers */}
                 <div
-                  className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
-                     bg-gradient-to-br from-amber-500 via-yellow-300 to-orange-100
+                  className="absolute inset-0 translate-x-4 -translate-y-6 rounded-3xl
+                                bg-gradient-to-br from-amber-400/80 via-yellow-300/80 to-orange-400/80
+                                transition-all duration-300"
+                />
+                <div
+                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl
+                                bg-gradient-to-br from-amber-300 via-yellow-200 to-orange-300
+                                transition-all duration-300"
+                />
+                {/* main card */}
+                {/* Teaching */}
+                <div
+                  className="relative z-10 group flex flex-col rounded-3xl p-6
+                     bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200
+                     border border-amber-300/50
                      ring-1 ring-amber-300/50
-                     shadow-[0_0_24px_rgba(245,158,11,0.95)]"
+                     transition-all duration-300
+                     hover:-translate-y-2
+                     hover:shadow-[0_0_36px_rgba(245,158,11,0.95)]"
                 >
-                  <Ear className="h-7 w-7 text-amber-800" />
+                  <div
+                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                       bg-gradient-to-br from-amber-500 via-yellow-300 to-orange-100
+                       ring-1 ring-amber-300/50
+                       shadow-[0_0_24px_rgba(245,158,11,0.95)]"
+                  >
+                    <Ear className="h-7 w-7 text-amber-800" />
+                  </div>
+                  <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                    Innovative Piano Learning
+                  </h3>
+                  <p className="text-muted-foreground text-lg font-semibold">
+                    Practice theory through real songs, ear training, and
+                    inspired playing from day one.
+                  </p>
                 </div>
-                <h3 className="mb-3 text-3xl font-bold text-gray-700">
-                  Innovative Piano Learning
-                </h3>
-                <p className="text-muted-foreground text-lg font-semibold">
-                  Apply theory through real songs, ear training, and practical,
-                  independent playing from day one.
-                </p>
               </div>
 
-              {/* Content Creation */}
-              <div
-                className="group flex flex-col rounded-3xl p-6
-                            bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200
-                            border border-violet-300/50
-                            ring-1 ring-violet-300/50
-                            transition-all duration-300
-                            hover:-translate-y-2
-                            hover:shadow-[0_0_36px_rgba(139,92,246,0.95)]"
-              >
+              <div className="group relative">
+                {/* hidden layers */}
                 <div
-                  className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
-                              bg-gradient-to-br from-violet-500 via-purple-400 to-fuchsia-200
+                  className="absolute inset-0 translate-x-4 -translate-y-6 rounded-3xl
+                                bg-gradient-to-br from-violet-400/80 via-purple-300/80 to-fuchsia-400/80
+                                transition-all duration-300"
+                />
+                <div
+                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl
+                                bg-gradient-to-br from-violet-300 via-purple-200 to-fuchsia-300
+                                transition-all duration-300"
+                />
+                {/* main card */}
+                {/* Content Creation */}
+                <div
+                  className="relative z-10 group flex flex-col rounded-3xl p-6
+                              bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200
+                              border border-violet-300/50
                               ring-1 ring-violet-300/50
-                              shadow-[0_0_24px_rgba(139,92,246,0.95)]"
+                              transition-all duration-300
+                              hover:-translate-y-2
+                              hover:shadow-[0_0_36px_rgba(139,92,246,0.95)]"
                 >
-                  <Video className="h-7 w-7 text-violet-800" />
+                  <div
+                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                                bg-gradient-to-br from-violet-500 via-purple-300 to-fuchsia-100
+                                ring-1 ring-violet-300/50
+                                shadow-[0_0_24px_rgba(139,92,246,0.95)]"
+                  >
+                    <Video className="h-7 w-7 text-violet-800" />
+                  </div>
+                  <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                    Music Content Creation
+                  </h3>
+                  <p className="text-muted-foreground text-lg font-semibold">
+                    Creating piano-vocal content reimagining performance,
+                    personality, and digital storytelling.
+                  </p>
                 </div>
-
-                <h3 className="mb-3 text-3xl font-bold text-gray-700">
-                  Music Content Creation
-                </h3>
-
-                <p className="text-muted-foreground text-lg font-semibold">
-                  Creating piano-vocal content reimagining performance,
-                  personality, and digital storytelling.
-                </p>
               </div>
 
-              {/* Musicianship */}
-              <div
-                className="group flex flex-col rounded-3xl p-6
-                            bg-gradient-to-br
-                            from-rose-200
-                            via-pink-100
-                            to-red-200
-                            border border-rose-300/50
-                            ring-1 ring-rose-300/50
-                            transition-all duration-300
-                            hover:-translate-y-2
-                            hover:shadow-[0_0_36px_rgba(244,63,94,0.95)]"
-              >
+              <div className="group relative">
+                {/* hidden layers */}
                 <div
-                  className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                  className="absolute inset-0 translate-x-4 -translate-y-6 rounded-3xl
+                                bg-gradient-to-br from-rose-400/80 via-pink-300/80 to-red-400/80
+                                transition-all duration-300"
+                />
+                <div
+                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl
+                                bg-gradient-to-br from-rose-300 via-pink-200 to-red-300
+                                transition-all duration-300"
+                />
+                {/* Musicianship */}
+                <div
+                  className="relative z-10 group flex flex-col rounded-3xl p-6
                               bg-gradient-to-br
-                              from-rose-500
-                              via-pink-300
-                              to-red-100
+                              from-rose-200
+                              via-pink-100
+                              to-red-200
+                              border border-rose-300/50
                               ring-1 ring-rose-300/50
-                              shadow-[0_0_24px_rgba(244,63,94,0.95)]"
+                              transition-all duration-300
+                              hover:-translate-y-2
+                              hover:shadow-[0_0_36px_rgba(244,63,94,0.95)]"
                 >
-                  <AudioLines className="h-7 w-7 text-rose-700" />
+                  <div
+                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                                bg-gradient-to-br
+                                from-rose-500
+                                via-pink-300
+                                to-red-100
+                                ring-1 ring-rose-300/50
+                                shadow-[0_0_24px_rgba(244,63,94,0.95)]"
+                  >
+                    <AudioLines className="h-7 w-7 text-rose-700" />
+                  </div>
+                  <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                    Genre-Fusing Musicianship
+                  </h3>
+                  <p className="text-muted-foreground text-lg font-semibold">
+                    Jazz, R&B, rock, East-Asian pop, classical, and production
+                    internalized into one personal sound.
+                  </p>
                 </div>
-
-                <h3 className="mb-3 text-3xl font-bold text-gray-700">
-                  Genre-Fusing Musicianship
-                </h3>
-
-                <p className="text-muted-foreground text-lg font-semibold">
-                  Jazz, R&B, rock, East-Asian pop, classical, and production
-                  internalized into one personal sound.
-                </p>
               </div>
             </div>
           </div>

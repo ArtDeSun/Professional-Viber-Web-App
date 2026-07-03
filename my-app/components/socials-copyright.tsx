@@ -1,8 +1,8 @@
 import {
   FaCopyright,
-  FaFacebook,
   FaInstagram,
   FaSpotify,
+  FaTiktok,
   FaYoutube,
 } from "react-icons/fa";
 
@@ -54,11 +54,11 @@ export default function SocialsCopyright() {
             />
           </a>
           <a
-            href="https://facebook.com"
+            href="https://tiktok.com"
             target="_blank"
             className="text-gray-300"
           >
-            <FaFacebook
+            <FaTiktok
               className="h-8 w-8 transition-all duration-300
               hover:-translate-y-1 
               hover:text-amber-400
