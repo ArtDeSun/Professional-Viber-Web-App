@@ -5,14 +5,11 @@ import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
 export default function ImageTabs() {
-  // const [activeTab, setActiveTab] = useState("organize");
-  // //organize, hired, boards, MV_UI_Cards_Inspiration, Stay_In_Touch_Template
-
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
     const savedTab = localStorage.getItem("activeTab");
-    setActiveTab(savedTab ?? "organize");
+    setActiveTab(savedTab ?? "AI_Basement_Music_Studio_1");
   }, []);
 
   useEffect(() => {
@@ -25,68 +22,92 @@ export default function ImageTabs() {
     return null; // or a loading spinner/skeleton
   } */
 
+  const tabs = [
+    { id: "AI_Basement_Music_Studio_1", label: "Studio" },
+    { id: "MV_UI_Cards_Inspiration_2", label: "MV Card Template" },
+    { id: "AI_Basement_Music_Studio_3", label: "Studio" },
+    { id: "MV_UI_Cards_Inspiration_4", label: "MV Card Template" },
+    { id: "AI_Basement_Music_Studio_5", label: "Studio" },
+  ];
+
   return (
     <section className="bg-black px-4 py-16 min-h-[850px]">
       <div className="container mx-auto max-w-6xl">
         {/* Tabs */}
         {/* CONSIDER THIS: className="md:grid-cols-4" */}
-        <div className="flex gap-2 justify-center mb-8">
-          <Button
-            onClick={() => setActiveTab("organize")}
-            /* className="bg-amber-500" */
-            className={`rounded-lg px-6 py-3 text-base font-medium
+        <div className="flex gap-2 justify-center mb-8 font-redHatDisplay">
+          {tabs.map((tab) => (
+            <Button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`rounded-lg px-6 py-3 text-lg font-bold
+                          transition-all duration-400 ease-out
+                          hover:cursor-pointer
+                          ${
+                            activeTab === tab.id
+                              ? "text-gray-100 bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-400"
+                              : "text-gray-700 bg-gradient-to-r from-white via-amber-100 to-white hover:from-amber-300 hover:via-yellow-200 hover:to-orange-300"
+                          }`}
+            >
+              {tab.label}
+            </Button>
+          ))}
+
+          {/*  <Button
+            onClick={() => setActiveTab("AI_Basement_Music_Studio_1")}
+            className={`rounded-lg px-6 py-3 text-lg font-bold
                     transition-colors hover:cursor-pointer ${
-                      activeTab === "organize"
+                      activeTab === "AI_Basement_Music_Studio_1"
                         ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-300"
                     }`}
           >
-            Organize Applications
+            Studio
           </Button>
           <Button
-            onClick={() => setActiveTab("hired")}
-            className={`rounded-lg px-6 py-3 text-base font-medium 
+            onClick={() => setActiveTab("MV_UI_Cards_Inspiration_2")}
+            className={`rounded-lg px-6 py-3 text-lg font-bold 
                     transition-colors hover:cursor-pointer ${
-                      activeTab === "hired"
+                      activeTab === "MV_UI_Cards_Inspiration_2"
                         ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-300"
                     }`}
           >
-            Get Hired
+            MV Card Template
           </Button>
           <Button
-            onClick={() => setActiveTab("boards")}
-            className={`rounded-lg px-6 py-3 text-base font-medium 
+            onClick={() => setActiveTab("AI_Basement_Music_Studio_3")}
+            className={`rounded-lg px-6 py-3 text-lg font-bold 
                     transition-colors hover:cursor-pointer ${
-                      activeTab === "boards"
+                      activeTab === "AI_Basement_Music_Studio_3"
                         ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-300"
                     }`}
           >
-            Manage Boards
+            Studio
           </Button>
           <Button
-            onClick={() => setActiveTab("MV_UI_Cards_Inspiration")}
-            className={`rounded-lg px-6 py-3 text-base font-medium 
+            onClick={() => setActiveTab("MV_UI_Cards_Inspiration_4")}
+            className={`rounded-lg px-6 py-3 text-lg font-bold 
                     transition-colors hover:cursor-pointer ${
-                      activeTab === "MV_UI_Cards_Inspiration"
+                      activeTab === "MV_UI_Cards_Inspiration_4"
                         ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-300"
                     }`}
           >
-            Inspiration for MV Cards
+            MV Card Template
           </Button>
           <Button
-            onClick={() => setActiveTab("Stay_In_Touch_Template")}
-            className={`rounded-lg px-6 py-3 text-base font-medium 
+            onClick={() => setActiveTab("AI_Basement_Music_Studio_5")}
+            className={`rounded-lg px-6 py-3 text-lg font-bold 
                     transition-colors hover:cursor-pointer ${
-                      activeTab === "Stay_In_Touch_Template"
+                      activeTab === "AI_Basement_Music_Studio_5"
                         ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-300"
                     }`}
           >
-            Mock Sign Up
-          </Button>
+            Studio
+          </Button> */}
         </div>
         <div
           className="
@@ -112,53 +133,53 @@ export default function ImageTabs() {
                         "
             />
 
-            {activeTab === "organize" && (
+            {activeTab === "AI_Basement_Music_Studio_1" && (
               <Image
-                src="/hero-images/hero1.png"
-                alt="Organize Applications"
+                src="/hero-images/AI_Generated_Basement_Studio.png"
+                alt="AI_Basement_Music_Studio"
                 width={1200}
                 height={800}
-                className="relative z-10 max-h-[620px] w-auto object-contain"
+                className="relative z-10 max-h-[580px] w-auto object-contain"
               />
             )}
 
-            {activeTab === "hired" && (
-              <Image
-                src="/hero-images/hero2.png"
-                alt="Get Hired"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[620px] w-auto object-contain"
-              />
-            )}
-
-            {activeTab === "boards" && (
-              <Image
-                src="/hero-images/hero3.png"
-                alt="Manage Boards"
-                width={1200}
-                height={800}
-                className="relative z-10 max-h-[620px] w-auto object-contain"
-              />
-            )}
-
-            {activeTab === "MV_UI_Cards_Inspiration" && (
+            {activeTab === "MV_UI_Cards_Inspiration_2" && (
               <Image
                 src="/hero-images/MV_UI_Cards_Inspiration.png"
-                alt="Inspiration for MV Cards"
+                alt="MV_UI_Cards_Inspiration"
                 width={1200}
                 height={800}
-                className="relative z-10 max-h-[620px] w-auto object-contain"
+                className="relative z-10 max-h-[580px] w-auto object-contain"
               />
             )}
 
-            {activeTab === "Stay_In_Touch_Template" && (
+            {activeTab === "AI_Basement_Music_Studio_3" && (
               <Image
-                src="/hero-images/Stay_In_Touch_Template.png"
-                alt="Mock Template for Signing Up"
+                src="/hero-images/AI_Generated_Basement_Studio.png"
+                alt="AI_Basement_Music_Studio"
                 width={1200}
                 height={800}
-                className="relative z-10 max-h-[620px] w-auto object-contain"
+                className="relative z-10 max-h-[580px] w-auto object-contain"
+              />
+            )}
+
+            {activeTab === "MV_UI_Cards_Inspiration_4" && (
+              <Image
+                src="/hero-images/MV_UI_Cards_Inspiration.png"
+                alt="MV_UI_Cards_Inspiration"
+                width={1200}
+                height={800}
+                className="relative z-10 max-h-[580px] w-auto object-contain"
+              />
+            )}
+
+            {activeTab === "AI_Basement_Music_Studio_5" && (
+              <Image
+                src="/hero-images/AI_Generated_Basement_Studio.png"
+                alt="AI_Basement_Music_Studio"
+                width={1200}
+                height={800}
+                className="relative z-10 max-h-[580px] w-auto object-contain"
               />
             )}
           </div>

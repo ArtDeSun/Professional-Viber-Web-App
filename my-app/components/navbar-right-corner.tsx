@@ -179,6 +179,11 @@ export default function NavbarRightCorner() {
                 <LogOut className="transition-colors duration-200 group-data-[highlighted]:stroke-white" />
                 Log out
               </DropdownMenuItem>
+              {error && (
+                <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                  {error}
+                </div>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </>

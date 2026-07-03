@@ -55,7 +55,7 @@ export default function SignUpSection() {
         {/* overflow-visible  */}
         <Card className="w-full max-w-lg border-gray-200 shadow-lg bg-neutral-950">
           <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-3xl font-bold text-neutral-50">
+            <CardTitle className="text-4xl font-bold text-neutral-50 font-figtree">
               Let's Connect
             </CardTitle>
             {/* Stay updated with new music videos and piano tips*/}
@@ -63,12 +63,15 @@ export default function SignUpSection() {
             {/* Discover new music videos and piano practice tips */}
             {/* Follow for fresh music videos and piano insights */}
             {/* Stay inspired with music videos and piano guidance */}
-            <CardDescription className="text-base text-neutral-400">
+            <CardDescription className="text-xl text-neutral-400 font-figtree">
               Latest music content and piano tips, all in one.
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="py-4 pt-12 rounded-2xl border border-amber-500 bg-neutral-900">
+            <div
+              className="py-4 pt-12 rounded-2xl border border-amber-500/50 bg-neutral-900 
+                            font-figtree"
+            >
               <CardContent className="space-y-4">
                 {error && (
                   <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
@@ -76,9 +79,6 @@ export default function SignUpSection() {
                   </div>
                 )}
                 <div className="grid gap-2">
-                  {/* <label htmlFor="name" className="text-gray-700">
-                    Name
-                  </label> */}
                   <Input
                     id="name"
                     type="text"
@@ -86,7 +86,8 @@ export default function SignUpSection() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="bg-neutral-50 border-gray-300 transition-all duration-300
+                    className="h-10 text-lg placeholder:text-lg
+                               bg-neutral-50 border-gray-300 transition-all duration-300
                                focus-visible:border-amber-500
                                focus-visible:ring-2 focus-visible:ring-amber-500"
                   />
@@ -102,7 +103,8 @@ export default function SignUpSection() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="bg-neutral-50 border-gray-300 transition-all duration-300
+                    className="h-10 text-lg placeholder:text-lg
+                               bg-neutral-50 border-gray-300 transition-all duration-300
                                focus-visible:border-amber-500
                                focus-visible:ring-2 focus-visible:ring-amber-500"
                   />
@@ -119,7 +121,8 @@ export default function SignUpSection() {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
-                    className="bg-neutral-50 border-gray-300 transition-all duration-300
+                    className="h-10 text-lg placeholder:text-lg
+                               bg-neutral-50 border-gray-300 transition-all duration-300
                                focus-visible:border-amber-500
                                focus-visible:ring-2 focus-visible:ring-amber-500"
                   />
@@ -128,12 +131,12 @@ export default function SignUpSection() {
               <CardFooter className="flex flex-col space-y-4 border-none bg-neutral-900">
                 <Button
                   type="submit"
-                  className="w-full bg-amber-500 text-neutral-950 hover:cursor-pointer hover:bg-amber-500/70"
+                  className="h-10 text-lg w-full bg-amber-500 text-neutral-950 hover:cursor-pointer hover:bg-amber-500/70"
                   disabled={loading}
                 >
                   {loading ? "Creating account..." : "Sign Up"}
                 </Button>
-                <p className="text-center text-sm text-neutral-200">
+                <p className="text-lg text-center text-neutral-200">
                   Already have an account?{" "}
                   <Link
                     href="/sign-in"

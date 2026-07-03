@@ -2,10 +2,10 @@ import Navbar from "@/components/navbar";
 import Socials_Copyright from "@/components/socials-copyright";
 import type { Metadata } from "next";
 import {
+  Figtree,
   Geist,
   Geist_Mono,
   Great_Vibes,
-  Manrope,
   Playfair_Display,
   Poppins,
   Red_Hat_Display,
@@ -24,7 +24,7 @@ const geistMono = Geist_Mono({
 });
 
 /* CONSIDER THESE FONTS: Great_Vibes, Roboto, Playfair_Display, Red_Hat_Display, Poppins 
-                         Manrope, Figtree, (Tahoma, Verdana, Georgia, Gotham_Light) */
+                         Figtree */
 
 const greatVibes = Great_Vibes({
   variable: "--font-great-vibes",
@@ -53,8 +53,9 @@ const poppins = Poppins({
   subsets: ["latin"],
 });
 
-const manrope = Manrope({
-  variable: "--font-manrope",
+const figtree = Figtree({
+  variable: "--font-figtree",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
 });
 
@@ -75,7 +76,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} 
       ${greatVibes.variable} ${roboto.variable} 
       ${playfairDisplay.variable} ${redHatDisplay.variable} 
-      ${poppins.variable} h-full antialiased`}
+      ${poppins.variable} 
+      ${figtree.variable}
+      h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <Navbar />

@@ -10,6 +10,8 @@ import { Button } from "./ui/button";
 export default function Navbar() {
   const pathname = usePathname();
 
+  /* const router = useRouter(); */
+
   const [animate, setAnimate] = useState(false);
   const [visible, setVisible] = useState(false);
 
@@ -50,14 +52,21 @@ export default function Navbar() {
           href="/"
           className="w-60 flex items-center gap-2 text-xl font-semibold text-gray-300"
           onClick={(e) => {
-            if (window.scrollY === 0 && pathname === "/") {
+            if (pathname !== "/") {
+              e.preventDefault();
+              window.location.href = "/";
+              return;
+            }
+
+            if (window.scrollY === 0) {
               e.preventDefault();
               window.location.reload();
-            } else if (pathname === "/") {
-              e.preventDefault();
-              history.pushState(null, "", "/");
-              window.scrollTo({ top: 0, behavior: "smooth" });
+              return;
             }
+
+            e.preventDefault();
+            history.replaceState(null, "", "/");
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
           <Piano />
@@ -74,7 +83,7 @@ export default function Navbar() {
                 window.location.reload();
               } else if (pathname === "/about") {
                 e.preventDefault();
-                history.pushState(null, "", "/about");
+                history.replaceState(null, "", "/");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}

@@ -4,7 +4,7 @@ import ImageTabs from "@/components/image-tabs";
 import SignUpSection from "@/components/sign-up-section";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth/auth-client";
-import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
+import { ArrowRight, AudioLines, Ear, Video } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -28,6 +28,35 @@ export default function Home() {
 
   const isLoggedIn = Boolean(session?.user);
 
+  // 1. Save scroll position before unload,
+  // and only force top-of-page on real refresh
+  useEffect(() => {
+    history.scrollRestoration = "manual";
+
+    const navEntry = performance.getEntriesByType(
+      "navigation",
+    )[0] as PerformanceNavigationTiming;
+
+    const isReload = navEntry?.type === "reload";
+
+    if (!isReload) {
+      sessionStorage.removeItem("homeScrollY");
+    } else {
+      window.scrollTo(0, 0);
+    }
+
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("homeScrollY", String(window.scrollY));
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  // 2. Start hero animations
   useEffect(() => {
     if (!initialAuthChecked || !heroImageLoaded) return;
     const backgroundTimer = setTimeout(() => {
@@ -41,6 +70,26 @@ export default function Home() {
       clearTimeout(contentTimer);
     };
   }, [initialAuthChecked, heroImageLoaded]);
+
+  // 3. Restore scroll after intro animation
+  useEffect(() => {
+    if (!visible) return;
+
+    const savedY = sessionStorage.getItem("homeScrollY");
+    if (!savedY) return;
+
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: Number(savedY),
+        behavior: "smooth",
+      });
+
+      sessionStorage.removeItem("homeScrollY");
+    }, 1100);
+
+    return () => clearTimeout(timer);
+  }, [visible]);
+
   /* return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -120,6 +169,7 @@ export default function Home() {
             src="/hero-images/AI_Generated_Basement_Studio.png"
             alt=""
             fill
+            sizes="100vw"
             priority
             onLoad={() => setHeroImageLoaded(true)}
             className={`object-cover object-center transition-all duration-[1400ms] ease-out
@@ -132,23 +182,26 @@ export default function Home() {
                           `}
           >
             <h1
-              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-8 text-8xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
+              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-6 text-8xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
             >
               Steven Sun
             </h1>
             {/* text-amber-100 */}
-            <h2 className="font-poppins font-bold text-gray-300 italic mb-6 text-2xl">
-              Keywords · Describing · Steven's · Core · Skills
+            <h2 className="font-poppins font-bold text-gray-300 italic mb-5 text-2xl">
+              {/* Keywords · Describing · Steven's · Core · Skills */}
+              Piano · Professional Vibemaster · Creative Voice
             </h2>
             {/* text-amber-100 */}
             <h1 className="font-poppins text-gray-300 mb-3 text-xl">
-              Something about Steven's role as Professional Vibemaster
+              Reimagining Musical Creativity Beyond Expectations
             </h1>
             {/* text-amber-100 */}
-            <p className="font-poppins text-gray-300 mb-6 text-xl">
-              15-word-max introduction to Steven's artistry
+            <p className="font-poppins text-gray-300 mb-5 text-lg">
+              An Ottawa-Based Pianist-Vocalist Fusing Tradition, Modern
+              Creativity, and Diverse Cultures Into a Distinctly Personal
+              Artistic Voice
             </p>
-            <div className="font-redHatDisplay flex flex-col items-center gap-6">
+            <div className="font-redHatDisplay flex flex-col items-center gap-4">
               <Link href="/music">
                 <Button
                   /* size="lg" */
@@ -242,75 +295,95 @@ export default function Home() {
         <section className="border-t border-white/15 bg-neutral-950 py-24">
           <div className="container mx-auto px-4">
             {/* Apply md only when the screen is at least the Medium breakpoint (768px and wider). */}
-            <div className="grid gap-12 md:grid-cols-3">
+            <div className="grid gap-12 md:grid-cols-3 font-redHatDisplay">
+              {/* Teaching */}
               <div
-                className="group flex flex-col bg-neutral-50 rounded-xl p-6
-                              border border-white/5
-                              ring-2 ring-amber-300
-                              transition-all duration-300
-                              hover:-translate-y-2
-                              hover:shadow-[0_0_30px_rgba(251,191,36,0.95)]  
-                              "
+                className="group flex flex-col rounded-3xl p-6
+                   bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200
+                   border border-amber-300/50
+                   ring-1 ring-amber-300/50
+                   transition-all duration-300
+                   hover:-translate-y-2
+                   hover:shadow-[0_0_36px_rgba(245,158,11,0.95)]"
               >
                 <div
-                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl
-                                bg-gradient-to-br from-amber-300 via-amber-200 to-orange-100
-                                ring-1 ring-amber-300/50 shadow-[0_0_30px_rgba(251,191,36,0.95)]"
+                  className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                     bg-gradient-to-br from-amber-500 via-yellow-300 to-orange-100
+                     ring-1 ring-amber-300/50
+                     shadow-[0_0_24px_rgba(245,158,11,0.95)]"
                 >
-                  <Briefcase className="h-6 w-6 text-red-500" />
+                  <Ear className="h-7 w-7 text-amber-800" />
                 </div>
-                <h3 className="mb-3 text-2xl font-semibold text-gray-700">
-                  Organize Applications
+                <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                  Innovative Piano Learning
                 </h3>
-                <p className="text-muted-foreground">
-                  Create custom boards and columns to track your job
-                  applications at every stage of the process.
+                <p className="text-muted-foreground text-lg font-semibold">
+                  Apply theory through real songs, ear training, and practical,
+                  independent playing from day one.
                 </p>
               </div>
+
+              {/* Content Creation */}
               <div
-                className="group flex flex-col bg-neutral-50 rounded-xl p-6
-                              border border-white/5
-                              ring-2 ring-purple-300
-                              transition-all duration-300
-                              hover:-translate-y-2
-                              hover:shadow-[0_0_30px_rgba(216,180,254,0.95)]"
+                className="group flex flex-col rounded-3xl p-6
+                            bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200
+                            border border-violet-300/50
+                            ring-1 ring-violet-300/50
+                            transition-all duration-300
+                            hover:-translate-y-2
+                            hover:shadow-[0_0_36px_rgba(139,92,246,0.95)]"
               >
                 <div
-                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl
-                                bg-gradient-to-br from-purple-300 via-fuchsia-200 to-rose-100
-                                ring-1 ring-purple-300/50 shadow-[0_0_30px_rgba(216,180,254,0.95]"
+                  className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                              bg-gradient-to-br from-violet-500 via-purple-400 to-fuchsia-200
+                              ring-1 ring-violet-300/50
+                              shadow-[0_0_24px_rgba(139,92,246,0.95)]"
                 >
-                  <TrendingUp className="h-6 w-6 text-red-500" />
+                  <Video className="h-7 w-7 text-violet-800" />
                 </div>
-                <h3 className="mb-3 text-2xl font-semibold text-gray-700">
-                  Track Progress
+
+                <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                  Music Content Creation
                 </h3>
-                <p className="text-muted-foreground">
-                  Monitor your application status from applied to interview to
-                  offer with visual Kanban boards.
+
+                <p className="text-muted-foreground text-lg font-semibold">
+                  Creating piano-vocal content reimagining performance,
+                  personality, and digital storytelling.
                 </p>
               </div>
+
+              {/* Musicianship */}
               <div
-                className="group flex flex-col bg-neutral-50 rounded-xl p-6
-                              border border-white/5
-                              ring-2 ring-rose-300
-                              transition-all duration-300
-                              hover:-translate-y-2
-                              hover:shadow-[0_0_30px_rgba(251,113,133,0.95)]"
+                className="group flex flex-col rounded-3xl p-6
+                            bg-gradient-to-br
+                            from-rose-200
+                            via-pink-100
+                            to-red-200
+                            border border-rose-300/50
+                            ring-1 ring-rose-300/50
+                            transition-all duration-300
+                            hover:-translate-y-2
+                            hover:shadow-[0_0_36px_rgba(244,63,94,0.95)]"
               >
                 <div
-                  className="mb-4 inline-flex h-14 w-14 items-center justify-center rounded-xl
-                                bg-gradient-to-br from-rose-300 via-pink-200 to-red-100
-                                ring-1 ring-rose-300/50 shadow-[0_0_30px_rgba(251,113,133,0.95)]"
+                  className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
+                              bg-gradient-to-br
+                              from-rose-500
+                              via-pink-300
+                              to-red-100
+                              ring-1 ring-rose-300/50
+                              shadow-[0_0_24px_rgba(244,63,94,0.95)]"
                 >
-                  <CheckCircle2 className="h-6 w-6 text-red-500" />
+                  <AudioLines className="h-7 w-7 text-rose-700" />
                 </div>
-                <h3 className="mb-3 text-2xl font-semibold text-gray-700">
-                  Stay Organized
+
+                <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                  Genre-Fusing Musicianship
                 </h3>
-                <p className="text-muted-foreground">
-                  Never lose track of an application. Keep all your job search
-                  information in one centralized place.
+
+                <p className="text-muted-foreground text-lg font-semibold">
+                  Jazz, R&B, rock, East-Asian pop, classical, and production
+                  internalized into one personal sound.
                 </p>
               </div>
             </div>

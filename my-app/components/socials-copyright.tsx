@@ -68,7 +68,7 @@ export default function SocialsCopyright() {
         </div>
         <div className="flex items-center justify-center gap-2">
           <FaCopyright className="text-gray-300" />
-          <p className="text-gray-300">2026 Steven Sun</p>
+          <p className="text-gray-300">2026 Steven Sun. All rights reserved.</p>
         </div>
       </div>
     </section>
