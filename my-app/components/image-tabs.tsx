@@ -4,12 +4,45 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
+const tabs = [
+  {
+    id: "AI_Basement_Music_Studio_1",
+    label: "Studio",
+    imgName: "AI_Generated_Basement_Studio",
+  },
+  {
+    id: "MV_UI_Cards_Inspiration_2",
+    label: "MV Card Template",
+    imgName: "MV_UI_Cards_Inspiration",
+  },
+  {
+    id: "AI_Basement_Music_Studio_3",
+    label: "Studio",
+    imgName: "AI_Generated_Basement_Studio",
+  },
+  {
+    id: "MV_UI_Cards_Inspiration_4",
+    label: "MV Card Template",
+    imgName: "MV_UI_Cards_Inspiration",
+  },
+  {
+    id: "AI_Basement_Music_Studio_5",
+    label: "Studio",
+    imgName: "AI_Generated_Basement_Studio",
+  },
+];
+
 export default function ImageTabs() {
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
     const savedTab = localStorage.getItem("activeTab");
-    setActiveTab(savedTab ?? "AI_Basement_Music_Studio_1");
+
+    const validTab = tabs.some((tab) => tab.id === savedTab)
+      ? savedTab
+      : "AI_Basement_Music_Studio_1";
+
+    setActiveTab(validTab);
   }, []);
 
   useEffect(() => {
@@ -18,38 +51,27 @@ export default function ImageTabs() {
     }
   }, [activeTab]);
 
-  /* if (activeTab === null) {
-    return null; // or a loading spinner/skeleton
-  } */
-
-  const tabs = [
-    {
-      id: "AI_Basement_Music_Studio_1",
-      label: "Studio",
-      imgName: "AI_Generated_Basement_Studio",
-    },
-    {
-      id: "MV_UI_Cards_Inspiration_2",
-      label: "MV Card Template",
-      imgName: "MV_UI_Cards_Inspiration",
-    },
-    {
-      id: "AI_Basement_Music_Studio_3",
-      label: "Studio",
-      imgName: "AI_Generated_Basement_Studio",
-    },
-    {
-      id: "MV_UI_Cards_Inspiration_4",
-      label: "MV Card Template",
-      imgName: "MV_UI_Cards_Inspiration",
-    },
-    {
-      id: "AI_Basement_Music_Studio_5",
-      label: "Studio",
-      imgName: "AI_Generated_Basement_Studio",
-    },
-  ];
   const activeImage = tabs.find((tab) => tab.id === activeTab);
+
+  const [displayedHeroImage, setDisplayedHeroImage] = useState<
+    (typeof tabs)[number] | null
+  >(null);
+  const [heroImageVisible, setHeroImageVisible] = useState(false);
+
+  useEffect(() => {
+    if (!activeImage) return;
+
+    setHeroImageVisible(false);
+    setDisplayedHeroImage(activeImage);
+
+    const timer = setTimeout(() => {
+      requestAnimationFrame(() => {
+        setHeroImageVisible(true);
+      });
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   return (
     <section className="bg-black px-4 py-16 min-h-[850px]">
@@ -149,19 +171,26 @@ export default function ImageTabs() {
             <div
               className="
                           absolute inset-0
-                          bg-[radial-gradient(ellipse_at_center,#000_0%,#333_45%,#999_75%,transparent_100%)]
-                          blur-3xl
+                          bg-[radial-gradient(ellipse_at_center,rgba(255,220,120,0.35)_0%,rgba(245,158,11,0.22)_50%,rgb(48,48,48)_100%)]
+                          blur-2xl
                         "
             />
 
             <div
-              className="relative z-10 overflow-hidden rounded-3xl
-                            shadow-[0_0_30px_rgba(245,158,11,0.25)]"
+              className={`relative z-10 overflow-hidden rounded-3xl
+                            shadow-[0_0_30px_rgba(225,29,72,0.5)]
+                             ${
+                               heroImageVisible
+                                 ? "translate-y-0 opacity-100 transition-all duration-[1800ms] ease-[cubic-bezier(0.19,1,0.22,1)]"
+                                 : "-translate-y-[480px] opacity-0 transition-none"
+                             }
+                            `}
             >
-              {activeImage && (
+              {displayedHeroImage && (
                 <Image
-                  src={`/hero-images/${activeImage.imgName}.png`}
-                  alt={activeImage.imgName}
+                  key={displayedHeroImage.id}
+                  src={`/hero-images/${displayedHeroImage.imgName}.png`}
+                  alt={displayedHeroImage.imgName}
                   width={1200}
                   height={800}
                   className="max-h-[580px] w-auto object-contain"

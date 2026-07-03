@@ -183,7 +183,7 @@ export default function Home() {
           >
             <div className="min-h-[8vh]" />
             <h1
-              className={`font-great-vibes font-bold tracking-wider text-amber-400 mb-8 text-9xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
+              className={`font-great-vibes font-bold tracking-widest text-amber-400 mb-8 text-9xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
             >
               Steven Sun
             </h1>
@@ -335,8 +335,9 @@ export default function Home() {
                     Innovative Piano Learning
                   </h3>
                   <p className="text-muted-foreground text-lg font-semibold">
-                    Practice theory through real songs, ear training, and
-                    inspired playing from day one.
+                    Practice theory with{" "}
+                    <span className="font-black">Steven</span> through real
+                    songs, ear training, and inspired playing from day one.
                   </p>
                 </div>
               </div>

@@ -18,7 +18,7 @@ export default function SocialsCopyright() {
         </p>
         <div className="mx-auto flex items-center justify-center h-18 gap-5">
           <a
-            href="https://youtube.com"
+            href="https://www.youtube.com/@stevensun2000"
             target="_blank"
             className="text-gray-300"
           >

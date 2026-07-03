@@ -74,18 +74,24 @@ export default function Navbar() {
         </Link>
         {/* CONSIDER THIS: className="md:grid-cols-4" */}
         <div className="flex gap-5">
-          {/* <Link href="/home">Home</Link> */}
           <Link
             href="/about"
             onClick={(e) => {
-              if (window.scrollY === 0 && pathname === "/about") {
+              if (pathname !== "/about") {
+                e.preventDefault();
+                window.location.href = "/about";
+                return;
+              }
+
+              if (window.scrollY === 0) {
                 e.preventDefault();
                 window.location.reload();
-              } else if (pathname === "/about") {
-                e.preventDefault();
-                history.replaceState(null, "", "/");
-                window.scrollTo({ top: 0, behavior: "smooth" });
+                return;
               }
+
+              e.preventDefault();
+              history.replaceState(null, "", "/about");
+              window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
             <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">

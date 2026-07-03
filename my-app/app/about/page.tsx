@@ -62,12 +62,13 @@ export default function getAbout() {
 
 //import { Button } from "@/components/ui/button";
 import {
+  BookOpen,
+  Code2,
   GraduationCap,
   Guitar,
   Laptop,
   MicVocal,
   Music2,
-  Notebook,
   Piano,
   Sparkles,
 } from "lucide-react"; //ArrowRight, BookOpen, GraduationCap, MicVocal, Music2
@@ -107,14 +108,89 @@ function Reveal({
 }
 
 export default function getAbout() {
+  const [pageReady, setPageReady] = useState(false);
+
+  useEffect(() => {
+    history.scrollRestoration = "manual";
+
+    const navEntry = performance.getEntriesByType(
+      "navigation",
+    )[0] as PerformanceNavigationTiming;
+
+    const isReload = navEntry?.type === "reload";
+
+    if (!isReload) {
+      sessionStorage.removeItem("aboutScrollY");
+    } else {
+      window.scrollTo(0, 0);
+    }
+
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("aboutScrollY", String(window.scrollY));
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPageReady(true);
+    }, 1400);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!pageReady) return;
+
+    const savedY = sessionStorage.getItem("aboutScrollY");
+    if (!savedY) return;
+
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: Number(savedY),
+        behavior: "smooth",
+      });
+
+      sessionStorage.removeItem("aboutScrollY");
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [pageReady]);
+
   const bullets = [
     { text: "Pianist · Singer", icon: MicVocal },
     { text: "Music Educator", icon: GraduationCap },
     { text: "Tech-Savvy Content Creator", icon: Laptop },
     { text: "Accompanist · Collaborative Artist", icon: Guitar },
-    { text: "Blending Music, Education, and Technology", icon: Sparkles },
+    {
+      text: "Professional Vibemaster · Seasoned Vibecoder",
+      icon: Sparkles,
+    },
   ];
   const textSizes = ["text-3xl", "text-2xl", "text-xl", "text-lg", "text-base"];
+
+  const currentActivties = [
+    {
+      icon: BookOpen,
+      title: "Curated Learning",
+      text: "Explore a catalogue of recordings and a practical guide to learning piano accompaniment for popular songs.",
+    },
+    {
+      icon: Music2,
+      title: "Collaborative Work",
+      text: "Steven is open to collaborating with musicians, directors, and engineers in the Ottawa area.",
+    },
+    {
+      icon: MicVocal,
+      title: "Ottawa Music Life",
+      text: "During the day, he teaches piano at Capital City Keyboards. During the night, he jams at Jazz@248.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-black text-neutral-100">
@@ -128,7 +204,7 @@ export default function getAbout() {
             <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14">
               <div className="space-y-10">
                 <Reveal>
-                  <div className="rounded-[2rem] bg-neutral-850 p-8 shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center">
+                  <div className="rounded-[3rem] bg-neutral-850 p-8 shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center">
                     <p className="mb-8 text-5xl font-black leading-tight text-amber-500">
                       About Steven Sun
                     </p>
@@ -136,7 +212,12 @@ export default function getAbout() {
                       Meet Your Professional Vibemaster
                     </h1>
                     <p className="mt-4 text-xl leading-8 text-neutral-400">
-                      As a trained software developer and as an RCM-certified
+                      As a trained software developer and as an{" "}
+                      <span className="underline transition-color duration-300 hover:text-amber-500">
+                        <a href="https://www.rcmusic.com/" target="_blank">
+                          RCM-certified
+                        </a>
+                      </span>{" "}
                       pianist, Steven excels at performing, digitalizing, and
                       coaching immersive entertainment experiences.
                     </p>
@@ -145,9 +226,9 @@ export default function getAbout() {
                 <Reveal delay="delay-400">
                   <ul
                     className="relative overflow-hidden
-                                 space-y-7 rounded-[2rem] p-8 text-xl font-bold leading-tight 
+                                 space-y-7 rounded-tr-[3rem] rounded-bl-[3rem] p-8 text-xl font-bold leading-tight 
                                  text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]
-                                 bg-gradient-to-tr from-red-950 via-amber-950 to-neutral-850"
+                                 bg-gradient-to-tr from-neutral-950 via-amber-950 to-red-950"
                   >
                     {/* Top-right decoration */}
                     <Piano
@@ -156,7 +237,7 @@ export default function getAbout() {
                     />
 
                     {/* Bottom-left decoration */}
-                    <Notebook
+                    <Code2
                       className="absolute bottom-6 left-6 h-16 w-16
                                 text-red-300/20"
                     />
@@ -202,7 +283,7 @@ export default function getAbout() {
               </div>
 
               <Reveal delay="delay-200">
-                <div className="relative min-h-[720px] overflow-hidden rounded-[2rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                <div className="relative min-h-[720px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
                   <Image
                     src="/hero-images/AI_Generated_Basement_Studio.png"
                     alt="Steven Sun profile portrait"
@@ -322,10 +403,27 @@ export default function getAbout() {
                   <p className="text-gray-700 text-xl font-semibold">
                     He teaches{" "}
                     <span className="font-black">
-                      all course and grades from the RCM syllabus
+                      all course and grades from the{" "}
+                      <span className="underline transition-color duration-300 hover:text-amber-500">
+                        <a
+                          href="https://rcmusic-kentico-cdn.s3.amazonaws.com/rcm/media/main/about%20us/rcm%20publishing/piano-syllabus-2022-edition.pdf"
+                          target="_blank"
+                        >
+                          RCM syllabus
+                        </a>
+                      </span>
                     </span>
-                    , including exam preparation, while keeping lessons beginner
-                    friendly and aligned with student goals.
+                    , including{" "}
+                    <span className="underline transition-color duration-300 hover:text-amber-500">
+                      <a
+                        href="https://rcmusic-production-strapi-media.s3.ca-central-1.amazonaws.com/s44_theorysyl_2016_online_rcm_v2_f_649983999a.pdf"
+                        target="_blank"
+                      >
+                        theory
+                      </a>
+                    </span>
+                    , while keeping lessons beginner friendly and aligned with
+                    student goals.
                   </p>
                 </div>
 
@@ -342,6 +440,47 @@ export default function getAbout() {
               </div>
             </div>
           </Reveal>
+        </section>
+
+        <section className="grid gap-8 py-16 lg:grid-cols-3">
+          {currentActivties.map((item, index) => {
+            const Icon = item.icon;
+
+            return (
+              <Reveal
+                key={item.title}
+                delay={
+                  index === 1 ? "delay-200" : index === 2 ? "delay-400" : ""
+                }
+              >
+                <div className="relative overflow-hidden rounded-[2rem] p-8 ring-1 ring-amber-500/20">
+                  <div
+                    className="
+                                absolute inset-0
+                                bg-[radial-gradient(ellipse_at_center,rgba(255,220,120,0.35)_0%,rgba(245,158,11,0.22)_50%,rgb(48,48,48)_100%)]
+                                blur-2xl
+                              "
+                  />
+
+                  <div className="relative z-10">
+                    <Icon className="mb-5 h-10 w-10 text-amber-500" />
+
+                    <h3
+                      className="mb-4 text-4xl font-bold bg-gradient-to-tr
+                         from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
+                         text-transparent"
+                    >
+                      {item.title}
+                    </h3>
+
+                    <p className="text-lg leading-8 text-neutral-300">
+                      {item.text}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
         </section>
       </main>
     </div>
