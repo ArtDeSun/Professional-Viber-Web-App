@@ -207,11 +207,11 @@ export default function getAbout() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-neutral-100">
+    <div className="bg-black text-neutral-100">
       <main className="mx-auto max-w-7xl px-6 py-32 font-redHatDisplay">
-        <section className="relative min-h-screen">
+        <section className="relative">
           <div
-            className="absolute inset-0 rounded-[3rem] 
+            className="relative rounded-[3rem] 
                        bg-gradient-to-b from-neutral-950 via-neutral-900 to-amber-950/50
                        "
           >
@@ -220,7 +220,7 @@ export default function getAbout() {
                 {/* About Steven */}
                 <Reveal>
                   <div
-                    className="
+                    className="h-[320px]
                                   rounded-[3rem] bg-neutral-900 p-8 
                                   shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center"
                   >
@@ -244,7 +244,7 @@ export default function getAbout() {
                 </Reveal>
 
                 {/* Bullet Points */}
-                <div className="relative overflow-visible">
+                <div className="relative h-[430px] overflow-visible">
                   <Reveal
                     as="ul"
                     delay="delay-400"
@@ -303,7 +303,7 @@ export default function getAbout() {
               </div>
 
               <Reveal delay="delay-200">
-                <div className="relative z-10 min-h-[760px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                <div className="relative z-10 h-[820px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
                   <Image
                     src="/hero-images/AI_Generated_Basement_Studio.png"
                     alt="Steven Sun profile portrait"
@@ -317,8 +317,8 @@ export default function getAbout() {
           </div>
         </section>
 
-        <section className="grid gap-8 py-16 md:grid-cols-2">
-          <Reveal>
+        <section className="grid items-stretch gap-8 py-16 md:grid-cols-2">
+          <Reveal className="h-full">
             <div
               className="
                 absolute inset-0
@@ -326,7 +326,7 @@ export default function getAbout() {
                 blur-2xl
               "
             />
-            <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10">
+            <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10 h-full">
               <Music2 className="mb-5 h-10 w-10 text-amber-500" />
               <h2
                 className="mb-4 text-4xl font-bold bg-gradient-to-tr
@@ -343,7 +343,7 @@ export default function getAbout() {
             </div>
           </Reveal>
 
-          <Reveal delay="delay-200">
+          <Reveal delay="delay-200" className="h-full">
             <div
               className="
                 absolute inset-0
@@ -351,7 +351,7 @@ export default function getAbout() {
                 blur-2xl
               "
             />
-            <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10">
+            <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10 h-full">
               <MicVocal className="mb-5 h-10 w-10 text-amber-500" />
               <h2
                 className="mb-4 text-4xl font-bold bg-gradient-to-tr
@@ -362,7 +362,7 @@ export default function getAbout() {
               </h2>
               <p className="text-lg leading-8 text-neutral-300">
                 Striving to reinvent the independent artist in the streaming
-                era, Steven draw from his unique background to craft a rich
+                era, Steven draws from his unique background to craft a rich
                 sound informed by popular culture and music legends of the past.
               </p>
             </div>
@@ -463,7 +463,7 @@ export default function getAbout() {
           </Reveal>
         </section>
 
-        <section className="grid gap-8 py-16 lg:grid-cols-3">
+        <section className="grid gap-8 py-16 lg:grid-cols-3 items-stretch">
           {currentActivties.map((item, index) => {
             const Icon = item.icon;
 
@@ -473,8 +473,9 @@ export default function getAbout() {
                 delay={
                   index === 1 ? "delay-200" : index === 2 ? "delay-400" : ""
                 }
+                className="h-full"
               >
-                <div className="relative overflow-hidden rounded-[2rem] p-8 ring-1 ring-amber-500/20">
+                <div className="relative overflow-hidden rounded-[2rem] p-8 ring-1 ring-amber-500/20 h-full">
                   <div
                     className="
                                 absolute inset-0
@@ -483,7 +484,7 @@ export default function getAbout() {
                               "
                   />
 
-                  <div className="relative z-10">
+                  <div className="relative z-10 h-full">
                     <Icon className="mb-5 h-10 w-10 text-amber-500" />
 
                     <h3
