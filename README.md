@@ -16,15 +16,16 @@ During the early stages of running the app post-deployment, only a small databas
 
 ### Features
 
-- Webpages describing Steven's background as a content creator specializing in music videos.
+- Webpages describing Steven's background as a content creator specializing in music videos and piano lessons.
 - Links to Steven's social media profiles such as Youtube.
 - Mechanism for uploading music videos as an admin.
 - Contact information for booking shows and piano lessons.
 - MongoDB integration.
 - Vercel deployment.
 - Selective coverage tests.
-- Cybersecurity measures after developing a payment system.
+- Cybersecurity measures after developing a payment system (possibly Stripe integration).
 - Containerization.
+- Search Engine Optimization (SEO).
 
 ## Getting Started
 
