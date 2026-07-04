@@ -76,13 +76,21 @@ import Image from "next/image";
 //import Link from "next/link";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
-function Reveal({
-  children,
-  delay = "",
-}: {
+type RevealProps<T extends React.ElementType = "div"> = {
+  as?: T;
   children: ReactNode;
   delay?: string;
-}) {
+  className?: string;
+};
+
+function Reveal<T extends React.ElementType = "div">({
+  as,
+  children,
+  delay = "",
+  className = "",
+}: RevealProps<T>) {
+  const Component = as ?? "div";
+
   const ref = useRef<HTMLDivElement>(null);
   const [show, setShow] = useState(false);
 
@@ -97,13 +105,13 @@ function Reveal({
   }, []);
 
   return (
-    <div
+    <Component
       ref={ref}
-      className={`transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${delay}
+      className={`${className} transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${delay}
         ${show ? "translate-y-0 opacity-100" : "translate-y-14 opacity-0"}`}
     >
       {children}
-    </div>
+    </Component>
   );
 }
 
@@ -172,18 +180,24 @@ export default function getAbout() {
       icon: Sparkles,
     },
   ];
-  const textSizes = ["text-3xl", "text-2xl", "text-xl", "text-lg", "text-base"];
+  const textSizes = [
+    "text-5xl",
+    "text-4xl",
+    "text-3xl",
+    "text-2xl",
+    "text-1xl",
+  ];
 
   const currentActivties = [
     {
       icon: BookOpen,
       title: "Curated Learning",
-      text: "Explore a catalogue of recordings and a practical guide to learning piano accompaniment for popular songs.",
+      text: "Explore a catalogue of recordings, discover contemporary keyboard styles, and create music on your own terms.",
     },
     {
       icon: Music2,
       title: "Collaborative Work",
-      text: "Steven is open to collaborating with musicians, directors, and engineers in the Ottawa area.",
+      text: "Steven is open to collaborating with musicians, directors, and engineers on commercial projects in the Ottawa area.",
     },
     {
       icon: MicVocal,
@@ -201,12 +215,17 @@ export default function getAbout() {
                        bg-gradient-to-b from-neutral-950 via-neutral-900 to-amber-950/50
                        "
           >
-            <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14">
+            <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14 overflow-visible">
               <div className="space-y-10">
+                {/* About Steven */}
                 <Reveal>
-                  <div className="rounded-[3rem] bg-neutral-850 p-8 shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center">
+                  <div
+                    className="
+                                  rounded-[3rem] bg-neutral-900 p-8 
+                                  shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center"
+                  >
                     <p className="mb-8 text-5xl font-black leading-tight text-amber-500">
-                      About Steven Sun
+                      About Steven
                     </p>
                     <h1 className="text-2xl leading-tight text-neutral-50">
                       Meet Your Professional Vibemaster
@@ -223,25 +242,27 @@ export default function getAbout() {
                     </p>
                   </div>
                 </Reveal>
-                <Reveal delay="delay-400">
-                  <ul
-                    className="relative overflow-hidden
-                                 space-y-7 rounded-tr-[3rem] rounded-bl-[3rem] p-8 text-xl font-bold leading-tight 
-                                 text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]
-                                 bg-gradient-to-tr from-neutral-950 via-amber-950 to-red-950"
+
+                {/* Bullet Points */}
+                <div className="relative overflow-visible">
+                  <Reveal
+                    as="ul"
+                    delay="delay-400"
+                    className="absolute z-20 w-max
+                                   space-y-7 rounded-l-[3rem] p-8 text-xl font-bold leading-tight
+                                   text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]
+                                   bg-gradient-to-tr from-neutral-950 via-amber-950 to-red-950"
                   >
                     {/* Top-right decoration */}
                     <Piano
                       className="absolute top-6 right-6 h-20 w-20
-                                text-amber-300/20"
+                                  text-amber-300/20"
                     />
-
                     {/* Bottom-left decoration */}
                     <Code2
-                      className="absolute bottom-6 left-6 h-16 w-16
-                                text-red-300/20"
+                      className="absolute bottom-4 left-6 h-16 w-16
+                                  text-red-300/20"
                     />
-
                     {bullets.map((item, i) => {
                       const Icon = item.icon;
                       return (
@@ -254,8 +275,8 @@ export default function getAbout() {
                         >
                           <Icon
                             className="h-8 w-8 shrink-0
-                            text-amber-400
-                            drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+                              text-amber-400
+                              drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
                           />
                           <span
                             className={`${textSizes[i]} [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]`}
@@ -265,25 +286,24 @@ export default function getAbout() {
                         </li>
                       );
                     })}
-
                     {/* {[
-                      "Pianist - Singer",
-                      "Music Educator",
-                      "Accompanist, Collaborative Artist",
-                      "Tech-Savvy Creative",
-                      "Blending Music, Education, and Technology",
-                    ].map((item) => (
-                      <li key={item} className="flex gap-4">
-                        <span className="text-amber-400">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))} */}
-                  </ul>
-                </Reveal>
+                        "Pianist - Singer",
+                        "Music Educator",
+                        "Accompanist, Collaborative Artist",
+                        "Tech-Savvy Creative",
+                        "Blending Music, Education, and Technology",
+                      ].map((item) => (
+                        <li key={item} className="flex gap-4">
+                          <span className="text-amber-400">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))} */}
+                  </Reveal>
+                </div>
               </div>
 
               <Reveal delay="delay-200">
-                <div className="relative min-h-[720px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                <div className="relative z-10 min-h-[760px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
                   <Image
                     src="/hero-images/AI_Generated_Basement_Studio.png"
                     alt="Steven Sun profile portrait"
@@ -365,7 +385,7 @@ export default function getAbout() {
                              from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
                              text-transparent"
               >
-                Credentials | Teaching | Practical Musicianship
+                Credentials | Lessons | Avaliability
               </h2>
               <div className="grid gap-6 text-lg leading-8 md:grid-cols-2">
                 <div
@@ -433,8 +453,9 @@ export default function getAbout() {
                 >
                   <p className="text-gray-700 text-xl font-semibold">
                     <span className="font-black">Hour-long lessons</span> can
-                    include popular songs, accompaniment, improvisation, ear
-                    training, theory, weddings, and other live musical settings.
+                    include popular songs, accompaniment, improvisation, and ear
+                    training. Steven also gigs at weddings and other live
+                    settings.
                   </p>
                 </div>
               </div>
