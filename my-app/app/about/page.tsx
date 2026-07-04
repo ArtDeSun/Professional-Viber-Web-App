@@ -1,65 +1,6 @@
-/* import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-
-export default function getAbout() {
-  return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-1">
-        <section className="mx-auto px-4 py-32">
-          <div className="mx-auto max-w-4xl text-center">
-            <h1 className="text-black mb-6 text-5xl font-bold [text-shadow:0_0_8px_rgba(255,215,0,0.5)]">
-              Meet THE Professional Vibemaster You've Always Wanted
-            </h1>
-            <p className="text-muted-foreground mb-8 text-xl">
-              As a computer-science graduate who earned a RCM Grade 10
-              Certification in Piano Performance, Steven excels at performing
-              and digitalizing immersive entertainment experiences. You can find
-              Steven singing jazz standards in live venues while accompanying
-              himself on the piano. You can also explore a curated catalogue of
-              recordings and a practical guide to learning piano accompaniment
-              for popular songs. Steven mixes and produces all of his music
-              videos in house.
-            </p>
-            <p className="text-muted-foreground mb-8 text-xl">
-              Striving to reinvent the independent artist in the streaming era,
-              Steven leverages his unique background to craft a rich fusion
-              sound informed by popular culture and music legends of the past.
-              Furthermore, Steven's technical competence and versatility allows
-              him to navigate through the expections of fellow musicians and the
-              expectations of studio engineers with ease, leading to consistent
-              delivery of engaging content.
-            </p>
-            <p className="text-muted-foreground mb-8 text-xl">
-              During the day, he teaches piano to students of all ages at all
-              levels at Capital City Keyboards. During the night, he jams at
-              Ottawa's one-and-only jazz club &mdash; Jazz@248 — as a jazz
-              keyboardist. He is open to collaborating with musicians,
-              directors, and engineers based in Ottawa to co-create the next big
-              hit in the local music scene.
-            </p>
-            <div className="flex flex-col items-center gap-4">
-              <Link href="/music">
-                <Button
-                  size="lg"
-                  className="h-12 px-8 text-lg font-bold bg-destructive hover:text-black cursor-pointer"
-                >
-                  Music <ArrowRight className="ml-2" />
-                </Button>
-              </Link>
-              <p className="text-sm text-muted-foreground">
-                professionalvibemaster@stevensun.com
-              </p>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-  );
-} */
-
 "use client";
-
+import AboutImageGallery from "@/components/about-image-gallery";
+//import Link from "next/link";
 //import { Button } from "@/components/ui/button";
 import {
   BookOpen,
@@ -71,9 +12,7 @@ import {
   Music2,
   Piano,
   Sparkles,
-} from "lucide-react"; //ArrowRight, BookOpen, GraduationCap, MicVocal, Music2
-import Image from "next/image";
-//import Link from "next/link";
+} from "lucide-react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 
 type RevealProps<T extends React.ElementType = "div"> = {
@@ -216,7 +155,7 @@ export default function getAbout() {
                        "
           >
             <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14 overflow-visible">
-              <div className="space-y-10">
+              <div className="space-y-25">
                 {/* About Steven */}
                 <Reveal>
                   <div
@@ -244,7 +183,7 @@ export default function getAbout() {
                 </Reveal>
 
                 {/* Bullet Points */}
-                <div className="relative h-[430px] overflow-visible">
+                <div className="relative h-[360px] overflow-visible">
                   <Reveal
                     as="ul"
                     delay="delay-400"
@@ -268,7 +207,7 @@ export default function getAbout() {
                       return (
                         <li
                           key={item.text}
-                          className="flex items-center gap-5 mb-8"
+                          className="flex items-center gap-5 mb-6"
                           style={{
                             marginLeft: `${i * 2}rem`,
                           }}
@@ -286,24 +225,12 @@ export default function getAbout() {
                         </li>
                       );
                     })}
-                    {/* {[
-                        "Pianist - Singer",
-                        "Music Educator",
-                        "Accompanist, Collaborative Artist",
-                        "Tech-Savvy Creative",
-                        "Blending Music, Education, and Technology",
-                      ].map((item) => (
-                        <li key={item} className="flex gap-4">
-                          <span className="text-amber-400">•</span>
-                          <span>{item}</span>
-                        </li>
-                      ))} */}
                   </Reveal>
                 </div>
               </div>
 
               <Reveal delay="delay-200">
-                <div className="relative z-10 h-[820px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                {/* <div className="relative z-10 h-[820px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
                   <Image
                     src="/hero-images/AI_Generated_Basement_Studio.png"
                     alt="Steven Sun profile portrait"
@@ -311,7 +238,8 @@ export default function getAbout() {
                     sizes="(min-width: 1024px) 40vw, 100vw"
                     className="object-cover"
                   />
-                </div>
+                </div> */}
+                <AboutImageGallery />
               </Reveal>
             </div>
           </div>

@@ -33,6 +33,7 @@ const tabs = [
 ];
 
 export default function ImageTabs() {
+  //Tabs
   const [activeTab, setActiveTab] = useState<string | null>(null);
 
   useEffect(() => {
@@ -51,27 +52,53 @@ export default function ImageTabs() {
     }
   }, [activeTab]);
 
+  //Images
   const activeImage = tabs.find((tab) => tab.id === activeTab);
 
   const [displayedHeroImage, setDisplayedHeroImage] = useState<
     (typeof tabs)[number] | null
   >(null);
-  const [heroImageVisible, setHeroImageVisible] = useState(false);
+
+  //const [heroImageVisible, setHeroImageVisible] = useState(false);
+
+  const [animationState, setAnimationState] = useState<
+    "entering" | "visible" | "exiting"
+  >("entering");
 
   useEffect(() => {
     if (!activeImage) return;
 
-    setHeroImageVisible(false);
-    setDisplayedHeroImage(activeImage);
+    // First load
+    if (!displayedHeroImage) {
+      setDisplayedHeroImage(activeImage);
+      setAnimationState("entering");
 
-    const timer = setTimeout(() => {
       requestAnimationFrame(() => {
-        setHeroImageVisible(true);
+        setAnimationState("visible");
       });
-    }, 100);
 
-    return () => clearTimeout(timer);
-  }, [activeTab]);
+      return;
+    }
+
+    // Same tab, do nothing
+    if (displayedHeroImage.id === activeImage.id) return;
+
+    // Exit old image first
+    setAnimationState("exiting");
+
+    const exitTimer = setTimeout(() => {
+      setDisplayedHeroImage(activeImage);
+      setAnimationState("entering");
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimationState("visible");
+        });
+      });
+    }, 300);
+
+    return () => clearTimeout(exitTimer);
+  }, [activeImage, displayedHeroImage]);
 
   return (
     <section className="bg-black px-4 py-16 min-h-[850px]">
@@ -177,18 +204,21 @@ export default function ImageTabs() {
             />
 
             <div
+              key={displayedHeroImage?.id}
               className={`relative z-10 overflow-hidden rounded-3xl
                             shadow-[0_0_30px_rgba(225,29,72,0.5)]
-                             ${
-                               heroImageVisible
-                                 ? "translate-y-0 opacity-100 transition-all duration-[1800ms] ease-[cubic-bezier(0.19,1,0.22,1)]"
-                                 : "-translate-y-[480px] opacity-0 transition-none"
-                             }
+                            transition-all duration-800 ease-[cubic-bezier(0.25,0.9,0.3,1)]
+                              ${
+                                animationState === "visible"
+                                  ? "translate-y-0 opacity-100"
+                                  : animationState === "exiting"
+                                    ? "translate-y-[360px] opacity-0"
+                                    : "-translate-y-[360px] opacity-0"
+                              }
                             `}
             >
               {displayedHeroImage && (
                 <Image
-                  key={displayedHeroImage.id}
                   src={`/hero-images/${displayedHeroImage.imgName}.png`}
                   alt={displayedHeroImage.imgName}
                   width={1200}

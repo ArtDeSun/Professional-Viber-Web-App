@@ -106,27 +106,29 @@ export default function Navbar() {
               Youtube
             </Button>
           </a>
-          {/* <Link href="/youtube">
-            <Button
-              variant="ghost"
-              className="bg-destructive text-white text-xl cursor-pointer"
-            >
-              Youtube
-            </Button>
-          </Link> */}
           <Link href="/music">
             <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
               Music
             </Button>
           </Link>
-          {/* <Link href="/shows">
-            <Button className="text-gray-700 text-xl hover:text-black cursor-pointer">
-              Shows
-            </Button>
-          </Link> */}
           <Link href="/updates">
             <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
               Updates
+            </Button>
+          </Link>
+          <Link
+            href="#contact"
+            onClick={(e) => {
+              //code
+              e.preventDefault();
+              history.replaceState(null, "", `${pathname}#contact`);
+              document.getElementById("contact")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+          >
+            <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
+              Contact
             </Button>
           </Link>
         </div>

@@ -249,7 +249,6 @@ export default function Home() {
                   )
                 )}
 
-                {/* asChild makes the Link look like a Button */}
                 <Button
                   asChild
                   className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
