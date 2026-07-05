@@ -131,16 +131,19 @@ export default function getAbout() {
     {
       icon: BookOpen,
       title: "Curated Learning",
+      titleFont: "font-marcellus",
       text: "Explore a catalogue of recordings, discover contemporary keyboard styles, and create music on your own terms.",
     },
     {
       icon: Music2,
       title: "Collaborative Work",
+      titleFont: "font-marcellus",
       text: "Steven is open to collaborating with musicians, directors, and engineers on commercial projects in the Ottawa area.",
     },
     {
       icon: MicVocal,
       title: "Ottawa Music Life",
+      titleFont: "font-marcellus",
       text: "During the day, he teaches piano at Capital City Keyboards. During the night, he jams at Jazz@248.",
     },
   ];
@@ -155,18 +158,21 @@ export default function getAbout() {
                        "
           >
             <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14 overflow-visible">
-              <div className="space-y-25">
+              <div className="space-y-15">
                 {/* About Steven */}
                 <Reveal>
                   <div
-                    className="h-[320px]
+                    className="min-h-[320px]
                                   rounded-[3rem] bg-neutral-900 p-8 
                                   shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center"
                   >
-                    <p className="mb-8 text-5xl font-black leading-tight text-amber-500">
-                      About Steven
+                    <p className="text-4xl font-marcellus text-amber-500">
+                      About
                     </p>
-                    <h1 className="text-2xl leading-tight text-neutral-50">
+                    <p className="mb-8 text-7xl font-black font-marcellus tracking-wider text-amber-500">
+                      Steven
+                    </p>
+                    <h1 className="text-3xl font-marcellus leading-tight text-neutral-50">
                       Meet Your Professional Vibemaster
                     </h1>
                     <p className="mt-4 text-xl leading-8 text-neutral-400">
@@ -188,7 +194,8 @@ export default function getAbout() {
                     as="ul"
                     delay="delay-400"
                     className="absolute z-20 w-max
-                                   space-y-7 rounded-l-[3rem] p-8 text-xl font-bold leading-tight
+                                   space-y-7 rounded-l-[3rem] p-8 text-xl font-bold
+                                   font-marcellus tracking-wider
                                    text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]
                                    bg-gradient-to-tr from-neutral-950 via-amber-950 to-red-950"
                   >
@@ -257,7 +264,7 @@ export default function getAbout() {
             <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10 h-full">
               <Music2 className="mb-5 h-10 w-10 text-amber-500" />
               <h2
-                className="mb-4 text-4xl font-bold bg-gradient-to-tr
+                className="mb-4 text-4xl font-bold font-marcellus bg-gradient-to-tr
                              from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
                              text-transparent"
               >
@@ -282,7 +289,7 @@ export default function getAbout() {
             <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10 h-full">
               <MicVocal className="mb-5 h-10 w-10 text-amber-500" />
               <h2
-                className="mb-4 text-4xl font-bold bg-gradient-to-tr
+                className="mb-4 text-4xl font-bold font-marcellus bg-gradient-to-tr
                              from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
                              text-transparent"
               >
@@ -309,7 +316,7 @@ export default function getAbout() {
             <div className="rounded-[2.5rem] p-10 shadow-[0_0_20px_rgba(245,158,11,0.5)] ring-1 ring-amber-500/20 relative z-10">
               <GraduationCap className="mb-6 h-12 w-12 text-amber-500" />
               <h2
-                className="mb-6 pb-2 text-5xl font-bold bg-gradient-to-tr
+                className="mb-6 pb-2 text-5xl font-bold font-marcellus bg-gradient-to-tr
                              from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
                              text-transparent"
               >
@@ -416,9 +423,9 @@ export default function getAbout() {
                     <Icon className="mb-5 h-10 w-10 text-amber-500" />
 
                     <h3
-                      className="mb-4 text-4xl font-bold bg-gradient-to-tr
+                      className={`mb-4 pb-2 text-4xl font-bold bg-gradient-to-tr
                          from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
-                         text-transparent"
+                         text-transparent ${item.titleFont ?? ""}`}
                     >
                       {item.title}
                     </h3>

@@ -87,22 +87,24 @@ export default function AboutImageGallery() {
 
       <Button
         onClick={goPrevious}
-        className="absolute left-6 top-2/5 z-20 -translate-y-1/6 
+        className="absolute left-6 top-1/3 z-20 -translate-y-1/6 
                    h-10 w-10 rounded-full border border-white/30 
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
-                   hover:scale-115 hover:bg-black/55 hover:border-white/60"
+                   hover:scale-115 hover:bg-black/55 hover:border-white/60
+                   cursor-pointer"
       >
         &lt;
       </Button>
 
       <Button
         onClick={goNext}
-        className="absolute right-6 top-2/5 z-20 -translate-y-1/6 
+        className="absolute right-6 top-1/3 z-20 -translate-y-1/6 
                    h-10 w-10 rounded-full border border-white/30 
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
-                   hover:scale-115 hover:bg-black/55 hover:border-white/60"
+                   hover:scale-115 hover:bg-black/55 hover:border-white/60
+                   cursor-pointer"
       >
         &gt;
       </Button>
@@ -113,18 +115,18 @@ export default function AboutImageGallery() {
             <Button
               key={image.src}
               onClick={() => changeImage(index)}
-              className={`h-2 flex-1 rounded-full p-0 transition-all duration-300 
+              className={`h-2 flex-1 rounded-full p-0 transition-all duration-500 
                           ${
                             index === currentIndex
                               ? "bg-white shadow-sm"
                               : "bg-white/30 hover:bg-white/60"
-                          }`}
+                          } cursor-pointer`}
             />
           ))}
         </div>
       </div>
       <div
-        className="absolute bottom-8 right-8 rounded-xl
+        className="absolute bottom-16 right-4 rounded-xl
                    border border-white/20 bg-black/30
                    px-6 py-3 backdrop-blur-md"
       >

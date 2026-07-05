@@ -187,7 +187,7 @@ export default function Home() {
             >
               Steven Sun
             </h1>
-            <h2 className="font-poppins font-semibold text-gray-300 italic mb-7 text-4xl">
+            <h2 className="font-marcellus font-semibold tracking-wide text-gray-300 mb-7 text-4xl">
               Piano · Professional Vibemaster · Creative Voice
             </h2>
             <h1
@@ -330,7 +330,7 @@ export default function Home() {
                   >
                     <Ear className="h-7 w-7 text-amber-800" />
                   </div>
-                  <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                  <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
                     Innovative Piano Learning
                   </h3>
                   <p className="text-muted-foreground text-lg font-semibold">
@@ -372,7 +372,7 @@ export default function Home() {
                   >
                     <Video className="h-7 w-7 text-violet-800" />
                   </div>
-                  <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                  <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
                     Music Content Creation
                   </h3>
                   <p className="text-muted-foreground text-lg font-semibold">
@@ -418,7 +418,7 @@ export default function Home() {
                   >
                     <AudioLines className="h-7 w-7 text-rose-700" />
                   </div>
-                  <h3 className="mb-3 text-3xl font-bold text-gray-700">
+                  <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
                     Genre-Fusing Musicianship
                   </h3>
                   <p className="text-muted-foreground text-lg font-semibold">

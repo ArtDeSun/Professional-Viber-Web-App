@@ -105,7 +105,7 @@ export default function ImageTabs() {
       <div className="container mx-auto max-w-6xl">
         {/* Tabs */}
         {/* CONSIDER THIS: className="md:grid-cols-4" */}
-        <div className="flex gap-2 justify-center mb-8 font-redHatDisplay">
+        <div className="flex gap-2 justify-center mb-8 font-marcellus">
           {tabs.map((tab) => (
             <Button
               key={tab.id}

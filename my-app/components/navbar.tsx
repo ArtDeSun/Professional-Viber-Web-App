@@ -3,17 +3,144 @@
 import { Piano } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import {
+  MouseEvent,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import NavbarRightCorner from "./navbar-right-corner";
 import { Button } from "./ui/button";
+
+type NavId =
+  | "stevensun"
+  | "about"
+  | "youtube"
+  | "music"
+  | "updates"
+  | "contact";
 
 export default function Navbar() {
   const pathname = usePathname();
 
-  /* const router = useRouter(); */
-
   const [animate, setAnimate] = useState(false);
   const [visible, setVisible] = useState(false);
+
+  const navRailRef = useRef<HTMLDivElement>(null);
+
+  const itemRefs: Record<NavId, RefObject<HTMLAnchorElement | null>> = {
+    stevensun: useRef<HTMLAnchorElement>(null),
+    about: useRef<HTMLAnchorElement>(null),
+    youtube: useRef<HTMLAnchorElement>(null),
+    music: useRef<HTMLAnchorElement>(null),
+    updates: useRef<HTMLAnchorElement>(null),
+    contact: useRef<HTMLAnchorElement>(null),
+  };
+
+  const [activeId, setActiveId] = useState<NavId | null>("stevensun");
+
+  const previousActiveIdRef = useRef<NavId | null>(activeId);
+
+  const [barStyle, setBarStyle] = useState({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  const [barTransitionEnabled, setBarTransitionEnabled] = useState(false);
+
+  const getRouteActiveId = (): NavId | null => {
+    if (typeof window !== "undefined" && window.location.hash === "#contact") {
+      return "contact";
+    }
+
+    if (pathname === "/") return "stevensun";
+    if (pathname === "/about") return "about";
+    if (pathname === "/music") return "music";
+    if (pathname === "/updates") return "updates";
+
+    return null;
+  };
+
+  const moveBarTo = (id: NavId) => {
+    const rail = navRailRef.current;
+    const item = itemRefs[id].current;
+
+    if (!rail || !item) return;
+
+    const railRect = rail.getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+
+    setBarStyle({
+      left: itemRect.left - railRect.left,
+      width: itemRect.width,
+      opacity: 1,
+    });
+  };
+
+  useLayoutEffect(() => {
+    const id = getRouteActiveId();
+
+    setBarTransitionEnabled(false);
+
+    if (id === null) {
+      setActiveId(null);
+      setBarStyle((prev) => ({
+        ...prev,
+        opacity: 0,
+      }));
+
+      requestAnimationFrame(() => {
+        setBarTransitionEnabled(true);
+      });
+
+      return;
+    }
+
+    setActiveId(id);
+
+    requestAnimationFrame(() => {
+      moveBarTo(id);
+
+      requestAnimationFrame(() => {
+        setBarTransitionEnabled(true);
+      });
+    });
+  }, [pathname]);
+
+  useEffect(() => {
+    if (activeId === null) return;
+    const handleResize = () => moveBarTo(activeId);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [activeId]);
+
+  useLayoutEffect(() => {
+    if (activeId === null) {
+      previousActiveIdRef.current = null;
+      return;
+    }
+
+    const cameFromHidden = previousActiveIdRef.current === null;
+
+    if (cameFromHidden) {
+      setBarTransitionEnabled(false);
+
+      requestAnimationFrame(() => {
+        moveBarTo(activeId);
+
+        requestAnimationFrame(() => {
+          setBarTransitionEnabled(true);
+        });
+      });
+    } else {
+      moveBarTo(activeId);
+    }
+
+    previousActiveIdRef.current = activeId;
+  }, [activeId]);
 
   const triggerNavbarAnimation = () => {
     setAnimate(false);
@@ -29,9 +156,41 @@ export default function Navbar() {
 
   useEffect(() => {
     const timer = triggerNavbarAnimation();
-
     return () => clearTimeout(timer);
   }, [pathname]);
+
+  const NAVIGATION_KICKOFF_MS = 400;
+
+  const handleTopNav = (
+    e: MouseEvent<HTMLAnchorElement>,
+    href: string,
+    id: NavId,
+  ) => {
+    e.preventDefault();
+
+    setActiveId(id);
+
+    // Already on this page
+    if (pathname === href) {
+      if (window.scrollY === 0) {
+        window.location.reload();
+        return;
+      }
+
+      history.replaceState(null, "", href);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      return;
+    }
+
+    // Wait for a fraction of the neon bar animation
+    setTimeout(() => {
+      window.location.href = href;
+    }, NAVIGATION_KICKOFF_MS);
+  };
 
   return (
     /* border-b border-gray-200  */
@@ -47,54 +206,59 @@ export default function Navbar() {
                   }
                   ${visible ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"}`}
     >
-      <div className="container mx-auto flex items-center h-24 px-4 justify-between font-playfairDisplay">
+      <div
+        ref={navRailRef}
+        className="relative container mx-auto flex items-center h-24 px-4 justify-between font-playfairDisplay"
+      >
+        {/* Neon sliding bar */}
+        {activeId !== null && (
+          <span
+            className={`
+                        pointer-events-none absolute bottom-3 h-[2px] rounded-full
+                        bg-white shadow-[0_0_8px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.75)]
+                        ${
+                          barTransitionEnabled
+                            ? "transition-all duration-[500ms] ease-[cubic-bezier(0.25,0.8,0.25,1)]"
+                            : "transition-none"
+                        }
+                      `}
+            style={{
+              left: `${barStyle.left}px`,
+              width: `${barStyle.width}px`,
+              opacity: barStyle.opacity,
+            }}
+          />
+        )}
+
+        {/* Left item */}
         <Link
+          ref={itemRefs.stevensun}
           href="/"
-          className="w-60 flex items-center gap-2 text-xl font-semibold text-gray-300"
-          onClick={(e) => {
-            if (pathname !== "/") {
-              e.preventDefault();
-              window.location.href = "/";
-              return;
-            }
-
-            if (window.scrollY === 0) {
-              e.preventDefault();
-              window.location.reload();
-              return;
-            }
-
-            e.preventDefault();
-            history.replaceState(null, "", "/");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
+          onClick={(e) => handleTopNav(e, "/", "stevensun")}
+          className={`w-60 flex items-center gap-2 text-xl font-semibold text-gray-300s transition-colors duration-300 
+                        hover:font-bold hover:text-white
+                        ${
+                          activeId === "stevensun"
+                            ? "text-white"
+                            : "text-gray-300"
+                        }`}
         >
           <Piano />
           Steven Sun
         </Link>
-        {/* CONSIDER THIS: className="md:grid-cols-4" */}
+
+        {/* Centered buttons */}
         <div className="flex gap-5">
           <Link
+            ref={itemRefs.about}
             href="/about"
-            onClick={(e) => {
-              if (pathname !== "/about") {
-                e.preventDefault();
-                window.location.href = "/about";
-                return;
-              }
-
-              if (window.scrollY === 0) {
-                e.preventDefault();
-                window.location.reload();
-                return;
-              }
-
-              e.preventDefault();
-              history.replaceState(null, "", "/about");
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
+            onClick={(e) => handleTopNav(e, "/about", "about")}
           >
-            <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
+            <Button
+              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+                activeId === "about" ? "text-white" : "text-gray-300"
+              }`}
+            >
               About
             </Button>
           </Link>
@@ -106,35 +270,57 @@ export default function Navbar() {
               Youtube
             </Button>
           </a>
-          <Link href="/music">
-            <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
+          <Link
+            ref={itemRefs.music}
+            href="/music"
+            onClick={(e) => handleTopNav(e, "/music", "music")}
+          >
+            <Button
+              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+                activeId === "music" ? "text-white" : "text-gray-300"
+              }`}
+            >
               Music
             </Button>
           </Link>
-          <Link href="/updates">
-            <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
+          <Link
+            ref={itemRefs.updates}
+            href="/updates"
+            onClick={(e) => handleTopNav(e, "/updates", "updates")}
+          >
+            <Button
+              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+                activeId === "updates" ? "text-white" : "text-gray-300"
+              }`}
+            >
               Updates
             </Button>
           </Link>
           <Link
+            ref={itemRefs.contact}
             href="#contact"
             onClick={(e) => {
               //code
               e.preventDefault();
+              setActiveId("contact");
               history.replaceState(null, "", `${pathname}#contact`);
               document.getElementById("contact")?.scrollIntoView({
                 behavior: "smooth",
               });
             }}
           >
-            <Button className="h-10 w-28 text-gray-300 text-xl hover:font-bold cursor-pointer">
+            <Button
+              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+                activeId === "contact" ? "text-white" : "text-gray-300"
+              }`}
+            >
               Contact
             </Button>
           </Link>
         </div>
 
-        <div className="w-60 flex items-center gap-4">
-          {/* Should disappear once a user has signed in*/}
+        {/* Right Corner */}
+        <div className="flex w-60 items-center justify-end gap-4">
           <NavbarRightCorner />
         </div>
       </div>

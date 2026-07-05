@@ -6,6 +6,8 @@ import {
   Geist,
   Geist_Mono,
   Great_Vibes,
+  Jost,
+  Marcellus,
   Playfair_Display,
   Poppins,
   Red_Hat_Display,
@@ -22,9 +24,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-/* CONSIDER THESE FONTS: Great_Vibes, Roboto, Playfair_Display, Red_Hat_Display, Poppins 
-                         Figtree */
 
 const greatVibes = Great_Vibes({
   variable: "--font-great-vibes",
@@ -59,6 +58,18 @@ const figtree = Figtree({
   subsets: ["latin"],
 });
 
+const marcellus = Marcellus({
+  variable: "--font-marcellus",
+  weight: ["400"],
+  subsets: ["latin"],
+});
+
+const jost = Jost({
+  variable: "--font-jost",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title:
     "Steven Sun - Official Site | Musician - Content Creator - Software Developer",
@@ -78,6 +89,8 @@ export default function RootLayout({
       ${playfairDisplay.variable} ${redHatDisplay.variable} 
       ${poppins.variable} 
       ${figtree.variable}
+      ${marcellus.variable}
+      ${jost.variable}
       h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
