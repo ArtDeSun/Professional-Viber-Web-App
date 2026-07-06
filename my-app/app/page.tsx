@@ -9,9 +9,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-/* const scrollToSection = (id: string) => {
-  document.getElementById(id)?.scrollIntoView();
-}; */
+const heroDescriptions = [
+  "Ottawa-Based, Canadian-Born & Chinese-Raised Musician",
+  "Digital Creator, Personality-Driven Piano Educator & Software Developer",
+  "Blending Modern Creativity and Diverse Cultures into a Distinctly Personal Artistic Voice",
+];
+
+const featureBackgroundImages = [
+  { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Studio" },
+  { src: "/hero-images/AI_Piano_Portrait.jpg", title: "Piano" },
+];
 
 export default function Home() {
   const { data: session, isPending } = useSession();
@@ -27,6 +34,22 @@ export default function Home() {
   }, [isPending, initialAuthChecked]);
 
   const isLoggedIn = Boolean(session?.user);
+
+  const TEXT_SLIDE_MS = 700;
+  const TEXT_HOLD_MS = 4000;
+
+  const [currentTextIndex, setCurrentTextIndex] = useState(0);
+  const [nextTextIndex, setNextTextIndex] = useState(1);
+  const [textSliding, setTextSliding] = useState(false);
+  const [textCanAnimate, setTextCanAnimate] = useState(true);
+
+  const SLIDE_MS = 1200;
+  const HOLD_MS = 4000;
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+  const [sliding, setSliding] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(true);
 
   // 1. Save scroll position before unload,
   // and only force top-of-page on real refresh
@@ -89,6 +112,58 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, [visible]);
+
+  useEffect(() => {
+    const holdTimer = setTimeout(() => {
+      setTextSliding(true);
+
+      const finishTimer = setTimeout(() => {
+        setTextCanAnimate(false);
+
+        setCurrentTextIndex(nextTextIndex);
+        setNextTextIndex((nextTextIndex + 1) % heroDescriptions.length);
+        setTextSliding(false);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTextCanAnimate(true);
+          });
+        });
+      }, TEXT_SLIDE_MS);
+
+      return () => clearTimeout(finishTimer);
+    }, TEXT_HOLD_MS);
+
+    return () => clearTimeout(holdTimer);
+  }, [currentTextIndex, nextTextIndex]);
+
+  useEffect(() => {
+    const holdTimer = setTimeout(() => {
+      //setCanAnimate(true);
+      setSliding(true);
+
+      const finishTimer = setTimeout(() => {
+        setCanAnimate(false);
+
+        const newCurrentIndex = nextIndex;
+        const newNextIndex = (nextIndex + 1) % featureBackgroundImages.length;
+
+        setCurrentIndex(newCurrentIndex);
+        setNextIndex(newNextIndex);
+        setSliding(false);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setCanAnimate(true);
+          });
+        });
+      }, SLIDE_MS);
+
+      return () => clearTimeout(finishTimer);
+    }, HOLD_MS);
+
+    return () => clearTimeout(holdTimer);
+  }, [currentIndex, nextIndex]);
 
   /* return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
@@ -199,15 +274,34 @@ export default function Home() {
               Reimagining Musical Creativity Beyond Expectations
             </h1>
 
-            <div className="max-w-2xl">
-              {" "}
-              {/* 42rem */}
-              <p className="font-poppins text-gray-300 mb-6 text-base font-light">
-                An Ottawa-Based Musician, Educator, Content Creator, and
-                Software Developer Fusing Modern Creativity and Diverse Cultures
-                into a Distinctly Personal Artistic Voice
-              </p>
+            <div className="max-w-3xl">
+              <div className="mb-6 grid overflow-hidden">
+                {/* Next text */}
+                <p
+                  className={`
+                              col-start-1 row-start-1 m-0 w-full
+                              font-poppins text-base font-light text-gray-300
+                              ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
+                              ${textSliding ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"}
+                            `}
+                >
+                  {heroDescriptions[nextTextIndex]}
+                </p>
+
+                {/* Current text */}
+                <p
+                  className={`
+                              col-start-1 row-start-1 m-0 w-full
+                              font-poppins text-base font-light text-gray-300
+                              ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
+                              ${textSliding ? "translate-y-12 opacity-0" : "translate-y-0 opacity-100"}
+                            `}
+                >
+                  {heroDescriptions[currentTextIndex]}
+                </p>
+              </div>
             </div>
+
             <div className="font-redHatDisplay flex flex-col items-center gap-3">
               <Link href="/music">
                 <Button className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full">
@@ -273,10 +367,10 @@ export default function Home() {
               ) : (
                 !isLoggedIn && (
                   <Link href="/lessons">
-                    <div className="h-11 flex items-center">
+                    <div className="flex h-12 items-center">
                       <Button
                         /* size="lg" */
-                        className="h-9 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:h-11 hover:px-8 hover:text-xl cursor-pointer rounded-full"
+                        className="py-1 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:py-5 hover:px-8 hover:text-xl cursor-pointer rounded-full"
                       >
                         Lessons
                       </Button>
@@ -294,9 +388,44 @@ export default function Home() {
         {/* Hero Image Section with Tabs */}
         <ImageTabs />
 
-        {/* Features Section */}
-        <section className="border-t border-white/15 bg-neutral-950 py-24">
-          <div className="container mx-auto px-4">
+        {/* Features Section: featureBackgroundImages */}
+        <section className="relative overflow-hidden border-t border-white/15 bg-neutral-950 py-36">
+          {/* Background slideshow */}
+          <Image
+            src={featureBackgroundImages[currentIndex].src}
+            alt=""
+            fill
+            priority={currentIndex === 0}
+            sizes="100vw"
+            className={`
+                        object-cover brightness-[0.50] opacity-75
+                        ${
+                          canAnimate
+                            ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                            : "transition-none"
+                        }
+                        ${sliding ? "-translate-x-full" : "translate-x-0"}
+                      `}
+          />
+
+          <Image
+            src={featureBackgroundImages[nextIndex].src}
+            alt=""
+            fill
+            sizes="100vw"
+            className={`
+                        object-cover brightness-[0.50] opacity-75
+                        ${
+                          canAnimate
+                            ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                            : "transition-none"
+                        }
+                        ${sliding ? "translate-x-0" : "translate-x-full"}
+                      `}
+          />
+
+          {/* Content */}
+          <div className="relative z-10 container mx-auto px-4">
             {/* Apply md only when the screen is at least the Medium breakpoint (768px and wider). */}
             <div className="grid gap-12 md:grid-cols-3 font-redHatDisplay">
               <div className="group relative">

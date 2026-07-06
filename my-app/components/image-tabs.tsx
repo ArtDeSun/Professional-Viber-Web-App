@@ -205,15 +205,15 @@ export default function ImageTabs() {
 
             <div
               key={displayedHeroImage?.id}
-              className={`relative z-10 overflow-hidden rounded-3xl
+              className={`relative z-10 overflow-hidden rounded-3xl hover:scale-102
                             shadow-[0_0_30px_rgba(225,29,72,0.5)]
-                            transition-all duration-800 ease-[cubic-bezier(0.25,0.9,0.3,1)]
+                            transition-all duration-800 ease-[cubic-bezier(0.25,0.5,0.4,1)]
                               ${
                                 animationState === "visible"
                                   ? "translate-y-0 opacity-100"
                                   : animationState === "exiting"
-                                    ? "translate-y-[360px] opacity-0"
-                                    : "-translate-y-[360px] opacity-0"
+                                    ? "translate-y-[440px] opacity-0"
+                                    : "-translate-y-[440px] opacity-0"
                               }
                             `}
             >

@@ -73,10 +73,20 @@ export default function NavbarRightCorner() {
       ) : !isLoggedIn ? (
         <Link href="/sign-in" className="mx-auto">
           <Button
-            className="h-10 w-28 bg-amber-600 text-black text-xl rounded-xl 
-                             hover:bg-amber-400 cursor-pointer"
+            className="relative overflow-hidden h-10 w-28 bg-amber-400 text-black text-xl rounded-xl 
+                             cursor-pointer group"
           >
-            Sign In
+            <span
+              className="
+                        absolute inset-0 bg-amber-600
+                        origin-top
+                        scale-y-100
+                        transition-transform duration-500
+                        ease-[cubic-bezier(0.22,1,0.36,1)]
+                        group-hover:scale-y-0
+                      "
+            />
+            <span className="relative z-10">Sign In</span>
           </Button>
         </Link>
       ) : (
