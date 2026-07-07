@@ -249,9 +249,8 @@ export default function Navbar() {
       >
         {/* Neon sliding bar */}
         {activeId !== null && (
-          <>
-            <span
-              className={`
+          <span
+            className={`
                         pointer-events-none absolute bottom-3 h-[2px] rounded-full
                         bg-white shadow-[0_0_8px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.75)]
                         ${
@@ -260,26 +259,25 @@ export default function Navbar() {
                             : "transition-none"
                         }
                       `}
-              style={{
-                left: `${barStyle.left}px`,
-                width: `${barStyle.width}px`,
-                opacity: barStyle.opacity,
-              }}
-            />
-            <span
-              className="
+            style={{
+              left: `${barStyle.left}px`,
+              width: `${barStyle.width}px`,
+              opacity: barStyle.opacity,
+            }}
+          />
+        )}
+        <span
+          className="
                           pointer-events-none absolute bottom-3 h-[2px] rounded-full
                           bg-white shadow-[0_0_6px_rgba(255,255,255,0.65),0_0_12px_rgba(255,255,255,0.45)]
                           transition-all duration-[500ms] ease-[cubic-bezier(0.25,0.8,0.25,1)]
                         "
-              style={{
-                left: `${hoverBarStyle.left}px`,
-                width: `${hoverBarStyle.width}px`,
-                opacity: hoverBarStyle.opacity,
-              }}
-            />
-          </>
-        )}
+          style={{
+            left: `${hoverBarStyle.left}px`,
+            width: `${hoverBarStyle.width}px`,
+            opacity: hoverBarStyle.opacity,
+          }}
+        />
 
         {/* Left item */}
         <Link

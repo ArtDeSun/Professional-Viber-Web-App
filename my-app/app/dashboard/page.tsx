@@ -1,4 +1,5 @@
 /* import KanbanBoard from "@/components/kanban-board"; */
+import DashboardLoading from "@/components/dashboard-loading";
 import KanbanBoardClient from "@/components/kanban-board-client";
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "@/lib/db";
@@ -62,13 +63,7 @@ export default async function getDashBoard() {
 
   return (
     <div className="min-h-screen w-full bg-black">
-      <Suspense
-        fallback={
-          <div className="container mx-auto min-h-screen px-6 py-32">
-            <h1 className="text-3xl font-bold text-neutral-100">Loading ...</h1>
-          </div>
-        }
-      >
+      <Suspense fallback={<DashboardLoading />}>
         <DashboardPage />
       </Suspense>
     </div>

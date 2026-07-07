@@ -281,12 +281,15 @@ export default function JobApplicationCard({
               <Button
                 type="button"
                 variant="outline"
-                className="hover:text-destructive"
+                className="hover:text-destructive cursor-pointer"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
               </Button>
-              <Button type="submit" className="bg-green-400 hover:bg-green-600">
+              <Button
+                type="submit"
+                className="bg-green-400 hover:bg-green-600 cursor-pointer"
+              >
                 Save Changes
               </Button>
             </DialogFooter>

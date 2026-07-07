@@ -91,12 +91,42 @@ export default function NavbarRightCorner() {
         </Link>
       ) : (
         <>
-          <Link href="/dashboard" className="flex items-center">
+          <Link
+            href="/dashboard"
+            className="flex items-center"
+            onClick={(e) => {
+              if (pathname === "/dashboard") {
+                e.preventDefault();
+
+                if (window.scrollY === 0) {
+                  window.location.reload();
+                  return;
+                }
+
+                history.replaceState(null, "", "/dashboard");
+
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }
+            }}
+          >
             <Button
-              className="h-10 w-36 bg-amber-600 text-black text-xl rounded-xl 
-                         hover:bg-amber-400 cursor-pointer"
+              className="relative overflow-hidden h-10 w-36 bg-amber-400 text-black text-xl rounded-xl 
+                             cursor-pointer group"
             >
-              Dashboard
+              <span
+                className="
+                        absolute inset-0 bg-amber-600
+                        origin-top
+                        scale-y-100
+                        transition-transform duration-500
+                        ease-[cubic-bezier(0.22,1,0.36,1)]
+                        group-hover:scale-y-0
+                      "
+              />
+              <span className="relative z-10">Dashboard</span>
             </Button>
           </Link>
           <DropdownMenu modal={false}>

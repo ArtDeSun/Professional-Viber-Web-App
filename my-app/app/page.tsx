@@ -36,7 +36,7 @@ export default function Home() {
   const isLoggedIn = Boolean(session?.user);
 
   const TEXT_SLIDE_MS = 700;
-  const TEXT_HOLD_MS = 4000;
+  const TEXT_HOLD_MS = 3000;
 
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
   const [nextTextIndex, setNextTextIndex] = useState(1);
