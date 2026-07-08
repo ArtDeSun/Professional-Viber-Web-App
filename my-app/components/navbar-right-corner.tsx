@@ -105,6 +105,8 @@ export default function NavbarRightCorner() {
 
                 history.replaceState(null, "", "/dashboard");
 
+                window.dispatchEvent(new Event("navbar-route-change"));
+
                 window.scrollTo({
                   top: 0,
                   behavior: "smooth",

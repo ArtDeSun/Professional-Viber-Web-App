@@ -35,6 +35,7 @@ export default function Home() {
 
   const isLoggedIn = Boolean(session?.user);
 
+  //Text Animation
   const TEXT_SLIDE_MS = 700;
   const TEXT_HOLD_MS = 3000;
 
@@ -43,6 +44,7 @@ export default function Home() {
   const [textSliding, setTextSliding] = useState(false);
   const [textCanAnimate, setTextCanAnimate] = useState(true);
 
+  //Image Animation
   const SLIDE_MS = 1200;
   const HOLD_MS = 4000;
 
@@ -368,10 +370,7 @@ export default function Home() {
                 !isLoggedIn && (
                   <Link href="/lessons">
                     <div className="flex h-12 items-center">
-                      <Button
-                        /* size="lg" */
-                        className="py-1 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:py-5 hover:px-8 hover:text-xl cursor-pointer rounded-full"
-                      >
+                      <Button className="py-1 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:py-5 hover:px-8 hover:text-xl cursor-pointer rounded-full">
                         Lessons
                       </Button>
                     </div>

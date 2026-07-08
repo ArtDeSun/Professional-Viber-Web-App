@@ -58,6 +58,10 @@ export default function Navbar() {
   const [barTransitionEnabled, setBarTransitionEnabled] = useState(false);
 
   const getRouteActiveId = (): NavId | null => {
+    if (pathname === "/dashboard" && window.location.hash !== "#contact") {
+      return null;
+    }
+
     if (typeof window !== "undefined" && window.location.hash === "#contact") {
       return "contact";
     }
@@ -194,6 +198,29 @@ export default function Navbar() {
   useEffect(() => {
     const timer = triggerNavbarAnimation();
     return () => clearTimeout(timer);
+  }, [pathname]);
+
+  useEffect(() => {
+    const syncActiveId = () => {
+      const id = getRouteActiveId();
+
+      setActiveId(id);
+
+      if (id === null) {
+        setBarStyle((prev) => ({
+          ...prev,
+          opacity: 0,
+        }));
+      }
+    };
+
+    window.addEventListener("navbar-route-change", syncActiveId);
+    window.addEventListener("hashchange", syncActiveId);
+
+    return () => {
+      window.removeEventListener("navbar-route-change", syncActiveId);
+      window.removeEventListener("hashchange", syncActiveId);
+    };
   }, [pathname]);
 
   const NAVIGATION_KICKOFF_MS = 400;

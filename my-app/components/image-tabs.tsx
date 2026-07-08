@@ -110,16 +110,29 @@ export default function ImageTabs() {
             <Button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`rounded-lg px-6 py-3 text-lg font-bold
+              className={`
+                          group relative overflow-hidden rounded-lg px-6 py-3 text-lg font-bold
                           transition-all duration-400 ease-out
                           hover:cursor-pointer
                           ${
                             activeTab === tab.id
                               ? "text-gray-100 bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-400"
-                              : "text-gray-700 bg-gradient-to-r from-white via-amber-100 to-white hover:from-amber-300 hover:via-yellow-200 hover:to-orange-300"
-                          }`}
+                              : "text-gray-700 bg-gradient-to-r from-white via-amber-100 to-white"
+                          }
+                        `}
             >
-              {tab.label}
+              {activeTab !== tab.id && (
+                <span
+                  className="
+                              absolute inset-0
+                              bg-gradient-to-r from-amber-300 via-yellow-200 to-orange-300
+                              opacity-0 transition-opacity duration-400 ease-out
+                              group-hover:opacity-100
+                            "
+                />
+              )}
+
+              <span className="relative z-10">{tab.label}</span>
             </Button>
           ))}
 

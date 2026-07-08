@@ -30,12 +30,14 @@ import { Textarea } from "./ui/textarea";
 interface JobApplicationProps {
   job: JobApplication;
   columns: Column[];
+  setDialogOpen: (open: boolean) => void;
   dragHandleProps?: React.HTMLAttributes<HTMLElement>;
 }
 
 export default function JobApplicationCard({
   job,
   columns,
+  setDialogOpen,
   dragHandleProps,
 }: JobApplicationProps) {
   const [isEditing, setIsEditing] = useState(false);
@@ -50,6 +52,10 @@ export default function JobApplicationCard({
     tags: job.tags?.join(", ") || "",
     description: job.description || "",
   });
+  function handleEditOpenChange(nextOpen: boolean) {
+    setIsEditing(nextOpen);
+    setDialogOpen(nextOpen);
+  }
   async function handleUpdate(e: React.SubmitEvent) {
     e.preventDefault();
 
@@ -63,7 +69,7 @@ export default function JobApplicationCard({
       });
 
       if (!result.error) {
-        setIsEditing(false);
+        handleEditOpenChange(false);
       }
     } catch (err) {
       console.error("Failed to update job application ", err);
@@ -139,7 +145,7 @@ export default function JobApplicationCard({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="min-w-40">
                   <DropdownMenuItem
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => handleEditOpenChange(true)}
                     className="cursor-pointer"
                   >
                     <Edit2 className="mr-2 h-4 w-4" />
@@ -175,7 +181,7 @@ export default function JobApplicationCard({
         </CardContent>
       </Card>
 
-      <Dialog open={isEditing} onOpenChange={setIsEditing}>
+      <Dialog open={isEditing} onOpenChange={handleEditOpenChange}>
         <DialogContent className="min-w-2xl">
           <DialogHeader>
             <DialogTitle>Add Job Description</DialogTitle>
@@ -282,7 +288,7 @@ export default function JobApplicationCard({
                 type="button"
                 variant="outline"
                 className="hover:text-destructive cursor-pointer"
-                onClick={() => setIsEditing(false)}
+                onClick={() => handleEditOpenChange(false)}
               >
                 Cancel
               </Button>

@@ -170,7 +170,7 @@ export default function getAbout() {
                       About
                     </p>
                     <p className="mb-8 text-7xl font-black font-marcellus tracking-wider text-amber-500">
-                      Steven
+                      STEVEN SUN
                     </p>
                     <h1 className="text-3xl font-marcellus leading-tight text-neutral-50">
                       Meet Your Professional Vibemaster

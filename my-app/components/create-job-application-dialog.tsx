@@ -20,6 +20,7 @@ import { Textarea } from "./ui/textarea";
 interface CreateJobApplicationDialogProps {
   columnId: string;
   boardId: string;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const INITIAL_FORM_DATA = {
@@ -36,9 +37,15 @@ const INITIAL_FORM_DATA = {
 export default function CreateJobApplicationDialog({
   columnId,
   boardId,
+  onOpenChange,
 }: CreateJobApplicationDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+
+  function handleOpenChange(nextOpen: boolean) {
+    setOpen(nextOpen);
+    onOpenChange?.(nextOpen);
+  }
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
@@ -56,7 +63,7 @@ export default function CreateJobApplicationDialog({
 
       if (!result.error) {
         setFormData(INITIAL_FORM_DATA);
-        setOpen(false);
+        handleOpenChange(false);
       } else {
         console.error("Failed to create job: ", result.error);
       }
@@ -65,7 +72,7 @@ export default function CreateJobApplicationDialog({
     }
   }
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
@@ -182,7 +189,7 @@ export default function CreateJobApplicationDialog({
               type="button"
               variant="outline"
               className="hover:text-destructive cursor-pointer"
-              onClick={() => setOpen(false)}
+              onClick={() => handleOpenChange(false)}
             >
               Cancel
             </Button>

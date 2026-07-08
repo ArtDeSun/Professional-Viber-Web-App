@@ -111,6 +111,7 @@ function DroppableColumn({
   config,
   boardId,
   sortedColumns,
+  onDialogOpenChange,
   onColumnDeleted,
   open,
   onOpenChange,
@@ -120,6 +121,7 @@ function DroppableColumn({
   config: ColConfig;
   boardId: string;
   sortedColumns: Column[];
+  onDialogOpenChange: (open: boolean) => void;
   onColumnDeleted: (columnId: string) => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -226,11 +228,16 @@ function DroppableColumn({
               key={key}
               job={{ ...job, columnId: job.columnId || column._id }}
               columns={sortedColumns}
+              setDialogOpen={onDialogOpenChange}
             />
           ))}
         </SortableContext>
 
-        <CreateJobApplicationDialog columnId={column._id} boardId={boardId} />
+        <CreateJobApplicationDialog
+          columnId={column._id}
+          boardId={boardId}
+          onOpenChange={onDialogOpenChange}
+        />
       </CardContent>
     </Card>
   );
@@ -239,9 +246,11 @@ function DroppableColumn({
 function SortableJobCard({
   job,
   columns,
+  setDialogOpen,
 }: {
   job: JobApplication;
   columns: Column[];
+  setDialogOpen: (open: boolean) => void;
 }) {
   const {
     attributes,
@@ -271,6 +280,7 @@ function SortableJobCard({
       <JobApplicationCard
         job={job}
         columns={columns}
+        setDialogOpen={setDialogOpen}
         dragHandleProps={{ ...attributes, ...listeners }}
       />
     </div>
@@ -428,6 +438,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
           <h1 className="text-3xl font-bold text-neutral-100">{board.name}</h1>
           <p className="text-neutral-400">Track your job applications</p>
         </div>
+
         <div className="flex items-end">
           <CreateColumnDialog
             board={board}
@@ -445,58 +456,60 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
         </div>
       </div>
 
-      <div className="space-y-4">
-        {/* className="flex gap-4 overflow-x-auto pb-4" */}
-        <div
-          ref={boardScrollRef}
-          onScroll={() => setOpenColumnMenuId(null)}
-          className={`flex gap-4 pb-4 ${
-            dialogOpen ? "overflow-x-hidden" : "overflow-x-auto"
-          }`}
-        >
-          {sortedColumns.map((col) => {
-            const uiConfig = columnUiConfig[col._id];
-            const config = uiConfig
-              ? {
-                  color: COLOR_CONFIG[uiConfig.colorKey] ?? "bg-neutral-500",
-                  icon: ICON_CONFIG[uiConfig.iconKey] ?? (
-                    <Calendar className="h-4 w-4" />
-                  ),
-                }
-              : DEFAULT_COLUMN_CONFIG[col.name] || {
-                  color: "bg-neutral-500",
-                  icon: <Calendar className="h-4 w-4" />,
-                };
+      <div
+        ref={boardScrollRef}
+        onScroll={() => setOpenColumnMenuId(null)}
+        className={`flex gap-4 pb-4 ${
+          dialogOpen ? "overflow-x-hidden" : "overflow-x-auto"
+        }`}
+      >
+        {sortedColumns.map((col) => {
+          const uiConfig = columnUiConfig[col._id];
+          const config = uiConfig
+            ? {
+                color: COLOR_CONFIG[uiConfig.colorKey] ?? "bg-neutral-500",
+                icon: ICON_CONFIG[uiConfig.iconKey] ?? (
+                  <Calendar className="h-4 w-4" />
+                ),
+              }
+            : DEFAULT_COLUMN_CONFIG[col.name] || {
+                color: "bg-neutral-500",
+                icon: <Calendar className="h-4 w-4" />,
+              };
 
-            return (
-              <DroppableColumn
-                key={col._id}
-                column={col}
-                config={config}
-                boardId={board._id}
-                sortedColumns={sortedColumns}
-                onColumnDeleted={(columnId) => {
-                  setColumnUiConfig((prev) => {
-                    const copy = { ...prev };
-                    delete copy[columnId];
-                    return copy;
-                  });
-                }}
-                open={openColumnMenuId === col._id}
-                onOpenChange={(open) =>
-                  setOpenColumnMenuId(open ? col._id : null)
-                }
-                boardScrollRef={boardScrollRef}
-              />
-            );
-          })}
-        </div>
+          return (
+            <DroppableColumn
+              key={col._id}
+              column={col}
+              config={config}
+              boardId={board._id}
+              sortedColumns={sortedColumns}
+              onDialogOpenChange={setDialogOpen}
+              onColumnDeleted={(columnId) => {
+                setColumnUiConfig((prev) => {
+                  const copy = { ...prev };
+                  delete copy[columnId];
+                  return copy;
+                });
+              }}
+              open={openColumnMenuId === col._id}
+              onOpenChange={(open) =>
+                setOpenColumnMenuId(open ? col._id : null)
+              }
+              boardScrollRef={boardScrollRef}
+            />
+          );
+        })}
       </div>
 
       <DragOverlay>
         {activeJob ? (
           <div className="opacity-50">
-            <JobApplicationCard job={activeJob} columns={sortedColumns} />
+            <JobApplicationCard
+              job={activeJob}
+              columns={sortedColumns}
+              setDialogOpen={setDialogOpen}
+            />
           </div>
         ) : null}
       </DragOverlay>
