@@ -254,54 +254,56 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black/70" />
           <div
-            className={`flex flex-col justify-center items-center container mx-auto max-w-4xl text-center relative z-10
+            className={`flex flex-col justify-center items-center container mx-auto text-center relative z-10
                           transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
                           `}
           >
-            <div className="min-h-[8vh]" />
+            {/* <div className="min-h-[8vh]" /> */}
             <h1
-              className={`font-great-vibes font-bold tracking-widest text-amber-400 mb-8 text-9xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
+              className={`font-great-vibes font-bold tracking-widest text-amber-400 mt-12 mb-12 text-9xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
             >
               Steven Sun
             </h1>
-            <h2 className="font-marcellus font-semibold tracking-wide text-gray-300 mb-7 text-4xl">
+            <h2
+              className="font-marcellus font-semibold tracking-wide text-gray-300 mb-12 text-4xl
+                           [text-shadow:0_2px_10px_rgba(245,158,11,0.8)]"
+            >
               Piano · Professional Vibemaster · Creative Voice
             </h2>
             <h1
               className="font-poppins mb-3 text-2xl
                            bg-gradient-to-r
                            from-gray-300 via-amber-500 to-gray-300 bg-clip-text
-                           text-transparent"
+                           text-transparent
+                           [text-shadow:0_2px_12px_rgba(251,191,36,0.8)]"
             >
               Reimagining Musical Creativity Beyond Expectations
             </h1>
 
-            <div className="max-w-3xl">
-              <div className="mb-6 grid overflow-hidden">
-                {/* Next text */}
-                <p
-                  className={`
+            <div className="mb-10 grid overflow-hidden">
+              {/* Next text */}
+              <p
+                className={`
                               col-start-1 row-start-1 m-0 w-full
                               font-poppins text-base font-light text-gray-300
                               ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
                               ${textSliding ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"}
                             `}
-                >
-                  {heroDescriptions[nextTextIndex]}
-                </p>
+              >
+                {heroDescriptions[nextTextIndex]}
+              </p>
 
-                {/* Current text */}
-                <p
-                  className={`
+              {/* Current text */}
+              <p
+                className={`
                               col-start-1 row-start-1 m-0 w-full
                               font-poppins text-base font-light text-gray-300
                               ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
                               ${textSliding ? "translate-y-12 opacity-0" : "translate-y-0 opacity-100"}
                             `}
-                >
-                  {heroDescriptions[currentTextIndex]}
-                </p>
-              </div>
+              >
+                {heroDescriptions[currentTextIndex]}
+              </p>
             </div>
 
             <div className="font-redHatDisplay flex flex-col items-center gap-3">

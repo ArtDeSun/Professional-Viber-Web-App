@@ -111,7 +111,8 @@ function DroppableColumn({
   config,
   boardId,
   sortedColumns,
-  onDialogOpenChange,
+  onCreateJobDialogOpenChange,
+  onEditJobDialogOpenChange,
   onColumnDeleted,
   open,
   onOpenChange,
@@ -121,7 +122,8 @@ function DroppableColumn({
   config: ColConfig;
   boardId: string;
   sortedColumns: Column[];
-  onDialogOpenChange: (open: boolean) => void;
+  onCreateJobDialogOpenChange: (open: boolean) => void;
+  onEditJobDialogOpenChange: (open: boolean) => void;
   onColumnDeleted: (columnId: string) => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -228,7 +230,7 @@ function DroppableColumn({
               key={key}
               job={{ ...job, columnId: job.columnId || column._id }}
               columns={sortedColumns}
-              setDialogOpen={onDialogOpenChange}
+              setDialogOpen={onEditJobDialogOpenChange}
             />
           ))}
         </SortableContext>
@@ -236,7 +238,7 @@ function DroppableColumn({
         <CreateJobApplicationDialog
           columnId={column._id}
           boardId={boardId}
-          onOpenChange={onDialogOpenChange}
+          onOpenChange={onCreateJobDialogOpenChange}
         />
       </CardContent>
     </Card>
@@ -289,7 +291,9 @@ function SortableJobCard({
 
 export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [createColumnDialogOpen, setCreateColumnDialogOpen] = useState(false);
+  const [createJobDialogOpen, setCreateJobDialogOpen] = useState(false);
+  const [editJobDialogOpen, setEditJobDialogOpen] = useState(false);
   const [openColumnMenuId, setOpenColumnMenuId] = useState<string | null>(null);
 
   const { columns, addColumn, moveJob } = useBoard(board);
@@ -450,8 +454,8 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
                 [column._id]: { colorKey, iconKey },
               }));
             }}
-            open={dialogOpen}
-            onOpenChange={setDialogOpen}
+            open={createColumnDialogOpen}
+            onOpenChange={setCreateColumnDialogOpen}
           />
         </div>
       </div>
@@ -460,7 +464,9 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
         ref={boardScrollRef}
         onScroll={() => setOpenColumnMenuId(null)}
         className={`flex gap-4 pb-4 ${
-          dialogOpen ? "overflow-x-hidden" : "overflow-x-auto"
+          createColumnDialogOpen || createJobDialogOpen || editJobDialogOpen
+            ? "overflow-x-hidden"
+            : "overflow-x-auto"
         }`}
       >
         {sortedColumns.map((col) => {
@@ -484,7 +490,8 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
               config={config}
               boardId={board._id}
               sortedColumns={sortedColumns}
-              onDialogOpenChange={setDialogOpen}
+              onCreateJobDialogOpenChange={setCreateJobDialogOpen}
+              onEditJobDialogOpenChange={setEditJobDialogOpen}
               onColumnDeleted={(columnId) => {
                 setColumnUiConfig((prev) => {
                   const copy = { ...prev };
@@ -508,7 +515,7 @@ export default function KanbanBoard({ board, userId }: KanbanBoardProps) {
             <JobApplicationCard
               job={activeJob}
               columns={sortedColumns}
-              setDialogOpen={setDialogOpen}
+              setDialogOpen={setEditJobDialogOpen}
             />
           </div>
         ) : null}

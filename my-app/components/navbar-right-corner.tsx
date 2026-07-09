@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "@/lib/auth/auth-client";
-import { LogOut } from "lucide-react";
+import { LogOut, MonitorPlay, PlusSquare, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,10 +29,21 @@ export default function NavbarRightCorner() {
 
   const pathname = usePathname();
 
+  const [videoDashboardOpen, setVideoDashboardOpen] = useState(false);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [signingOut, setSigningOut] = useState(false);
+
+  const goToVideoDashboardPage = (href: string) => {
+    setVideoDashboardOpen(false);
+    window.location.href = href;
+
+    /* requestAnimationFrame(() => {
+      window.location.href = href;
+    }); */
+  };
 
   const handleSignOut = async () => {
     setError("");
@@ -91,7 +102,7 @@ export default function NavbarRightCorner() {
         </Link>
       ) : (
         <>
-          <Link
+          {/* <Link
             href="/dashboard"
             className="flex items-center"
             onClick={(e) => {
@@ -130,7 +141,83 @@ export default function NavbarRightCorner() {
               />
               <span className="relative z-10">Dashboard</span>
             </Button>
-          </Link>
+          </Link> */}
+
+          <DropdownMenu
+            modal={false}
+            open={videoDashboardOpen}
+            onOpenChange={setVideoDashboardOpen}
+          >
+            <DropdownMenuTrigger asChild>
+              <Button
+                className="group relative h-10 w-40 overflow-hidden rounded-xl
+                                 bg-amber-500/80 text-black text-xl cursor-pointer
+                                 hover:[filter:drop-shadow(0_0_6px_orange)]
+                                 data-[state=open]:drop-shadow-[0_0_6px_orange]"
+              >
+                <span
+                  className="absolute inset-0 bg-amber-600
+                                 origin-top scale-y-100
+                                 transition-transform duration-500
+                                 ease-[cubic-bezier(0.22,1,0.36,1)]
+                                 group-hover:scale-y-0
+                                 group-data-[state=open]:scale-y-0"
+                />
+                <span className="relative z-10 flex items-center gap-2">
+                  <PlusSquare className="h-8 w-8" />
+                  <span className="relative bottom-[1px]">Dashboard</span>
+                </span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              sideOffset={16}
+              className="w-72 rounded-2xl border border-white/5 ring-1 ring-white/10
+                                                                        bg-black/80 backdrop-blur-xs
+                                                                        shadow-[0_0_20px_rgba(245,158,11,0.25)]
+                                                                        animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-300"
+            >
+              <DropdownMenuLabel className="font-playfairDisplay border-b border-gray-300/30 px-4 py-4">
+                <div className="flex flex-col gap-1 items-center">
+                  <p className="text-xl text-gray-100">Manage Videos</p>
+                  <p className="text-sm text-gray-100/60">
+                    Choose a video format to manage.
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  goToVideoDashboardPage("/dashboard-landscape-videos");
+                }}
+                className="group font-playfairDisplay mx-2 mt-2 cursor-pointer rounded-md text-base
+                                             px-3 py-3 text-gray-100 font-medium transition-all duration-200
+                                             data-[highlighted]:bg-amber-500/15
+                                             data-[highlighted]:text-white
+                                             data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+              >
+                <MonitorPlay className="h-5 w-5 transition-colors duration-200 group-data-[highlighted]:stroke-white" />
+                Videos - Landscape
+              </DropdownMenuItem>
+
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  goToVideoDashboardPage("/dashboard-portrait-videos");
+                }}
+                className="group font-playfairDisplay mx-2 mt-2 cursor-pointer rounded-md text-base
+                                             px-3 py-3 text-gray-100 font-medium transition-all duration-200
+                                             data-[highlighted]:bg-amber-500/15
+                                             data-[highlighted]:text-white
+                                             data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+              >
+                <Smartphone className="h-5 w-5 transition-colors duration-200 group-data-[highlighted]:stroke-white" />
+                Shorts - Portrait
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button

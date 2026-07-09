@@ -115,7 +115,7 @@ export default function getAbout() {
     { text: "Tech-Savvy Content Creator", icon: Laptop },
     { text: "Accompanist · Collaborative Artist", icon: Guitar },
     {
-      text: "Professional Vibemaster · Seasoned Vibecoder",
+      text: "Professional Vibemaster · Agentic Vibecoder",
       icon: Sparkles,
     },
   ];
@@ -158,7 +158,7 @@ export default function getAbout() {
                        "
           >
             <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14 overflow-visible">
-              <div className="space-y-15">
+              <div className="space-y-10">
                 {/* About Steven */}
                 <Reveal>
                   <div
@@ -169,8 +169,8 @@ export default function getAbout() {
                     <p className="text-4xl font-marcellus text-amber-500">
                       About
                     </p>
-                    <p className="mb-8 text-7xl font-black font-marcellus tracking-wider text-amber-500">
-                      STEVEN SUN
+                    <p className="mb-8 text-8xl font-black font-marcellus tracking-wider text-amber-500">
+                      STEVEN
                     </p>
                     <h1 className="text-3xl font-marcellus leading-tight text-neutral-50">
                       Meet Your Professional Vibemaster

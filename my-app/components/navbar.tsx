@@ -58,7 +58,11 @@ export default function Navbar() {
   const [barTransitionEnabled, setBarTransitionEnabled] = useState(false);
 
   const getRouteActiveId = (): NavId | null => {
-    if (pathname === "/dashboard" && window.location.hash !== "#contact") {
+    if (
+      (pathname === "/dashboard" ||
+        pathname === "/dashboard-landscape-videos") &&
+      window.location.hash !== "#contact"
+    ) {
       return null;
     }
 
@@ -419,7 +423,7 @@ export default function Navbar() {
         </div>
 
         {/* Right Corner */}
-        <div className="flex w-60 items-center justify-end gap-4">
+        <div className="flex w-64 items-center justify-end gap-4">
           <NavbarRightCorner />
         </div>
       </div>
