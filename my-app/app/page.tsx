@@ -266,7 +266,7 @@ export default function Home() {
             </h1>
             <h2
               className="font-marcellus font-semibold tracking-wide text-gray-300 mb-12 text-4xl
-                           [text-shadow:0_2px_10px_rgba(245,158,11,0.8)]"
+                           [text-shadow:0_2px_10px_rgba(245,158,11,0.6)]"
             >
               Piano · Professional Vibemaster · Creative Voice
             </h2>
@@ -274,8 +274,7 @@ export default function Home() {
               className="font-poppins mb-3 text-2xl
                            bg-gradient-to-r
                            from-gray-300 via-amber-500 to-gray-300 bg-clip-text
-                           text-transparent
-                           [text-shadow:0_2px_12px_rgba(251,191,36,0.8)]"
+                           text-transparent"
             >
               Reimagining Musical Creativity Beyond Expectations
             </h1>
