@@ -17,11 +17,12 @@ const heroDescriptions = [
 
 const featureBackgroundImages = [
   { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Studio" },
-  { src: "/hero-images/AI_Piano_Portrait.jpg", title: "Piano" },
+  { src: "/hero-images/icon.png", title: "Steven Sun Logo" },
 ];
 
 export default function Home() {
   const { data: session, isPending } = useSession();
+
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
   const [heroBackgroundVisible, setHeroBackgroundVisible] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -235,7 +236,7 @@ export default function Home() {
         {/* Hero Section */}
         <section
           /* id="steven_sun" */
-          className="flex py-32 px-4 bg-black relative min-h-screen"
+          className="flex py-32 px-4 bg-black relative min-h-screen overflow-x-hidden"
         >
           {/* <div
             className="absolute inset-0 
@@ -252,7 +253,56 @@ export default function Home() {
             className={`object-cover object-center transition-all duration-[1400ms] ease-out
                         ${heroBackgroundVisible ? "opacity-100" : "opacity-0"}`}
           />
-          <div className="absolute inset-0 bg-black/70" />
+          <div className="absolute inset-0 bg-black/60" />
+
+          {/* Bass clef */}
+          <div
+            aria-label="Bass clef"
+            className={`absolute bottom-16 left-48 z-10 h-[26rem] w-[12rem]
+              bg-[linear-gradient(to_top_right,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
+              transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]
+              ${
+                visible
+                  ? "translate-x-0 opacity-75"
+                  : "-translate-x-120 opacity-0"
+              }`}
+            style={{
+              WebkitMaskImage: "url('/hero-images/bass-clef.png')",
+              WebkitMaskPosition: "center",
+              WebkitMaskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+
+              maskImage: "url('/hero-images/bass-clef.png')",
+              maskPosition: "center",
+              maskSize: "contain",
+              maskRepeat: "no-repeat",
+            }}
+          />
+
+          {/* Treble clef */}
+          <div
+            aria-label="Treble clef"
+            className={`absolute top-32 right-48 z-10 h-[16rem] w-[12rem]
+              bg-[linear-gradient(to_bottom_left,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
+              transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]
+              ${
+                visible
+                  ? "translate-x-0 opacity-75"
+                  : "translate-x-120 opacity-0"
+              }`}
+            style={{
+              WebkitMaskImage: "url('/hero-images/treble-clef.png')",
+              WebkitMaskPosition: "center",
+              WebkitMaskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+
+              maskImage: "url('/hero-images/treble-clef.png')",
+              maskPosition: "center",
+              maskSize: "contain",
+              maskRepeat: "no-repeat",
+            }}
+          />
+
           <div
             className={`flex flex-col justify-center items-center container mx-auto text-center relative z-10
                           transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
@@ -265,26 +315,81 @@ export default function Home() {
               Steven Sun
             </h1>
             <h2
-              className="font-marcellus font-semibold tracking-wide text-gray-300 mb-12 text-4xl
-                           [text-shadow:0_2px_10px_rgba(245,158,11,0.6)]"
+              className="font-marcellus mb-12 text-5xl font-semibold tracking-wide
+               [text-shadow:0_2px_10px_rgba(245,158,11,0.1)]"
             >
-              Piano · Professional Vibemaster · Creative Voice
+              <Link
+                href="/#description-cards"
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.pushState(null, "", "#description-cards");
+                  document.getElementById("description-cards")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                <span
+                  className="bg-gradient-to-t from-gray-200 to-amber-300 bg-clip-text text-transparent 
+                                 transition-color duration-300 hover:text-amber-300"
+                >
+                  Piano
+                </span>
+              </Link>
+              <span className="mx-4 text-gray-300">·</span>
+              <Link
+                href="/#description-cards"
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.pushState(null, "", "#description-cards");
+                  document.getElementById("description-cards")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                <span
+                  className="bg-gradient-to-t from-gray-200 to-violet-300 bg-clip-text text-transparent
+                                 transition-color duration-300 hover:text-violet-300"
+                >
+                  Professional Vibemaster
+                </span>
+              </Link>
+              <span className="mx-4 text-gray-300">·</span>
+              <Link
+                href="/#description-cards"
+                onClick={(e) => {
+                  e.preventDefault();
+                  history.pushState(null, "", "#description-cards");
+                  document.getElementById("description-cards")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                <span
+                  className="bg-gradient-to-t from-gray-200 to-rose-300 bg-clip-text text-transparent
+                                 transition-color duration-300 hover:text-rose-300"
+                >
+                  Creative Voice
+                </span>
+              </Link>
             </h2>
-            <h1
+            {/* <h1
               className="font-poppins mb-3 text-2xl
                            bg-gradient-to-r
                            from-gray-300 via-amber-500 to-gray-300 bg-clip-text
                            text-transparent"
             >
               Reimagining Musical Creativity Beyond Expectations
-            </h1>
+            </h1> */}
 
-            <div className="mb-10 grid overflow-hidden">
+            <div className="mb-14 grid overflow-hidden">
               {/* Next text */}
               <p
                 className={`
                               col-start-1 row-start-1 m-0 w-full
-                              font-poppins text-base font-light text-gray-300
+                              font-poppins text-2xl font-light text-gray-200
+                              bg-gradient-to-r
+                              from-gray-200 via-amber-300 to-gray-200 bg-clip-text
+                              text-transparent
                               ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
                               ${textSliding ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"}
                             `}
@@ -296,7 +401,10 @@ export default function Home() {
               <p
                 className={`
                               col-start-1 row-start-1 m-0 w-full
-                              font-poppins text-base font-light text-gray-300
+                              font-poppins text-2xl font-light
+                              bg-gradient-to-r
+                              from-gray-100 via-amber-200 to-gray-100 bg-clip-text
+                              text-transparent
                               ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
                               ${textSliding ? "translate-y-12 opacity-0" : "translate-y-0 opacity-100"}
                             `}
@@ -389,7 +497,10 @@ export default function Home() {
         <ImageTabs />
 
         {/* Features Section: featureBackgroundImages */}
-        <section className="relative overflow-hidden border-t border-white/15 bg-neutral-950 py-36">
+        <section
+          id="description-cards"
+          className="relative overflow-hidden border-t border-white/15 bg-neutral-950 py-36"
+        >
           {/* Background slideshow */}
           <Image
             src={featureBackgroundImages[currentIndex].src}
@@ -398,7 +509,7 @@ export default function Home() {
             priority={currentIndex === 0}
             sizes="100vw"
             className={`
-                        object-cover brightness-[0.50] opacity-75
+                        object-cover object-center brightness-[0.85] opacity-85
                         ${
                           canAnimate
                             ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -414,7 +525,7 @@ export default function Home() {
             fill
             sizes="100vw"
             className={`
-                        object-cover brightness-[0.50] opacity-75
+                        object-cover brightness-[0.85] opacity-85
                         ${
                           canAnimate
                             ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -502,10 +613,10 @@ export default function Home() {
                     <Video className="h-7 w-7 text-violet-800" />
                   </div>
                   <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
-                    Music Content Creation
+                    Professional Vibemaster
                   </h3>
                   <p className="text-muted-foreground text-lg font-semibold">
-                    Creating piano-vocal content reimagining performance,
+                    Crafting immersive musical experiences through performance,
                     personality, and digital storytelling.
                   </p>
                 </div>
@@ -548,11 +659,11 @@ export default function Home() {
                     <AudioLines className="h-7 w-7 text-rose-700" />
                   </div>
                   <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
-                    Genre-Fusing Musicianship
+                    Genre-Spanning Creativity
                   </h3>
                   <p className="text-muted-foreground text-lg font-semibold">
-                    Jazz, R&B, rock, East-Asian pop, classical, and production
-                    internalized into one personal sound.
+                    Internalizing jazz, R&B, rock, East-Asian pop, and
+                    classical, into a distinctive creative voice.
                   </p>
                 </div>
               </div>
@@ -561,6 +672,7 @@ export default function Home() {
         </section>
 
         {/* Sign Up Section */}
+
         {initialAuthChecked && !isLoggedIn && <SignUpSection />}
         {/* {session?.user ? <></> : <SignUpSection />} */}
         {/*<SignUpSection />*/}

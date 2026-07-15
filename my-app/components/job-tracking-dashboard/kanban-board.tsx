@@ -35,17 +35,17 @@ import {
   XCircle,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import CreateColumnDialog from "./create-column-dialog";
-import CreateJobApplicationDialog from "./create-job-application-dialog";
-import JobApplicationCard from "./job-application-card";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
+import CreateColumnDialog from "./create-column-dialog";
+import CreateJobApplicationDialog from "./create-job-application-dialog";
+import JobApplicationCard from "./job-application-card";
 
 interface KanbanBoardProps {
   board: Board;

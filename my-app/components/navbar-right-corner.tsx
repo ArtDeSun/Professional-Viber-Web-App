@@ -56,14 +56,18 @@ export default function NavbarRightCorner() {
         setError(result.error.message ?? "Failed to log out");
         alert("Error signing out");
       } else {
-        if (pathname === "/dashboard") {
-          window.location.replace("/");
-        } else {
-          //router.push("/");
-          //window.location.href = "/";
-          //router.refresh();
-          window.location.reload();
-        }
+        //if (
+        //pathname === "/dashboard" ||
+        //pathname === "/dashboard-landscape-videos" ||
+        //pathname === "/dashboard-portrait-videos"
+        //) {
+        //window.location.replace("/");
+        //} else {
+        //router.push("/");
+        //window.location.href = "/";
+        //router.refresh();
+        window.location.reload();
+        //}
       }
     } catch (err) {
       setSigningOut(false);

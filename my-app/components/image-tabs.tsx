@@ -11,9 +11,9 @@ const tabs = [
     imgName: "AI_Generated_Basement_Studio",
   },
   {
-    id: "MV_UI_Cards_Inspiration_2",
-    label: "MV Card Template",
-    imgName: "MV_UI_Cards_Inspiration",
+    id: "Steven_Sun_Logo_2",
+    label: "Steven Sun Logo",
+    imgName: "icon",
   },
   {
     id: "AI_Basement_Music_Studio_3",
@@ -21,9 +21,9 @@ const tabs = [
     imgName: "AI_Generated_Basement_Studio",
   },
   {
-    id: "MV_UI_Cards_Inspiration_4",
-    label: "MV Card Template",
-    imgName: "MV_UI_Cards_Inspiration",
+    id: "Steven_Sun_Logo_4",
+    label: "Steven Sun Logo",
+    imgName: "icon",
   },
   {
     id: "AI_Basement_Music_Studio_5",
@@ -135,66 +135,10 @@ export default function ImageTabs() {
               <span className="relative z-10">{tab.label}</span>
             </Button>
           ))}
-
-          {/*  <Button
-            onClick={() => setActiveTab("AI_Basement_Music_Studio_1")}
-            className={`rounded-lg px-6 py-3 text-lg font-bold
-                    transition-colors hover:cursor-pointer ${
-                      activeTab === "AI_Basement_Music_Studio_1"
-                        ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-300"
-                    }`}
-          >
-            Studio
-          </Button>
-          <Button
-            onClick={() => setActiveTab("MV_UI_Cards_Inspiration_2")}
-            className={`rounded-lg px-6 py-3 text-lg font-bold 
-                    transition-colors hover:cursor-pointer ${
-                      activeTab === "MV_UI_Cards_Inspiration_2"
-                        ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-300"
-                    }`}
-          >
-            MV Card Template
-          </Button>
-          <Button
-            onClick={() => setActiveTab("AI_Basement_Music_Studio_3")}
-            className={`rounded-lg px-6 py-3 text-lg font-bold 
-                    transition-colors hover:cursor-pointer ${
-                      activeTab === "AI_Basement_Music_Studio_3"
-                        ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-300"
-                    }`}
-          >
-            Studio
-          </Button>
-          <Button
-            onClick={() => setActiveTab("MV_UI_Cards_Inspiration_4")}
-            className={`rounded-lg px-6 py-3 text-lg font-bold 
-                    transition-colors hover:cursor-pointer ${
-                      activeTab === "MV_UI_Cards_Inspiration_4"
-                        ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-300"
-                    }`}
-          >
-            MV Card Template
-          </Button>
-          <Button
-            onClick={() => setActiveTab("AI_Basement_Music_Studio_5")}
-            className={`rounded-lg px-6 py-3 text-lg font-bold 
-                    transition-colors hover:cursor-pointer ${
-                      activeTab === "AI_Basement_Music_Studio_5"
-                        ? "bg-amber-500 text-gray-100 hover:bg-amber-600"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-300"
-                    }`}
-          >
-            Studio
-          </Button> */}
         </div>
         <div
           className="
-                      relative mx-auto h-[700px] max-w-5xl
+                      mx-auto h-[700px] max-w-5xl
                       flex items-center justify-center
                       overflow-hidden rounded-4xl
                       
@@ -218,8 +162,8 @@ export default function ImageTabs() {
 
             <div
               key={displayedHeroImage?.id}
-              className={`relative z-10 overflow-hidden rounded-3xl hover:scale-102
-                            shadow-[0_0_30px_rgba(225,29,72,0.5)]
+              className={`relative z-10 hover:scale-102
+                          [filter:drop-shadow(0_0_30px_rgba(225,29,72,0.5))]
                             transition-all duration-800 ease-[cubic-bezier(0.25,0.5,0.4,1)]
                               ${
                                 animationState === "visible"
@@ -230,60 +174,22 @@ export default function ImageTabs() {
                               }
                             `}
             >
-              {displayedHeroImage && (
-                <Image
-                  src={`/hero-images/${displayedHeroImage.imgName}.png`}
-                  alt={displayedHeroImage.imgName}
-                  width={1200}
-                  height={800}
-                  className="max-h-[580px] w-auto object-contain"
-                />
-              )}
-              {/* {activeTab === "AI_Basement_Music_Studio_1" && (
-                <Image
-                  src="/hero-images/AI_Generated_Basement_Studio.png"
-                  alt="AI_Basement_Music_Studio"
-                  width={1200}
-                  height={800}
-                  className="max-h-[580px] w-auto object-contain"
-                />
-              )}
-              {activeTab === "MV_UI_Cards_Inspiration_2" && (
-                <Image
-                  src="/hero-images/MV_UI_Cards_Inspiration.png"
-                  alt="MV_UI_Cards_Inspiration"
-                  width={1200}
-                  height={800}
-                  className="relative z-10 max-h-[580px] w-auto object-contain"
-                />
-              )}
-              {activeTab === "AI_Basement_Music_Studio_3" && (
-                <Image
-                  src="/hero-images/AI_Generated_Basement_Studio.png"
-                  alt="AI_Basement_Music_Studio"
-                  width={1200}
-                  height={800}
-                  className="relative z-10 max-h-[580px] w-auto object-contain"
-                />
-              )}
-              {activeTab === "MV_UI_Cards_Inspiration_4" && (
-                <Image
-                  src="/hero-images/MV_UI_Cards_Inspiration.png"
-                  alt="MV_UI_Cards_Inspiration"
-                  width={1200}
-                  height={800}
-                  className="relative z-10 max-h-[580px] w-auto object-contain"
-                />
-              )}
-              {activeTab === "AI_Basement_Music_Studio_5" && (
-                <Image
-                  src="/hero-images/AI_Generated_Basement_Studio.png"
-                  alt="AI_Basement_Music_Studio"
-                  width={1200}
-                  height={800}
-                  className="relative z-10 max-h-[580px] w-auto object-contain"
-                />
-              )} */}
+              <div
+                className="overflow-hidden"
+                style={{
+                  clipPath: "ellipse(50% 50% at 50% 50%)",
+                }}
+              >
+                {displayedHeroImage && (
+                  <Image
+                    src={`/hero-images/${displayedHeroImage.imgName}.png`}
+                    alt={displayedHeroImage.imgName}
+                    width={1200}
+                    height={800}
+                    className="max-h-[580px] w-auto object-contain"
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

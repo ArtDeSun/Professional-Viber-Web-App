@@ -1,6 +1,6 @@
 /* import KanbanBoard from "@/components/kanban-board"; */
-import DashboardLoading from "@/components/dashboard-loading";
-import KanbanBoardClient from "@/components/kanban-board-client";
+import DashboardLoading from "@/components/job-tracking-dashboard/dashboard-loading";
+import KanbanBoardClient from "@/components/job-tracking-dashboard/kanban-board-client";
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "@/lib/db";
 import { Board } from "@/lib/models";

@@ -1,6 +1,5 @@
 "use client";
 
-import { Piano } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -319,7 +318,7 @@ export default function Navbar() {
             setHoverBarStyle((prev) => ({ ...prev, opacity: 0 }))
           }
           onClick={(e) => handleTopNav(e, "/", "stevensun")}
-          className={`w-60 flex items-center gap-2 text-xl font-semibold text-gray-300s transition-colors duration-300 
+          className={`w-60 flex items-center gap-2 text-2xl font-semibold text-gray-300s transition-colors duration-300 
                         hover:font-bold hover:text-white
                         ${
                           activeId === "stevensun"
@@ -327,7 +326,11 @@ export default function Navbar() {
                             : "text-gray-300"
                         }`}
         >
-          <Piano />
+          <img
+            src="/hero-images/icon.png"
+            alt="Steven Sun Logo"
+            className="h-12 w-12"
+          />
           Steven Sun
         </Link>
 

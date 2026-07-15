@@ -25,6 +25,14 @@ export default function SignUpSection() {
 
   const router = useRouter();
 
+  /* React.useEffect(() => {
+    console.log("SignUp mounted");
+
+    return () => {
+      console.log("SignUp unmounted");
+    };
+  }, []); */
+
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
@@ -41,7 +49,6 @@ export default function SignUpSection() {
       }
     } catch (err) {
       setError("An unexpected error occurred");
-    } finally {
       setLoading(false);
     }
   }

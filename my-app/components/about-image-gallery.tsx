@@ -7,8 +7,8 @@ import { Button } from "./ui/button";
 const images = [
   { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Studio" },
   {
-    src: "/hero-images/AI_Piano_Portrait.jpg",
-    title: "Piano",
+    src: "/hero-images/icon.png",
+    title: "Logo",
   },
 ];
 
@@ -65,7 +65,7 @@ export default function AboutImageGallery() {
           sizes="(min-width: 1024px) 520px, 100vw"
           fill
           className={`
-            object-cover
+            object-cover object-center
             transition-opacity duration-700 ease-in-out
             ${isTransitioning ? "opacity-0" : "opacity-100"}
           `}
@@ -78,12 +78,12 @@ export default function AboutImageGallery() {
         sizes="(min-width: 1024px) 520px, 100vw"
         fill
         className={`
-          object-cover
+          object-cover object-center
           transition-opacity duration-700 ease-in-out
           ${previousImage && !isTransitioning ? "opacity-0" : "opacity-100"}
         `}
       />
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/15" />
 
       <Button
         onClick={goPrevious}

@@ -176,14 +176,23 @@ export default function getAbout() {
                       Meet Your Professional Vibemaster
                     </h1>
                     <p className="mt-4 text-xl leading-8 text-neutral-400">
-                      As a trained software developer and as an{" "}
+                      As an{" "}
                       <span className="underline transition-color duration-300 hover:text-amber-500">
                         <a href="https://www.rcmusic.com/" target="_blank">
                           RCM-certified
                         </a>
                       </span>{" "}
-                      pianist, Steven excels at performing, digitalizing, and
-                      coaching immersive entertainment experiences.
+                      pianist and a{" "}
+                      <span className="underline transition-color duration-300 hover:text-amber-500">
+                        <a
+                          href="https://catalogue.uottawa.ca/en/undergrad/joint-honours-bsc-computer-science-mathematics/"
+                          target="_blank"
+                        >
+                          degreed software engineer
+                        </a>
+                      </span>
+                      , Steven excels at performing, digitalizing, and coaching
+                      immersive entertainment experiences.
                     </p>
                   </div>
                 </Reveal>
@@ -322,14 +331,14 @@ export default function getAbout() {
               >
                 Credentials | Lessons | Avaliability
               </h2>
-              <div className="grid gap-6 text-lg leading-8 md:grid-cols-2">
+              <div className="grid gap-6 leading-8 md:grid-cols-2">
                 <div
                   className="rounded-2xl bg-gradient-to-tl from-amber-100 via-orange-200 to-yellow-300
                                p-6 shadow-lg ring-1 ring-amber-500/20"
                 >
                   <p className="text-gray-700 text-xl font-semibold">
                     Started piano at age 5, Steven earned{" "}
-                    <span className="font-black">
+                    <span className="font-black text-gray-900">
                       RCM Grade 10 Piano Certification
                     </span>{" "}
                     and has 3+ years of experience teaching students of all ages
@@ -343,7 +352,7 @@ export default function getAbout() {
                 >
                   <p className="text-gray-700 text-xl font-semibold">
                     With a{" "}
-                    <span className="font-black">
+                    <span className="font-black text-gray-900">
                       BSc in Computer Science from the University of Ottawa
                     </span>
                     , he connects music learning with digital creativity and
@@ -357,8 +366,8 @@ export default function getAbout() {
                 >
                   <p className="text-gray-700 text-xl font-semibold">
                     He teaches{" "}
-                    <span className="font-black">
-                      all course and grades from the{" "}
+                    <span className="font-black text-gray-900">
+                      all courses and grades from the{" "}
                       <span className="underline transition-color duration-300 hover:text-amber-500">
                         <a
                           href="https://rcmusic-kentico-cdn.s3.amazonaws.com/rcm/media/main/about%20us/rcm%20publishing/piano-syllabus-2022-edition.pdf"
@@ -387,9 +396,11 @@ export default function getAbout() {
                                p-6 shadow-lg ring-1 ring-amber-500/20"
                 >
                   <p className="text-gray-700 text-xl font-semibold">
-                    <span className="font-black">Hour-long lessons</span> can
-                    include popular songs, accompaniment, improvisation, and ear
-                    training. Steven also gigs at weddings and other live
+                    <span className="font-black  text-gray-900">
+                      Hour-long lessons
+                    </span>{" "}
+                    can include popular songs, accompaniment, improvisation, and
+                    ear training. Steven also gigs at weddings and other live
                     settings.
                   </p>
                 </div>
