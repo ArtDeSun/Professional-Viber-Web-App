@@ -1,5 +1,6 @@
 "use client";
 
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -23,6 +24,8 @@ type NavId =
 
 export default function Navbar() {
   const pathname = usePathname();
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [animate, setAnimate] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -108,6 +111,10 @@ export default function Navbar() {
       opacity: 0.75,
     });
   };
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
 
   useLayoutEffect(() => {
     const id = getRouteActiveId();
@@ -259,29 +266,55 @@ export default function Navbar() {
     }, NAVIGATION_KICKOFF_MS);
   };
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
+
   return (
     /* border-b border-gray-200  */
     /* <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xs 
     bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent"> */
     <nav
-      className={`fixed top-0 left-0 w-[100vw] z-50 backdrop-blur-xs
-                  bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent
+      className={`fixed top-0 left-0 w-[100vw] z-50
                   ${
                     animate
                       ? "transition-all duration-1000 ease-[cubic-bezier(0.30,1,0.50,1)]"
                       : "transition-none"
                   }
-                  ${visible ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"}`}
+                  ${visible ? "translate-y-0 opacity-100" : "-translate-y-8 opacity-0"}
+                  `}
     >
       <div
         ref={navRailRef}
-        className="relative container mx-auto flex items-center h-24 px-4 justify-between font-playfairDisplay"
+        className={`
+                    relative flex h-24 items-center
+                    justify-between px-4 font-playfairDisplay
+                    transition-none
+                    ${
+                      mobileMenuOpen
+                        ? "bg-black"
+                        : "bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent backdrop-blur-xs"
+                    }
+                  `}
       >
         {/* Neon sliding bar */}
         {activeId !== null && (
           <span
             className={`
                         pointer-events-none absolute bottom-3 h-[2px] rounded-full
+                        hidden lg:block
                         bg-white shadow-[0_0_8px_rgba(255,255,255,0.95),0_0_16px_rgba(255,255,255,0.75)]
                         ${
                           barTransitionEnabled
@@ -299,6 +332,7 @@ export default function Navbar() {
         <span
           className="
                           pointer-events-none absolute bottom-3 h-[2px] rounded-full
+                          hidden lg:block
                           bg-white shadow-[0_0_6px_rgba(255,255,255,0.65),0_0_12px_rgba(255,255,255,0.45)]
                           transition-all duration-[500ms] ease-[cubic-bezier(0.25,0.8,0.25,1)]
                         "
@@ -310,32 +344,56 @@ export default function Navbar() {
         />
 
         {/* Left item */}
-        <Link
-          ref={itemRefs.stevensun}
-          href="/"
-          onMouseEnter={() => moveHoverBarTo("stevensun")}
-          onMouseLeave={() =>
-            setHoverBarStyle((prev) => ({ ...prev, opacity: 0 }))
+        <div className="flex flex-1 justify-start lg:w-60 lg:flex-none">
+          <Link
+            ref={itemRefs.stevensun}
+            href="/"
+            onMouseEnter={() => moveHoverBarTo("stevensun")}
+            onMouseLeave={() =>
+              setHoverBarStyle((prev) => ({ ...prev, opacity: 0 }))
+            }
+            onClick={(e) => handleTopNav(e, "/", "stevensun")}
+            className={`flex w-auto items-center gap-2 text-2xl font-semibold text-gray-300s transition-all duration-300 lg:w-60
+                          hover:text-amber-300 group
+                          ${
+                            activeId === "stevensun"
+                              ? "text-white"
+                              : "text-gray-300"
+                          }`}
+          >
+            <img
+              src="/hero-images/icon.png"
+              alt="Steven Sun Logo"
+              className="h-12 w-12 transition duration-300 group-hover:scale-105"
+            />
+            <span className="">Steven Sun</span>
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          aria-label={
+            mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
           }
-          onClick={(e) => handleTopNav(e, "/", "stevensun")}
-          className={`w-60 flex items-center gap-2 text-2xl font-semibold text-gray-300s transition-colors duration-300 
-                        hover:font-bold hover:text-white
-                        ${
-                          activeId === "stevensun"
-                            ? "text-white"
-                            : "text-gray-300"
-                        }`}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
+          onClick={() => setMobileMenuOpen((previous) => !previous)}
+          className="
+                      ml-3 flex h-11 w-11 shrink-0 cursor-pointer
+                      items-center justify-center rounded-xl text-gray-200
+                      transition-colors hover:bg-white/10 hover:text-white
+                      lg:hidden
+                    "
         >
-          <img
-            src="/hero-images/icon.png"
-            alt="Steven Sun Logo"
-            className="h-12 w-12"
-          />
-          Steven Sun
-        </Link>
+          {mobileMenuOpen ? (
+            <X className="h-7 w-7" />
+          ) : (
+            <Menu className="h-7 w-7" />
+          )}
+        </button>
 
         {/* Centered buttons */}
-        <div className="flex gap-5">
+        <div className="hidden gap-2 lg:flex xl:gap-5 mx-auto">
           <Link
             ref={itemRefs.about}
             href="/about"
@@ -346,7 +404,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/about", "about")}
           >
             <Button
-              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
                 activeId === "about" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -358,7 +416,7 @@ export default function Navbar() {
             target="_blank"
           >
             <Button
-              className="h-10 w-28 bg-destructive text-gray-300 text-xl rounded-xl 
+              className="h-10 w-24 xl:w-28 bg-destructive text-gray-300 text-xl rounded-xl 
                          hover:text-black cursor-pointer"
             >
               Youtube
@@ -374,7 +432,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/music", "music")}
           >
             <Button
-              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
                 activeId === "music" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -391,7 +449,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/updates", "updates")}
           >
             <Button
-              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
                 activeId === "updates" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -416,7 +474,7 @@ export default function Navbar() {
             }}
           >
             <Button
-              className={`h-10 w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white ${
                 activeId === "contact" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -426,8 +484,122 @@ export default function Navbar() {
         </div>
 
         {/* Right Corner */}
-        <div className="flex w-64 items-center justify-end gap-4">
+        <div className="flex flex-1 items-center justify-end lg:w-60 lg:flex-none xl:w-64">
           <NavbarRightCorner />
+        </div>
+      </div>
+
+      <div
+        id="mobile-navigation"
+        className={`
+                    overflow-hidden
+                    bg-gradient-to-b
+                    from-black via-black/80 via-20% to-transparent
+                    backdrop-blur-xs
+                    font-playfairDisplay
+                    transition-[max-height,opacity,padding]
+                    duration-300 ease-out
+                    lg:hidden
+                    ${
+                      mobileMenuOpen
+                        ? "max-h-10 px-4 py-0 opacity-100"
+                        : "pointer-events-none max-h-0 px-4 py-0 opacity-0"
+                    }
+                  `}
+      >
+        <div className="flex justify-center gap-2">
+          <Link
+            href="/about"
+            onClick={(e) => {
+              setMobileMenuOpen(false);
+              handleTopNav(e, "/about", "about");
+            }}
+          >
+            <Button
+              className={`h-10 w-20 justify-center px-4 text-md
+                          hover:font-bold hover:text-white
+                          cursor-pointer
+                          ${activeId === "about" ? "text-white" : "text-gray-300"}`}
+            >
+              About
+            </Button>
+          </Link>
+
+          <a
+            href="https://www.youtube.com/@StevenVibemasterSun"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Button
+              className="
+                          h-10 w-20 justify-center rounded-xl bg-destructive
+                          px-4 text-md text-gray-300 hover:text-black
+                          cursor-pointer
+                        "
+            >
+              YouTube
+            </Button>
+          </a>
+
+          <Link
+            href="/music"
+            onClick={(e) => {
+              setMobileMenuOpen(false);
+              handleTopNav(e, "/music", "music");
+            }}
+          >
+            <Button
+              className={`h-10 w-20 justify-center px-4 text-md
+                          hover:font-bold hover:text-white
+                          cursor-pointer
+                          ${activeId === "music" ? "text-white" : "text-gray-300"}`}
+            >
+              Music
+            </Button>
+          </Link>
+
+          <Link
+            href="/updates"
+            onClick={(e) => {
+              setMobileMenuOpen(false);
+              handleTopNav(e, "/updates", "updates");
+            }}
+          >
+            <Button
+              className={`h-10 w-20 justify-center px-4 text-md
+                          hover:font-bold hover:text-white
+                          cursor-pointer
+                          ${activeId === "updates" ? "text-white" : "text-gray-300"}`}
+            >
+              Updates
+            </Button>
+          </Link>
+
+          <Link
+            href="#contact"
+            onClick={(e) => {
+              e.preventDefault();
+
+              setActiveId("contact");
+              setMobileMenuOpen(false);
+
+              history.replaceState(null, "", `${pathname}#contact`);
+
+              document.getElementById("contact")?.scrollIntoView({
+                behavior: "smooth",
+              });
+            }}
+          >
+            <Button
+              className={`h-10 w-20 justify-center px-4 text-md
+                          hover:font-bold hover:text-white
+                          cursor-pointer
+                          ${activeId === "contact" ? "text-white" : "text-gray-300"}`}
+            >
+              Contact
+            </Button>
+          </Link>
         </div>
       </div>
     </nav>

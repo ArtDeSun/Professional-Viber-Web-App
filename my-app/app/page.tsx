@@ -10,9 +10,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const heroDescriptions = [
-  "Ottawa-Based, Canadian-Born & Chinese-Raised Musician",
-  "Digital Creator, Personality-Driven Piano Educator & Software Developer",
-  "Blending Modern Creativity and Diverse Cultures into a Distinctly Personal Artistic Voice",
+  "Ottawa-Based, Canadian-Born, and Chinese-Raised Musician",
+  "Piano Instructor, Software Developer, and Digital Creator",
+  "Modern Creativity, Diverse Cultures, and Personal Expression",
 ];
 
 const featureBackgroundImages = [
@@ -236,13 +236,11 @@ export default function Home() {
         {/* Hero Section */}
         <section
           /* id="steven_sun" */
-          className="flex py-32 px-4 bg-black relative min-h-screen overflow-x-hidden"
+          className="flex bg-black relative min-h-screen overflow-hidden
+                     px-4 pb-12 pt-46
+                     sm:px-6 sm:pb-16
+                     lg:px-8 lg:py-46"
         >
-          {/* <div
-            className="absolute inset-0 
-            bg-[url('../public/hero-images/AI_Generated_Basement_Studio.png')]
-            bg-cover bg-center"
-          /> */}
           <Image
             src="/hero-images/AI_Generated_Basement_Studio.png"
             alt=""
@@ -255,240 +253,374 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-black/60" />
 
-          {/* Bass clef */}
           <div
-            aria-label="Bass clef"
-            className={`absolute bottom-16 left-48 z-10 h-[26rem] w-[12rem]
-              bg-[linear-gradient(to_top_right,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
-              transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]
-              ${
-                visible
-                  ? "translate-x-0 opacity-75"
-                  : "-translate-x-120 opacity-0"
-              }`}
-            style={{
-              WebkitMaskImage: "url('/hero-images/bass-clef.png')",
-              WebkitMaskPosition: "center",
-              WebkitMaskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
+            className={`relative z-10 container mx-auto
+                        grid items-center
 
-              maskImage: "url('/hero-images/bass-clef.png')",
-              maskPosition: "center",
-              maskSize: "contain",
-              maskRepeat: "no-repeat",
-            }}
-          />
+                        grid-cols-[3.5rem_minmax(0,1fr)_3.5rem]
+                        sm:grid-cols-[5rem_minmax(0,1fr)_5rem]
+                        md:grid-cols-[7rem_minmax(0,1fr)_7rem]
+                        lg:grid-cols-[9.5rem_minmax(0,1fr)_9.5rem]
+                        xl:grid-cols-[12.5rem_minmax(0,1fr)_12.5rem]
 
-          {/* Treble clef */}
-          <div
-            aria-label="Treble clef"
-            className={`absolute top-32 right-48 z-10 h-[16rem] w-[12rem]
-              bg-[linear-gradient(to_bottom_left,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
-              transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)]
-              ${
-                visible
-                  ? "translate-x-0 opacity-75"
-                  : "translate-x-120 opacity-0"
-              }`}
-            style={{
-              WebkitMaskImage: "url('/hero-images/treble-clef.png')",
-              WebkitMaskPosition: "center",
-              WebkitMaskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
-
-              maskImage: "url('/hero-images/treble-clef.png')",
-              maskPosition: "center",
-              maskSize: "contain",
-              maskRepeat: "no-repeat",
-            }}
-          />
-
-          <div
-            className={`flex flex-col justify-center items-center container mx-auto text-center relative z-10
-                          transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
-                          `}
+                        transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
+                      `}
           >
-            {/* <div className="min-h-[8vh]" /> */}
-            <h1
-              className={`font-great-vibes font-bold tracking-widest text-amber-400 mt-12 mb-12 text-9xl [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]`}
-            >
-              Steven Sun
-            </h1>
-            <h2
-              className="font-marcellus mb-12 text-5xl font-semibold tracking-wide
-               [text-shadow:0_2px_10px_rgba(245,158,11,0.1)]"
-            >
-              <Link
-                href="/#description-cards"
-                onClick={(e) => {
-                  e.preventDefault();
-                  history.pushState(null, "", "#description-cards");
-                  document.getElementById("description-cards")?.scrollIntoView({
-                    behavior: "smooth",
-                  });
-                }}
-              >
-                <span
-                  className="bg-gradient-to-t from-gray-200 to-amber-300 bg-clip-text text-transparent 
-                                 transition-color duration-300 hover:text-amber-300"
-                >
-                  Piano
-                </span>
-              </Link>
-              <span className="mx-4 text-gray-300">·</span>
-              <Link
-                href="/#description-cards"
-                onClick={(e) => {
-                  e.preventDefault();
-                  history.pushState(null, "", "#description-cards");
-                  document.getElementById("description-cards")?.scrollIntoView({
-                    behavior: "smooth",
-                  });
-                }}
-              >
-                <span
-                  className="bg-gradient-to-t from-gray-200 to-violet-300 bg-clip-text text-transparent
-                                 transition-color duration-300 hover:text-violet-300"
-                >
-                  Professional Vibemaster
-                </span>
-              </Link>
-              <span className="mx-4 text-gray-300">·</span>
-              <Link
-                href="/#description-cards"
-                onClick={(e) => {
-                  e.preventDefault();
-                  history.pushState(null, "", "#description-cards");
-                  document.getElementById("description-cards")?.scrollIntoView({
-                    behavior: "smooth",
-                  });
-                }}
-              >
-                <span
-                  className="bg-gradient-to-t from-gray-200 to-rose-300 bg-clip-text text-transparent
-                                 transition-color duration-300 hover:text-rose-300"
-                >
-                  Creative Voice
-                </span>
-              </Link>
-            </h2>
-            {/* <h1
-              className="font-poppins mb-3 text-2xl
-                           bg-gradient-to-r
-                           from-gray-300 via-amber-500 to-gray-300 bg-clip-text
-                           text-transparent"
-            >
-              Reimagining Musical Creativity Beyond Expectations
-            </h1> */}
-
-            <div className="mb-14 grid overflow-hidden">
-              {/* Next text */}
-              <p
+            <div className="flex flex-col h-full justify-between items-center">
+              <div
+                aria-label="Treble clef"
                 className={`
-                              col-start-1 row-start-1 m-0 w-full
-                              font-poppins text-2xl font-light text-gray-200
+                  h-28 w-14
+                  md:h-40 md:w-20
+                  lg:h-56 lg:w-24
+                  xl:h-80 xl:w-32
+
+                  bg-[linear-gradient(to_bottom_left,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
+
+                  transition-all duration-[1400ms]
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                  ${
+                    visible
+                      ? "translate-x-0 opacity-75"
+                      : "-translate-x-32 opacity-0"
+                  }
+                `}
+                style={{
+                  WebkitMaskImage: "url('/hero-images/treble-clef.png')",
+                  WebkitMaskPosition: "center",
+                  WebkitMaskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+
+                  maskImage: "url('/hero-images/treble-clef.png')",
+                  maskPosition: "center",
+                  maskSize: "contain",
+                  maskRepeat: "no-repeat",
+                }}
+              />
+              <div
+                aria-label="Bass clef"
+                className={`
+                  h-28 w-14
+                  md:h-40 md:w-20
+                  lg:h-56 lg:w-24
+                  xl:h-80 xl:w-32
+
+                  bg-[linear-gradient(to_top_right,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
+
+                  transition-all duration-[1400ms]
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                  ${
+                    visible
+                      ? "translate-x-0 opacity-75"
+                      : "-translate-x-32 opacity-0"
+                  }
+                `}
+                style={{
+                  WebkitMaskImage: "url('/hero-images/bass-clef.png')",
+                  WebkitMaskPosition: "center",
+                  WebkitMaskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+
+                  maskImage: "url('/hero-images/bass-clef.png')",
+                  maskPosition: "center",
+                  maskSize: "contain",
+                  maskRepeat: "no-repeat",
+                }}
+              />
+            </div>
+
+            <div className="flex min-w-0 flex-col items-center text-center">
+              <h1
+                className="
+                            mt-4 mb-7
+                            font-great-vibes text-8xl font-bold tracking-wide text-amber-400
+                            [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]
+                            sm:mt-8 sm:mb-9
+                            md:text-9xl
+                            lg:mt-12 lg:mb-12 lg:tracking-widest
+                          "
+              >
+                Steven Sun
+              </h1>
+              <h2
+                className="
+                            mb-8 flex w-full flex-col items-center gap-1
+                            font-marcellus text-3xl font-semibold tracking-wide
+                            [text-shadow:0_2px_10px_rgba(245,158,11,0.1)]
+                            sm:text-4xl
+                            md:mb-10 md:text-5xl
+                            lg:mb-12
+                            2xl:flex-row 2xl:justify-center 2xl:gap-0
+                          "
+              >
+                <Link
+                  href="/#description-cards"
+                  className="block whitespace-nowrap"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.pushState(null, "", "#description-cards");
+                    document
+                      .getElementById("description-cards")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                  }}
+                >
+                  <span
+                    className="bg-gradient-to-t from-gray-200 to-amber-300 bg-clip-text text-transparent 
+                                  transition-color duration-300 hover:text-amber-300"
+                  >
+                    Piano
+                  </span>
+                </Link>
+                <span className="mx-4 hidden shrink-0 text-gray-300 2xl:inline">
+                  ·
+                </span>
+                <Link
+                  href="/#description-cards"
+                  className="block whitespace-nowrap"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.pushState(null, "", "#description-cards");
+                    document
+                      .getElementById("description-cards")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                  }}
+                >
+                  <span
+                    className="bg-gradient-to-t from-gray-200 to-violet-300 bg-clip-text text-transparent
+                                  transition-color duration-300 hover:text-violet-300"
+                  >
+                    Professional Vibemaster
+                  </span>
+                </Link>
+                <span className="mx-4 hidden shrink-0 text-gray-300 2xl:inline">
+                  ·
+                </span>
+                <Link
+                  href="/#description-cards"
+                  className="block whitespace-nowrap"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.pushState(null, "", "#description-cards");
+                    document
+                      .getElementById("description-cards")
+                      ?.scrollIntoView({
+                        behavior: "smooth",
+                      });
+                  }}
+                >
+                  <span
+                    className="bg-gradient-to-t from-gray-200 to-rose-300 bg-clip-text text-transparent
+                                  transition-color duration-300 hover:text-rose-300"
+                  >
+                    Creative Voice
+                  </span>
+                </Link>
+              </h2>
+
+              <div
+                className="
+                            mb-10 grid h-[3.5rem] w-full min-w-0 overflow-hidden text-center
+                            md:mb-12 md:h-[4rem]
+                            xl:mb-14 xl:h-auto
+                          "
+              >
+                {/* Next text */}
+                <p
+                  className={`
+                              col-start-1 row-start-1 m-0
+                              flex h-full w-full min-w-0 items-center justify-center
+                              text-center
+                              whitespace-nowrap
+
+                              font-poppins text-xs font-light tracking-tighter
+                              sm:text-sm
+                              md:text-lg
+                              lg:text-xl
+                              2xl:text-2xl
+
                               bg-gradient-to-r
-                              from-gray-200 via-amber-300 to-gray-200 bg-clip-text
-                              text-transparent
+                              from-gray-100 via-amber-300 to-gray-100
+                              bg-clip-text text-transparent
                               ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
                               ${textSliding ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"}
                             `}
-              >
-                {heroDescriptions[nextTextIndex]}
-              </p>
+                >
+                  {heroDescriptions[nextTextIndex]}
+                </p>
 
-              {/* Current text */}
-              <p
-                className={`
-                              col-start-1 row-start-1 m-0 w-full
-                              font-poppins text-2xl font-light
+                {/* Current text */}
+                <p
+                  className={`
+                              col-start-1 row-start-1 m-0
+                              flex h-full w-full min-w-0 items-center justify-center
+                              text-center
+                              whitespace-nowrap
+
+                              font-poppins text-xs font-light tracking-tighter
+                              sm:text-sm
+                              md:text-lg
+                              lg:text-xl
+                              2xl:text-2xl
+
                               bg-gradient-to-r
-                              from-gray-100 via-amber-200 to-gray-100 bg-clip-text
-                              text-transparent
+                              from-gray-100 via-amber-300 to-gray-100
+                              bg-clip-text text-transparent
                               ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
                               ${textSliding ? "translate-y-12 opacity-0" : "translate-y-0 opacity-100"}
                             `}
-              >
-                {heroDescriptions[currentTextIndex]}
-              </p>
-            </div>
+                >
+                  {heroDescriptions[currentTextIndex]}
+                </p>
+              </div>
 
-            <div className="font-redHatDisplay flex flex-col items-center gap-3">
-              <Link href="/music">
-                <Button className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full">
-                  Music <ArrowRight className="ml-2" />
-                </Button>
-              </Link>
-              <div className="flex gap-4">
-                {/* <Link href="/updates">
+              <div className="relative z-20 flex flex-col items-center gap-3 font-redHatDisplay">
+                <Link href="/music">
+                  <Button className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full">
+                    Music <ArrowRight className="ml-2" />
+                  </Button>
+                </Link>
+                <div className="flex gap-4">
+                  {/* <Link href="/updates">
+                    <Button
+                      size="lg"
+                      border border-solid border-black/[.08]
+                      className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                    >
+                      Updates
+                    </Button>
+                  </Link> */}
+
+                  {!initialAuthChecked ? (
+                    <></>
+                  ) : (
+                    !isLoggedIn && (
+                      <Button
+                        asChild
+                        className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                      >
+                        <Link
+                          href="/#signup"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            history.pushState(null, "", "#signup");
+                            document.getElementById("signup")?.scrollIntoView({
+                              behavior: "smooth",
+                            });
+                          }}
+                        >
+                          Sign Up
+                        </Link>
+                      </Button>
+                    )
+                  )}
+
                   <Button
-                    size="lg"
-                    border border-solid border-black/[.08]
+                    asChild
                     className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
                   >
-                    Updates
+                    <Link
+                      href="/#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        history.pushState(null, "", "#contact");
+                        document.getElementById("contact")?.scrollIntoView({
+                          behavior: "smooth",
+                        });
+                      }}
+                    >
+                      Contact
+                    </Link>
                   </Button>
-                </Link> */}
+                </div>
 
                 {!initialAuthChecked ? (
                   <></>
                 ) : (
                   !isLoggedIn && (
-                    <Button
-                      asChild
-                      className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
-                    >
-                      <Link
-                        href="/#signup"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          history.pushState(null, "", "#signup");
-                          document.getElementById("signup")?.scrollIntoView({
-                            behavior: "smooth",
-                          });
-                        }}
-                      >
-                        Sign Up
-                      </Link>
-                    </Button>
+                    <Link href="/lessons">
+                      <div className="flex h-12 items-center">
+                        <Button className="py-1 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:py-5 hover:px-8 hover:text-xl cursor-pointer rounded-full">
+                          Lessons
+                        </Button>
+                      </div>
+                    </Link>
                   )
                 )}
-
-                <Button
-                  asChild
-                  className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
-                >
-                  <Link
-                    href="/#contact"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      history.pushState(null, "", "#contact");
-                      document.getElementById("contact")?.scrollIntoView({
-                        behavior: "smooth",
-                      });
-                    }}
-                  >
-                    Contact
-                  </Link>
-                </Button>
+                {/* <p className="text-sm text-muted-foreground">
+                  professionalvibemaster@stevensun.com
+                </p> */}
               </div>
+            </div>
 
-              {!initialAuthChecked ? (
-                <></>
-              ) : (
-                !isLoggedIn && (
-                  <Link href="/lessons">
-                    <div className="flex h-12 items-center">
-                      <Button className="py-1 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:py-5 hover:px-8 hover:text-xl cursor-pointer rounded-full">
-                        Lessons
-                      </Button>
-                    </div>
-                  </Link>
-                )
-              )}
-              {/* <p className="text-sm text-muted-foreground">
-                professionalvibemaster@stevensun.com
-              </p> */}
+            <div className="flex flex-col h-full justify-between items-center">
+              <div
+                aria-label="Treble clef"
+                className={`
+                  h-28 w-14
+                  md:h-40 md:w-20
+                  lg:h-56 lg:w-24
+                  xl:h-80 xl:w-32
+
+                  bg-[linear-gradient(to_bottom_left,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
+
+                  transition-all duration-[1400ms]
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                  ${
+                    visible
+                      ? "translate-x-0 opacity-75"
+                      : "translate-x-32 opacity-0"
+                  }
+                `}
+                style={{
+                  WebkitMaskImage: "url('/hero-images/treble-clef.png')",
+                  WebkitMaskPosition: "center",
+                  WebkitMaskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+
+                  maskImage: "url('/hero-images/treble-clef.png')",
+                  maskPosition: "center",
+                  maskSize: "contain",
+                  maskRepeat: "no-repeat",
+                }}
+              />
+              <div
+                aria-label="Bass clef"
+                className={`
+                  h-28 w-14
+                  md:h-40 md:w-20
+                  lg:h-56 lg:w-24
+                  xl:h-80 xl:w-32
+
+                  bg-[linear-gradient(to_top_right,theme(colors.amber.100)_25%,theme(colors.red.300)_50%,theme(colors.fuchsia.500)_75%)]
+
+                  transition-all duration-[1400ms]
+                  ease-[cubic-bezier(0.22,1,0.36,1)]
+
+                  ${
+                    visible
+                      ? "translate-x-0 opacity-75"
+                      : "translate-x-32 opacity-0"
+                  }
+                `}
+                style={{
+                  WebkitMaskImage: "url('/hero-images/bass-clef.png')",
+                  WebkitMaskPosition: "center",
+                  WebkitMaskSize: "contain",
+                  WebkitMaskRepeat: "no-repeat",
+
+                  maskImage: "url('/hero-images/bass-clef.png')",
+                  maskPosition: "center",
+                  maskSize: "contain",
+                  maskRepeat: "no-repeat",
+                }}
+              />
             </div>
           </div>
         </section>
@@ -536,25 +668,25 @@ export default function Home() {
           />
 
           {/* Content */}
-          <div className="relative z-10 container mx-auto px-4">
+          <div className="relative z-10 container mx-auto px-6">
             {/* Apply md only when the screen is at least the Medium breakpoint (768px and wider). */}
-            <div className="grid gap-12 md:grid-cols-3 font-redHatDisplay">
-              <div className="group relative">
+            <div className="grid items-stretch gap-6 sm:gap-5 md:grid-cols-3 md:gap-4 lg:gap-6 font-redHatDisplay">
+              <div className="group relative h-full">
                 {/* hidden layers */}
                 <div
-                  className="absolute inset-0 translate-x-4 -translate-y-6 rounded-3xl
+                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl md:translate-x-3 md:-translate-y-4
                                 bg-gradient-to-br from-amber-400/80 via-yellow-300/80 to-orange-400/80
                                 transition-all duration-300"
                 />
                 <div
-                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl
+                  className="absolute inset-0 translate-x-1 -translate-y-1.5 rounded-3xl md:translate-x-1.5 md:-translate-y-2
                                 bg-gradient-to-br from-amber-300 via-yellow-200 to-orange-300
                                 transition-all duration-300"
                 />
                 {/* main card */}
                 {/* Teaching */}
                 <div
-                  className="relative z-10 group flex flex-col rounded-3xl p-6
+                  className="relative z-10 group h-full flex flex-col rounded-3xl p-4 md:p-3 lg:p-5 xl:p-6
                      bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200
                      border border-amber-300/50
                      ring-1 ring-amber-300/50
@@ -573,7 +705,7 @@ export default function Home() {
                   <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
                     Innovative Piano Learning
                   </h3>
-                  <p className="text-muted-foreground text-lg font-semibold">
+                  <p className="mt-auto text-muted-foreground text-lg font-semibold">
                     Practice theory with{" "}
                     <span className="font-black">Steven</span> through real
                     songs, ear training, and inspired playing from day one.
@@ -581,22 +713,22 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="group relative">
+              <div className="group relative h-full">
                 {/* hidden layers */}
                 <div
-                  className="absolute inset-0 translate-x-4 -translate-y-6 rounded-3xl
+                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl md:translate-x-3 md:-translate-y-4
                                 bg-gradient-to-br from-violet-400/80 via-purple-300/80 to-fuchsia-400/80
                                 transition-all duration-300"
                 />
                 <div
-                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl
+                  className="absolute inset-0 translate-x-1 -translate-y-1.5 rounded-3xl md:translate-x-1.5 md:-translate-y-2
                                 bg-gradient-to-br from-violet-300 via-purple-200 to-fuchsia-300
                                 transition-all duration-300"
                 />
                 {/* main card */}
                 {/* Content Creation */}
                 <div
-                  className="relative z-10 group flex flex-col rounded-3xl p-6
+                  className="relative z-10 group h-full flex flex-col rounded-3xl p-4 md:p-3 lg:p-5 xl:p-6
                               bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200
                               border border-violet-300/50
                               ring-1 ring-violet-300/50
@@ -615,28 +747,28 @@ export default function Home() {
                   <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
                     Professional Vibemaster
                   </h3>
-                  <p className="text-muted-foreground text-lg font-semibold">
+                  <p className="mt-auto text-muted-foreground text-lg font-semibold">
                     Crafting immersive musical experiences through performance,
                     personality, and digital storytelling.
                   </p>
                 </div>
               </div>
 
-              <div className="group relative">
+              <div className="group relative h-full">
                 {/* hidden layers */}
                 <div
-                  className="absolute inset-0 translate-x-4 -translate-y-6 rounded-3xl
+                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl md:translate-x-3 md:-translate-y-4
                                 bg-gradient-to-br from-rose-400/80 via-pink-300/80 to-red-400/80
                                 transition-all duration-300"
                 />
                 <div
-                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl
+                  className="absolute inset-0 translate-x-1 -translate-y-1.5 rounded-3xl md:translate-x-1.5 md:-translate-y-2
                                 bg-gradient-to-br from-rose-300 via-pink-200 to-red-300
                                 transition-all duration-300"
                 />
                 {/* Musicianship */}
                 <div
-                  className="relative z-10 group flex flex-col rounded-3xl p-6
+                  className="relative z-10 group h-full flex flex-col rounded-3xl p-4 md:p-3 lg:rounded-3xl lg:p-5 xl:p-6
                               bg-gradient-to-br
                               from-rose-200
                               via-pink-100
@@ -661,7 +793,7 @@ export default function Home() {
                   <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
                     Genre-Spanning Creativity
                   </h3>
-                  <p className="text-muted-foreground text-lg font-semibold">
+                  <p className="mt-auto text-muted-foreground text-lg font-semibold">
                     Internalizing jazz, R&B, rock, East-Asian pop, and
                     classical, into a distinctive creative voice.
                   </p>

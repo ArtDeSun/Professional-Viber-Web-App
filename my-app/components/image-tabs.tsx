@@ -101,17 +101,24 @@ export default function ImageTabs() {
   }, [activeImage, displayedHeroImage]);
 
   return (
-    <section className="bg-black px-4 py-16 min-h-[850px]">
+    <section className="bg-black px-4 py-12 min-h-[850px]">
       <div className="container mx-auto max-w-6xl">
-        {/* Tabs */}
-        {/* CONSIDER THIS: className="md:grid-cols-4" */}
-        <div className="flex gap-2 justify-center mb-8 font-marcellus">
+        <div
+          className="
+                      mb-6 flex flex-col justify-center gap-1
+                      font-marcellus
+                      sm:items-center
+                      md:flex-row md:justify-center md:mx-0
+                      lg:gap-2
+                    "
+        >
           {tabs.map((tab) => (
             <Button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`
-                          group relative overflow-hidden rounded-lg px-6 py-3 text-lg font-bold
+                          group relative w-2/5 mx-auto overflow-hidden rounded-lg px-6 py-2 text-base font-bold
+                          md:mx-0 md:w-auto md:text-lg
                           transition-all duration-400 ease-out
                           hover:cursor-pointer
                           ${
@@ -138,7 +145,9 @@ export default function ImageTabs() {
         </div>
         <div
           className="
-                      mx-auto h-[700px] max-w-5xl
+                      mx-auto h-[560px] w-full max-w-5xl
+                      sm:h-[620px]
+                      lg:h-[700px]
                       flex items-center justify-center
                       overflow-hidden rounded-4xl
                       
@@ -151,7 +160,7 @@ export default function ImageTabs() {
                       transition-all duration-300
                     "
         >
-          <div className="relative flex items-center justify-center p-12">
+          <div className="relative flex h-full w-full items-center justify-center p-4 sm:p-8 lg:p-12">
             <div
               className="
                           absolute inset-0
@@ -175,10 +184,25 @@ export default function ImageTabs() {
                             `}
             >
               <div
-                className="overflow-hidden"
-                style={{
-                  clipPath: "ellipse(50% 50% at 50% 50%)",
-                }}
+                className={`
+                            overflow-hidden rounded-[50%]
+                            ${
+                              displayedHeroImage?.imgName === "icon"
+                                ? `
+                                  h-[320px] w-[320px]
+                                  sm:h-[340px] sm:w-[340px]
+                                  md:h-[440px] md:w-[440px]
+                                  lg:h-[520px] lg:w-[520px]
+                                `
+                                : `
+                                  h-[420px] w-[320px]
+                                  sm:h-[460px] sm:w-[460px]
+                                  md:h-[480px] md:w-[480px]
+                                  lg:h-[480px] lg:w-[720px]
+                                  xl:h-[540px] xl:w-[860px]
+                                `
+                            }
+                          `}
               >
                 {displayedHeroImage && (
                   <Image
@@ -186,7 +210,14 @@ export default function ImageTabs() {
                     alt={displayedHeroImage.imgName}
                     width={1200}
                     height={800}
-                    className="max-h-[580px] w-auto object-contain"
+                    className={`
+                                h-full w-full
+                                ${
+                                  displayedHeroImage.imgName === "icon"
+                                    ? "object-contain"
+                                    : "object-cover"
+                                }
+                              `}
                   />
                 )}
               </div>

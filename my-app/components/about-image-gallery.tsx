@@ -56,13 +56,23 @@ export default function AboutImageGallery() {
   }
 
   return (
-    <div className="relative z-10 h-[820px] w-full max-w-[520px] overflow-hidden rounded-t-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+    <div
+      className="
+        relative z-10 mx-auto
+        h-[440px] w-full min-w-0 max-w-[520px]
+        overflow-hidden rounded-[2rem]
+        shadow-[0_0_20px_rgba(245,158,11,0.5)]
+        sm:h-[560px] sm:rounded-t-[3rem]
+        md:h-[680px]
+        lg:mx-0 lg:h-[820px] lg:rounded-t-[4rem]
+      "
+    >
       {previousImage && (
         <Image
           key={previousImage.src}
           src={previousImage.src}
           alt={previousImage.title}
-          sizes="(min-width: 1024px) 520px, 100vw"
+          sizes="(min-width: 1024px) 520px, (min-width: 640px) 90vw, 100vw"
           fill
           className={`
             object-cover object-center
@@ -75,7 +85,7 @@ export default function AboutImageGallery() {
         key={currentImage.src}
         src={currentImage.src}
         alt={currentImage.title}
-        sizes="(min-width: 1024px) 520px, 100vw"
+        sizes="(min-width: 1024px) 520px, (min-width: 640px) 90vw, 100vw"
         fill
         className={`
           object-cover object-center
@@ -83,7 +93,7 @@ export default function AboutImageGallery() {
           ${previousImage && !isTransitioning ? "opacity-0" : "opacity-100"}
         `}
       />
-      <div className="absolute inset-0 bg-black/15" />
+      <div className="pointer-events-none absolute inset-0 bg-black/15" />
 
       <Button
         onClick={goPrevious}

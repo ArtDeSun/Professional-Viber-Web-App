@@ -120,11 +120,11 @@ export default function getAbout() {
     },
   ];
   const textSizes = [
-    "text-5xl",
-    "text-4xl",
-    "text-3xl",
-    "text-2xl",
-    "text-1xl",
+    "text-2xl sm:text-3xl xl:text-5xl",
+    "text-xl sm:text-2xl xl:text-4xl",
+    "text-lg sm:text-xl xl:text-3xl",
+    "text-base sm:text-lg xl:text-2xl",
+    "text-sm sm:text-base xl:text-xl",
   ];
 
   const currentActivties = [
@@ -150,43 +150,94 @@ export default function getAbout() {
 
   return (
     <div className="bg-black text-neutral-100">
-      <main className="mx-auto max-w-7xl px-6 py-32 font-redHatDisplay">
+      <main className="mx-auto w-full max-w-7xl overflow-hidden px-4 py-24 font-redHatDisplay sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <section className="relative">
           <div
-            className="relative rounded-[3rem] 
-                       bg-gradient-to-b from-neutral-950 via-neutral-900 to-amber-950/50
-                       "
+            className="
+                        relative overflow-hidden rounded-[2rem]
+                        bg-gradient-to-b from-neutral-950 via-neutral-900 to-amber-950/50
+                        sm:rounded-[3rem]
+                        lg:overflow-visible
+                      "
           >
-            <div className="relative grid gap-10 p-16 lg:grid-cols-[1.1fr_0.9fr] lg:p-14 overflow-visible">
-              <div className="space-y-10">
+            <div
+              className="
+                              relative grid min-w-0 gap-8 p-4
+                              sm:p-6
+                              md:p-8
+                              lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]
+                              lg:gap-10 lg:overflow-visible lg:p-12
+                              xl:p-14
+                            "
+            >
+              <div className="min-w-0 space-y-8 lg:space-y-10">
                 {/* About Steven */}
                 <Reveal>
                   <div
-                    className="min-h-[320px]
-                                  rounded-[3rem] bg-neutral-900 p-8 
-                                  shadow-[0_0_20px_rgba(245,158,11,0.5)] text-center"
+                    className="
+                                rounded-[2rem] bg-neutral-900 p-5 text-center
+                                shadow-[0_0_20px_rgba(245,158,11,0.5)]
+                                sm:min-h-[320px] sm:rounded-[3rem] sm:p-8
+                              "
                   >
-                    <p className="text-4xl font-marcellus text-amber-500">
-                      About
-                    </p>
-                    <p className="mb-8 text-8xl font-black font-marcellus tracking-wider text-amber-500">
+                    <div className="mb-1 flex items-center justify-center gap-3 sm:gap-4">
+                      <span
+                        className="
+                          h-[3px] w-24 rounded-full
+                          bg-gradient-to-r
+                          from-transparent
+                          via-amber-300
+                          to-amber-500
+                          shadow-[0_0_8px_rgba(251,191,36,0.35)]
+                        "
+                      />
+
+                      <p className="shrink-0 font-marcellus text-2xl text-amber-500 sm:text-3xl lg:text-4xl">
+                        About
+                      </p>
+
+                      <span
+                        className="
+                          h-[3px] w-24 rounded-full
+                          bg-gradient-to-r
+                          from-amber-500
+                          via-amber-300
+                          to-transparent
+                          shadow-[0_0_8px_rgba(251,191,36,0.35)]
+                        "
+                      />
+                    </div>
+                    <p
+                      className="
+                                    mb-5 break-words font-marcellus text-5xl font-black
+                                    tracking-wide text-amber-500
+                                    sm:mb-8 sm:text-6xl sm:tracking-wider
+                                    lg:text-7xl
+                                    xl:text-8xl
+                                  "
+                    >
                       STEVEN
                     </p>
-                    <h1 className="text-3xl font-marcellus leading-tight text-neutral-50">
+                    <h1 className="font-marcellus text-xl leading-tight text-neutral-50 sm:text-2xl lg:text-3xl">
                       Meet Your Professional Vibemaster
                     </h1>
-                    <p className="mt-4 text-xl leading-8 text-neutral-400">
+                    <p className="mt-4 text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8 lg:text-xl">
                       As an{" "}
-                      <span className="underline transition-color duration-300 hover:text-amber-500">
-                        <a href="https://www.rcmusic.com/" target="_blank">
+                      <span className="underline transition-colors duration-300 hover:text-amber-500">
+                        <a
+                          href="https://www.rcmusic.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           RCM-certified
                         </a>
                       </span>{" "}
                       pianist and a{" "}
-                      <span className="underline transition-color duration-300 hover:text-amber-500">
+                      <span className="underline transition-colors duration-300 hover:text-amber-500">
                         <a
                           href="https://catalogue.uottawa.ca/en/undergrad/joint-honours-bsc-computer-science-mathematics/"
                           target="_blank"
+                          rel="noopener noreferrer"
                         >
                           degreed software engineer
                         </a>
@@ -198,43 +249,70 @@ export default function getAbout() {
                 </Reveal>
 
                 {/* Bullet Points */}
-                <div className="relative h-[360px] overflow-visible">
+                <div className="relative min-w-0 lg:min-h-[360px] lg:overflow-visible">
                   <Reveal
                     as="ul"
                     delay="delay-400"
-                    className="absolute z-20 w-max
-                                   space-y-7 rounded-l-[3rem] p-8 text-xl font-bold
-                                   font-marcellus tracking-wider
-                                   text-neutral-300 shadow-[0_0_20px_rgba(245,158,11,0.5)]
-                                   bg-gradient-to-tr from-neutral-950 via-amber-950 to-red-950"
+                    className="
+                      relative z-20 w-full min-w-0 space-y-4
+                      overflow-hidden rounded-[2rem] p-5
+                      font-marcellus font-bold tracking-wide text-neutral-300
+                      shadow-[0_0_20px_rgba(245,158,11,0.5)]
+                      bg-gradient-to-tr from-neutral-950 via-amber-950 to-red-950
+                      sm:space-y-5 sm:rounded-[2.5rem] sm:p-7 sm:tracking-wider
+                      lg:absolute lg:left-0 lg:top-0 lg:w-[calc(100%+8rem)]
+                      lg:max-w-[calc(100vw-8rem)] lg:overflow-visible
+                      lg:rounded-l-[3rem] lg:rounded-r-none lg:p-8
+                      xl:w-[calc(100%+11rem)]
+                    "
                   >
-                    {/* Top-right decoration */}
                     <Piano
-                      className="absolute top-6 right-6 h-20 w-20
-                                  text-amber-300/20"
+                      className="
+                        pointer-events-none absolute right-3 top-4 h-14 w-14
+                        text-amber-300/15
+                        sm:right-6 sm:top-6 sm:h-20 sm:w-20 sm:text-amber-300/20
+                      "
                     />
-                    {/* Bottom-left decoration */}
+
                     <Code2
-                      className="absolute bottom-4 left-6 h-16 w-16
-                                  text-red-300/20"
+                      className="
+                        pointer-events-none absolute bottom-3 left-3 h-12 w-12
+                        text-red-300/15
+                        sm:bottom-4 sm:left-6 sm:h-16 sm:w-16 sm:text-red-300/20
+                      "
                     />
+
                     {bullets.map((item, i) => {
                       const Icon = item.icon;
+
                       return (
                         <li
                           key={item.text}
-                          className="flex items-center gap-5 mb-6"
-                          style={{
-                            marginLeft: `${i * 2}rem`,
-                          }}
+                          className={`
+                            relative z-10 flex min-w-0 items-center gap-3
+                            sm:gap-4
+                            lg:gap-5
+                            ${i === 1 ? "lg:ml-8" : ""}
+                            ${i === 2 ? "lg:ml-16" : ""}
+                            ${i === 3 ? "lg:ml-24" : ""}
+                            ${i === 4 ? "lg:ml-32" : ""}
+                          `}
                         >
                           <Icon
-                            className="h-8 w-8 shrink-0
-                              text-amber-400
-                              drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]"
+                            className="
+                              h-6 w-6 shrink-0 text-amber-400
+                              drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]
+                              sm:h-7 sm:w-7
+                              lg:h-8 lg:w-8
+                            "
                           />
+
                           <span
-                            className={`${textSizes[i]} [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]`}
+                            className={`
+                              min-w-0 break-words leading-tight
+                              [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]
+                              ${textSizes[i]}
+                            `}
                           >
                             {item.text}
                           </span>
@@ -245,41 +323,38 @@ export default function getAbout() {
                 </div>
               </div>
 
-              <Reveal delay="delay-200">
-                {/* <div className="relative z-10 h-[820px] overflow-hidden rounded-[4rem] shadow-[0_0_20px_rgba(245,158,11,0.5)]">
-                  <Image
-                    src="/hero-images/AI_Generated_Basement_Studio.png"
-                    alt="Steven Sun profile portrait"
-                    fill
-                    sizes="(min-width: 1024px) 40vw, 100vw"
-                    className="object-cover"
-                  />
-                </div> */}
+              <Reveal
+                delay="delay-200"
+                className="min-w-0 lg:flex lg:justify-end"
+              >
                 <AboutImageGallery />
               </Reveal>
             </div>
           </div>
         </section>
 
-        <section className="grid items-stretch gap-8 py-16 md:grid-cols-2">
-          <Reveal className="h-full">
+        <section className="grid items-stretch gap-6 py-12 sm:gap-8 sm:py-16 md:grid-cols-2">
+          <Reveal className="h-full overflow-hidden rounded-[2rem]">
             <div
               className="
-                absolute inset-0
+                pointer-events-none absolute inset-0
                 bg-[radial-gradient(ellipse_at_center,rgba(255,220,120,0.35)_0%,rgba(245,158,11,0.22)_50%,rgb(48,48,48)_100%)]
                 blur-2xl
               "
             />
-            <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10 h-full">
-              <Music2 className="mb-5 h-10 w-10 text-amber-500" />
+            <div className="relative z-10 h-full rounded-[2rem] p-6 ring-1 ring-amber-500/20 sm:p-8">
+              <Music2 className="mb-5 h-9 w-9 text-amber-500 sm:h-10 sm:w-10" />
               <h2
-                className="mb-4 text-4xl font-bold font-marcellus bg-gradient-to-tr
-                             from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
-                             text-transparent"
+                className="
+                            mb-4 bg-gradient-to-tr from-amber-500 via-neutral-300 to-amber-500
+                            bg-clip-text font-marcellus text-3xl font-bold leading-tight
+                            text-transparent
+                            sm:text-4xl
+                          "
               >
                 Performance & Production
               </h2>
-              <p className="text-lg leading-8 text-neutral-300">
+              <p className="text-base leading-7 text-neutral-300 sm:text-lg sm:leading-8">
                 You can find Steven singing jazz standards in live venues while
                 accompanying himself on the piano. Steven mixes and produces all
                 of his music videos independently.
@@ -287,10 +362,13 @@ export default function getAbout() {
             </div>
           </Reveal>
 
-          <Reveal delay="delay-200" className="h-full">
+          <Reveal
+            delay="delay-200"
+            className="relative h-full overflow-hidden rounded-[2rem]"
+          >
             <div
               className="
-                absolute inset-0
+                pointer-events-none absolute inset-0
                 bg-[radial-gradient(ellipse_at_center,rgba(255,220,120,0.35)_0%,rgba(245,158,11,0.22)_50%,rgb(48,48,48)_100%)]
                 blur-2xl
               "
@@ -298,13 +376,16 @@ export default function getAbout() {
             <div className="rounded-[2rem] p-8 ring-1 ring-amber-500/20 relative z-10 h-full">
               <MicVocal className="mb-5 h-10 w-10 text-amber-500" />
               <h2
-                className="mb-4 text-4xl font-bold font-marcellus bg-gradient-to-tr
-                             from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
-                             text-transparent"
+                className="
+                            mb-4 bg-gradient-to-tr from-amber-500 via-neutral-300 to-amber-500
+                            bg-clip-text font-marcellus text-3xl font-bold leading-tight
+                            text-transparent
+                            sm:text-4xl
+                          "
               >
                 Independent Artist Vision
               </h2>
-              <p className="text-lg leading-8 text-neutral-300">
+              <p className="text-base leading-7 text-neutral-300 sm:text-lg sm:leading-8">
                 Striving to reinvent the independent artist in the streaming
                 era, Steven draws from his unique background to craft a rich
                 sound informed by popular culture and music legends of the past.
@@ -313,8 +394,11 @@ export default function getAbout() {
           </Reveal>
         </section>
 
-        <section className="py-16">
-          <Reveal delay="delay-200">
+        <section className="py-12 sm:py-16">
+          <Reveal
+            delay="delay-200"
+            className="relative overflow-hidden rounded-[2rem] sm:rounded-[2.5rem]"
+          >
             <div
               className="
                 absolute inset-0
@@ -322,21 +406,34 @@ export default function getAbout() {
                 blur-2xl
               "
             />
-            <div className="rounded-[2.5rem] p-10 shadow-[0_0_20px_rgba(245,158,11,0.5)] ring-1 ring-amber-500/20 relative z-10">
+            <div
+              className="
+                relative z-10 rounded-[2rem] p-5
+                shadow-[0_0_20px_rgba(245,158,11,0.5)]
+                ring-1 ring-amber-500/20
+                sm:rounded-[2.5rem] sm:p-8
+                lg:p-10
+              "
+            >
               <GraduationCap className="mb-6 h-12 w-12 text-amber-500" />
               <h2
-                className="mb-6 pb-2 text-5xl font-bold font-marcellus bg-gradient-to-tr
-                             from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
-                             text-transparent"
+                className="
+                            mb-6 break-words bg-gradient-to-tr from-amber-500 via-neutral-300
+                            to-amber-500 bg-clip-text pb-2 font-marcellus text-3xl
+                            font-bold leading-tight text-transparent
+                            sm:text-4xl
+                            lg:text-5xl
+                          "
               >
-                Credentials | Lessons | Avaliability
+                Credentials | Lessons
               </h2>
-              <div className="grid gap-6 leading-8 md:grid-cols-2">
+              <div className="grid min-w-0 gap-4 leading-8 sm:gap-6 md:grid-cols-2">
                 <div
                   className="rounded-2xl bg-gradient-to-tl from-amber-100 via-orange-200 to-yellow-300
-                               p-6 shadow-lg ring-1 ring-amber-500/20"
+                               shadow-lg ring-1 ring-amber-500/20
+                               min-w-0 overflow-hidden p-5 sm:p-6"
                 >
-                  <p className="text-gray-700 text-xl font-semibold">
+                  <p className="break-words text-base font-semibold leading-7 text-gray-700 sm:text-lg lg:text-xl">
                     Started piano at age 5, Steven earned{" "}
                     <span className="font-black text-gray-900">
                       RCM Grade 10 Piano Certification
@@ -348,9 +445,10 @@ export default function getAbout() {
 
                 <div
                   className="rounded-2xl bg-gradient-to-tr from-amber-100 via-orange-200 to-yellow-300
-                               p-6 shadow-lg ring-1 ring-amber-500/20"
+                               shadow-lg ring-1 ring-amber-500/20
+                               min-w-0 overflow-hidden p-5 sm:p-6"
                 >
-                  <p className="text-gray-700 text-xl font-semibold">
+                  <p className="break-words text-base font-semibold leading-7 text-gray-700 sm:text-lg lg:text-xl">
                     With a{" "}
                     <span className="font-black text-gray-900">
                       BSc in Computer Science from the University of Ottawa
@@ -362,9 +460,10 @@ export default function getAbout() {
 
                 <div
                   className="rounded-2xl bg-gradient-to-bl from-amber-100 via-orange-200 to-yellow-300
-                               p-6 shadow-lg ring-1 ring-amber-500/20"
+                               shadow-lg ring-1 ring-amber-500/20
+                               min-w-0 overflow-hidden p-5 sm:p-6"
                 >
-                  <p className="text-gray-700 text-xl font-semibold">
+                  <p className="break-words text-base font-semibold leading-7 text-gray-700 sm:text-lg lg:text-xl">
                     He teaches{" "}
                     <span className="font-black text-gray-900">
                       all courses and grades from the{" "}
@@ -393,9 +492,10 @@ export default function getAbout() {
 
                 <div
                   className="rounded-2xl bg-gradient-to-br from-amber-100 via-orange-200 to-yellow-300
-                               p-6 shadow-lg ring-1 ring-amber-500/20"
+                               shadow-lg ring-1 ring-amber-500/20
+                               min-w-0 overflow-hidden p-5 sm:p-6"
                 >
-                  <p className="text-gray-700 text-xl font-semibold">
+                  <p className="break-words text-base font-semibold leading-7 text-gray-700 sm:text-lg lg:text-xl">
                     <span className="font-black  text-gray-900">
                       Hour-long lessons
                     </span>{" "}
@@ -409,7 +509,14 @@ export default function getAbout() {
           </Reveal>
         </section>
 
-        <section className="grid gap-8 py-16 lg:grid-cols-3 items-stretch">
+        <section
+          className="grid items-stretch
+                            grid-cols-1 gap-5 py-10
+                            sm:gap-6 sm:py-12
+                            md:grid-cols-2 md:py-14
+                            lg:gap-8
+                            xl:grid-cols-3 xl:py-16"
+        >
           {currentActivties.map((item, index) => {
             const Icon = item.icon;
 
@@ -419,9 +526,19 @@ export default function getAbout() {
                 delay={
                   index === 1 ? "delay-200" : index === 2 ? "delay-400" : ""
                 }
-                className="h-full"
+                className={`
+                            h-full
+                            ${index === currentActivties.length - 1 ? "md:col-span-2 xl:col-span-1" : ""}
+                          `}
               >
-                <div className="relative overflow-hidden rounded-[2rem] p-8 ring-1 ring-amber-500/20 h-full">
+                <div
+                  className="relative h-full overflow-hidden
+                                rounded-[1.5rem] p-5
+                                ring-1 ring-amber-500/20
+                                sm:rounded-[1.75rem] sm:p-6
+                                lg:p-7
+                                xl:rounded-[2rem] xl:p-8"
+                >
                   <div
                     className="
                                 absolute inset-0
@@ -430,18 +547,34 @@ export default function getAbout() {
                               "
                   />
 
-                  <div className="relative z-10 h-full">
-                    <Icon className="mb-5 h-10 w-10 text-amber-500" />
+                  <div className="relative z-10 flex h-full flex-col">
+                    <Icon
+                      className="
+                                  mb-4 h-8 w-8 text-amber-500
+                                  sm:h-9 sm:w-9
+                                  xl:mb-5 xl:h-10 xl:w-10"
+                    />
 
                     <h3
-                      className={`mb-4 pb-2 text-4xl font-bold bg-gradient-to-tr
-                         from-amber-500 via-neutral-300 to-amber-500 bg-clip-text
-                         text-transparent ${item.titleFont ?? ""}`}
+                      className={`
+                                  mb-3 bg-gradient-to-tr
+                                  from-amber-500 via-neutral-300 to-amber-500
+                                  bg-clip-text pb-1
+                                  text-2xl font-bold leading-tight text-transparent
+                                  sm:text-3xl
+                                  lg:text-[2rem]
+                                  xl:mb-4 xl:pb-2 xl:text-4xl
+                                  ${item.titleFont ?? ""}
+                                `}
                     >
                       {item.title}
                     </h3>
 
-                    <p className="text-lg leading-8 text-neutral-300">
+                    <p
+                      className="
+                      text-base leading-7 text-neutral-300
+                      sm:text-lg sm:leading-8"
+                    >
                       {item.text}
                     </p>
                   </div>
