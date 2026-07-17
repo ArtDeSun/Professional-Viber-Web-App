@@ -14,6 +14,8 @@ import { LandscapeVideoSection } from "./landscape-video-section";
 import { LandscapeVideoSidebar } from "./landscape-video-sidebar";
 
 export default function DashboardLandscapeVideos() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [activeSection, setActiveSection] = useState("featured");
 
   const [videoSections, setVideoSections] = useState(
@@ -63,6 +65,7 @@ export default function DashboardLandscapeVideos() {
   }, [videoSectionIds]);
 
   const scrollToTop = () => {
+    setActiveSection("featured");
     window.history.replaceState(null, "", window.location.pathname);
 
     window.dispatchEvent(new Event("navbar-route-change"));
@@ -74,6 +77,7 @@ export default function DashboardLandscapeVideos() {
   };
 
   const scrollToSection = (id: string) => {
+    setActiveSection(id);
     document.getElementById(id)?.scrollIntoView({
       behavior: "smooth",
       block: "start",
@@ -81,26 +85,42 @@ export default function DashboardLandscapeVideos() {
   };
 
   return (
-    <main className="relative min-h-screen py-32 font-redHatDisplay text-white">
+    <main
+      className="
+      relative min-h-screen
+      py-32 font-redHatDisplay text-white
+      sm:py-36
+      lg:py-46
+    "
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_38%),radial-gradient(circle_at_bottom,rgba(245,158,11,0.14),transparent_38%)]" />
 
-      <div className="relative mx-auto flex w-full max-w-8xl items-start gap-6 px-6 lg:pl-[17rem]">
+      <div
+        className="
+                    relative mx-auto w-full max-w-8xl
+                    px-4 pl-20
+                    sm:px-6 sm:pl-24
+                    lg:pl-[17rem]
+                  "
+      >
         <LandscapeVideoSidebar
           activeSection={activeSection}
           videoSections={videoSections}
           loading={leftColumnLoading}
+          open={sidebarOpen}
+          onOpenChange={setSidebarOpen}
           onScrollToTop={scrollToTop}
           onScrollToSection={scrollToSection}
         />
 
-        <section className="min-w-0 flex-1 space-y-12">
+        <section className="min-w-0 space-y-10 lg:space-y-12">
           <DashboardLandscapeHeader />
 
           {!hasVideos && <EmptyLandscapeState />}
 
           <FeaturedLandscapeVideo video={featuredLandscapeVideo} />
 
-          <div className="space-y-14">
+          <div className="space-y-12 lg:space-y-14">
             {videoSections.map((section) => (
               <LandscapeVideoSection key={section.id} section={section} />
             ))}

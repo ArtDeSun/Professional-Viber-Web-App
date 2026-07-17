@@ -1,6 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowUp, Loader2, Plus, Star } from "lucide-react";
+import {
+  ArrowUp,
+  ChevronRight,
+  Loader2,
+  PanelLeft,
+  Plus,
+  Star,
+} from "lucide-react";
 import type { ElementType } from "react";
 import type { LandscapeVideoSectionData } from "./landscape-video-types";
 
@@ -8,6 +15,8 @@ type LandscapeVideoSidebarProps = {
   activeSection: string;
   videoSections: LandscapeVideoSectionData[];
   loading: boolean;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   onScrollToTop: () => void;
   onScrollToSection: (id: string) => void;
 };
@@ -16,68 +25,181 @@ export function LandscapeVideoSidebar({
   activeSection,
   videoSections,
   loading,
+  open,
+  onOpenChange,
   onScrollToTop,
   onScrollToSection,
 }: LandscapeVideoSidebarProps) {
+  const handleScrollToTop = () => {
+    onOpenChange(false);
+    onScrollToTop();
+  };
+
+  const handleScrollToSection = (id: string) => {
+    onOpenChange(false);
+    onScrollToSection(id);
+  };
+
   return (
-    <aside className="fixed left-6 top-28 z-40 hidden h-fit w-56 shrink-0 lg:block">
-      {loading ? (
-        <LeftColumnLoadingBox sectionCount={videoSections.length} />
-      ) : (
-        <Card className="rounded-3xl border-amber-400/20 bg-black/45 shadow-[0_0_18px_rgba(245,158,11,0.5)] backdrop-blur-md">
-          <CardContent className="space-y-12 p-4">
-            <div className="flex justify-center">
-              <Button
-                type="button"
-                onClick={onScrollToTop}
-                className="group relative h-10 w-3/4 cursor-pointer overflow-hidden rounded-xl bg-amber-400 text-sm text-black shadow-[0_0_14px_rgba(245,158,11,0.35)] transition-shadow duration-300 hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]"
-              >
-                <span className="absolute inset-0 origin-top bg-amber-600 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-y-0" />
+    <aside
+      className={`
+        fixed left-3 top-40 z-40 h-fit
+        transition-[width] duration-300
+        ease-[cubic-bezier(0.22,1,0.36,1)]
 
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <ArrowUp className="h-4 w-4" />
-                  Back to Top
-                </span>
-              </Button>
-            </div>
+        ${open ? "w-72" : "w-14"}
 
-            <nav className="space-y-6">
-              <p className="text-center font-marcellus text-4xl tracking-wide text-gray-100">
-                Sections
-              </p>
+        sm:left-4
+        lg:left-6 lg:w-56
+      `}
+    >
+      <button
+        type="button"
+        aria-label={open ? "Collapse sections" : "Expand sections"}
+        aria-expanded={open}
+        aria-controls="landscape-video-sidebar-content"
+        onClick={() => onOpenChange(!open)}
+        className="
+          mb-3 flex h-12 w-full cursor-pointer
+          items-center rounded-2xl
+          border border-amber-400/20 bg-black/70
+          px-4 text-gray-100
+          shadow-[0_0_18px_rgba(245,158,11,0.25)]
+          backdrop-blur-md
+          transition-all duration-300
+          hover:border-amber-300/40
+          hover:text-amber-200
+          lg:hidden
+        "
+      >
+        <PanelLeft className="h-5 w-5 shrink-0 text-amber-300" />
 
-              <div className="space-y-2">
-                <SidebarButton
-                  id="featured"
-                  label="Featured"
-                  icon={Star}
-                  activeSection={activeSection}
-                  onClick={onScrollToSection}
-                />
+        <span
+          className={`
+            min-w-0 overflow-hidden whitespace-nowrap
+            font-marcellus text-lg
+            transition-[width,opacity,margin] duration-300
 
-                {videoSections.map((section) => (
-                  <SidebarButton
-                    key={section.id}
-                    id={section.id}
-                    label={section.label}
-                    icon={section.icon}
-                    activeSection={activeSection}
-                    onClick={onScrollToSection}
+            ${open ? "ml-3 w-full opacity-100" : "ml-0 w-0 opacity-0"}
+          `}
+        >
+          Sections
+        </span>
+
+        <ChevronRight
+          className={`
+            h-5 w-5 shrink-0 text-amber-300
+            transition-transform duration-300
+
+            ${open ? "rotate-180" : "rotate-0"}
+          `}
+        />
+      </button>
+
+      <div
+        id="landscape-video-sidebar-content"
+        className={`
+          origin-left transition-all duration-300
+          ease-[cubic-bezier(0.22,1,0.36,1)]
+
+          ${
+            open
+              ? "visible translate-x-0 opacity-100"
+              : "invisible -translate-x-3 opacity-0"
+          }
+
+          lg:visible lg:translate-x-0 lg:opacity-100
+        `}
+      >
+        {loading ? (
+          <LeftColumnLoadingBox sectionCount={videoSections.length} />
+        ) : (
+          <Card
+            className="
+              overflow-hidden rounded-3xl
+              border-amber-400/20 bg-black/70
+              shadow-[0_0_18px_rgba(245,158,11,0.5)]
+              backdrop-blur-md
+              lg:bg-black/45
+            "
+          >
+            <CardContent className="space-y-8 p-4 lg:space-y-12">
+              <div className="flex justify-center">
+                <Button
+                  type="button"
+                  onClick={handleScrollToTop}
+                  className="
+                    group relative h-10 w-3/4
+                    cursor-pointer overflow-hidden rounded-xl
+                    bg-amber-400 text-sm text-black
+                    shadow-[0_0_14px_rgba(245,158,11,0.35)]
+                    transition-shadow duration-300
+                    hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]
+                  "
+                >
+                  <span
+                    className="
+                      absolute inset-0 origin-top bg-amber-600
+                      transition-transform duration-500
+                      ease-[cubic-bezier(0.22,1,0.36,1)]
+                      group-hover:scale-y-0
+                    "
                   />
-                ))}
+
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    <ArrowUp className="h-4 w-4" />
+                    Back to Top
+                  </span>
+                </Button>
               </div>
 
-              <Button
-                type="button"
-                className="flex h-10 w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-gray-300/20 bg-black/30 font-marcellus text-lg text-gray-100 transition-all duration-300 hover:border-amber-300/30 hover:bg-white/10 hover:text-amber-200 hover:shadow-[0_0_12px_rgba(245,158,11,0.18)]"
-              >
-                <Plus className="h-4 w-4" />
-                Add Section
-              </Button>
-            </nav>
-          </CardContent>
-        </Card>
-      )}
+              <nav className="space-y-6">
+                <p className="text-center font-marcellus text-4xl tracking-wide text-gray-100">
+                  Sections
+                </p>
+
+                <div className="space-y-2">
+                  <SidebarButton
+                    id="featured"
+                    label="Featured"
+                    icon={Star}
+                    activeSection={activeSection}
+                    onClick={handleScrollToSection}
+                  />
+
+                  {videoSections.map((section) => (
+                    <SidebarButton
+                      key={section.id}
+                      id={section.id}
+                      label={section.label}
+                      icon={section.icon}
+                      activeSection={activeSection}
+                      onClick={handleScrollToSection}
+                    />
+                  ))}
+                </div>
+
+                <Button
+                  type="button"
+                  className="
+                    flex h-10 w-full cursor-pointer
+                    items-center justify-center gap-2
+                    rounded-xl border border-gray-300/20
+                    bg-black/30 font-marcellus text-lg text-gray-100
+                    transition-all duration-300
+                    hover:border-amber-300/30
+                    hover:bg-white/10 hover:text-amber-200
+                    hover:shadow-[0_0_12px_rgba(245,158,11,0.18)]
+                  "
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Section
+                </Button>
+              </nav>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </aside>
   );
 }
