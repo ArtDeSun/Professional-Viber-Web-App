@@ -1,23 +1,28 @@
 "use client";
 
+import HeroDescriptionsSection from "@/components/hero-descriptions-section";
 import ImageTabs from "@/components/image-tabs";
 import SignUpSection from "@/components/sign-up-section";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth/auth-client";
-import { ArrowRight, AudioLines, Ear, Video } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const heroDescriptions = [
-  "Ottawa-Based, Canadian-Born, and Chinese-Raised Musician",
-  "Piano Instructor, Software Developer, and Digital Creator",
-  "Modern Creativity, Diverse Cultures, and Personal Expression",
-];
-
-const featureBackgroundImages = [
-  { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Studio" },
-  { src: "/hero-images/icon.png", title: "Steven Sun Logo" },
+  {
+    mobile: ["Ottawa-Based, Canadian-Born,", "and Chinese-Raised Musician"],
+    desktop: "Ottawa-Based, Canadian-Born, and Chinese-Raised Musician",
+  },
+  {
+    mobile: ["Piano Instructor, Software Developer,", "and Digital Creator"],
+    desktop: "Piano Instructor, Software Developer, and Digital Creator",
+  },
+  {
+    mobile: ["Modern Creativity, Diverse Cultures,", "and Personal Expression"],
+    desktop: "Modern Creativity, Diverse Cultures, and Personal Expression",
+  },
 ];
 
 export default function Home() {
@@ -34,6 +39,7 @@ export default function Home() {
     }
   }, [isPending, initialAuthChecked]);
 
+  //Maybe produce flicker after signing up, signing in, or signing out
   const isLoggedIn = Boolean(session?.user);
 
   //Text Animation
@@ -44,15 +50,6 @@ export default function Home() {
   const [nextTextIndex, setNextTextIndex] = useState(1);
   const [textSliding, setTextSliding] = useState(false);
   const [textCanAnimate, setTextCanAnimate] = useState(true);
-
-  //Image Animation
-  const SLIDE_MS = 1200;
-  const HOLD_MS = 4000;
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [sliding, setSliding] = useState(false);
-  const [canAnimate, setCanAnimate] = useState(true);
 
   // 1. Save scroll position before unload,
   // and only force top-of-page on real refresh
@@ -140,105 +137,15 @@ export default function Home() {
     return () => clearTimeout(holdTimer);
   }, [currentTextIndex, nextTextIndex]);
 
-  useEffect(() => {
-    const holdTimer = setTimeout(() => {
-      //setCanAnimate(true);
-      setSliding(true);
-
-      const finishTimer = setTimeout(() => {
-        setCanAnimate(false);
-
-        const newCurrentIndex = nextIndex;
-        const newNextIndex = (nextIndex + 1) % featureBackgroundImages.length;
-
-        setCurrentIndex(newCurrentIndex);
-        setNextIndex(newNextIndex);
-        setSliding(false);
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setCanAnimate(true);
-          });
-        });
-      }, SLIDE_MS);
-
-      return () => clearTimeout(finishTimer);
-    }, HOLD_MS);
-
-    return () => clearTimeout(holdTimer);
-  }, [currentIndex, nextIndex]);
-
-  /* return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  ); */
-
   return (
     <div className="flex flex-col">
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero Section - Landing Page */}
         <section
           /* id="steven_sun" */
           className="flex bg-black relative min-h-screen overflow-hidden
-                     px-4 pb-12 pt-46
-                     sm:px-6 sm:pb-16
+                     px-4 pb-6 pt-16
+                     sm:px-6 sm:pb-12
                      lg:px-8 lg:py-46"
         >
           <Image
@@ -257,11 +164,11 @@ export default function Home() {
             className={`relative z-10 container mx-auto
                         grid items-center
 
-                        grid-cols-[3.5rem_minmax(0,1fr)_3.5rem]
-                        sm:grid-cols-[5rem_minmax(0,1fr)_5rem]
-                        md:grid-cols-[7rem_minmax(0,1fr)_7rem]
-                        lg:grid-cols-[9.5rem_minmax(0,1fr)_9.5rem]
-                        xl:grid-cols-[12.5rem_minmax(0,1fr)_12.5rem]
+                        grid-cols-[1rem_minmax(0,1fr)_1rem]
+                        sm:grid-cols-[2rem_minmax(0,1fr)_2rem]
+                        md:grid-cols-[5rem_minmax(0,1fr)_5rem]
+                        lg:grid-cols-[8rem_minmax(0,1fr)_8rem]
+                        xl:grid-cols-[12rem_minmax(0,1fr)_12rem]
 
                         transition-all ease-out duration-1000 ${visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"} 
                       `}
@@ -270,7 +177,6 @@ export default function Home() {
               <div
                 aria-label="Treble clef"
                 className={`
-                  h-28 w-14
                   md:h-40 md:w-20
                   lg:h-56 lg:w-24
                   xl:h-80 xl:w-32
@@ -301,7 +207,6 @@ export default function Home() {
               <div
                 aria-label="Bass clef"
                 className={`
-                  h-28 w-14
                   md:h-40 md:w-20
                   lg:h-56 lg:w-24
                   xl:h-80 xl:w-32
@@ -334,10 +239,10 @@ export default function Home() {
             <div className="flex min-w-0 flex-col items-center text-center">
               <h1
                 className="
-                            mt-4 mb-7
+                            mt-2 mb-3
                             font-great-vibes text-8xl font-bold tracking-wide text-amber-400
                             [text-shadow:0_5px_10px_rgba(255,215,0,0.5),5px_0_10px_rgba(255,215,0,0.5)]
-                            sm:mt-8 sm:mb-9
+                            sm:mt-4 sm:mb-5
                             md:text-9xl
                             lg:mt-12 lg:mb-12 lg:tracking-widest
                           "
@@ -346,11 +251,11 @@ export default function Home() {
               </h1>
               <h2
                 className="
-                            mb-8 flex w-full flex-col items-center gap-1
-                            font-marcellus text-3xl font-semibold tracking-wide
+                            mb-4 flex w-full flex-col items-center gap-1
+                            font-marcellus text-2xl font-semibold
                             [text-shadow:0_2px_10px_rgba(245,158,11,0.1)]
                             sm:text-4xl
-                            md:mb-10 md:text-5xl
+                            md:mb-6 md:text-5xl
                             lg:mb-12
                             2xl:flex-row 2xl:justify-center 2xl:gap-0
                           "
@@ -425,8 +330,9 @@ export default function Home() {
 
               <div
                 className="
-                            mb-10 grid h-[3.5rem] w-full min-w-0 overflow-hidden text-center
-                            md:mb-12 md:h-[4rem]
+                            mb-5 grid h-[4.5rem] w-full min-w-0 overflow-hidden text-center
+                            sm:h-[3.5rem]
+                            md:mb-10 md:h-[4rem]
                             xl:mb-14 xl:h-auto
                           "
               >
@@ -438,7 +344,7 @@ export default function Home() {
                               text-center
                               whitespace-nowrap
 
-                              font-poppins text-xs font-light tracking-tighter
+                              font-poppins text-xs font-light
                               sm:text-sm
                               md:text-lg
                               lg:text-xl
@@ -451,58 +357,102 @@ export default function Home() {
                               ${textSliding ? "translate-y-0 opacity-100" : "-translate-y-12 opacity-0"}
                             `}
                 >
-                  {heroDescriptions[nextTextIndex]}
+                  <>
+                    <span className="block sm:hidden">
+                      {heroDescriptions[nextTextIndex].mobile[0]}
+                      <br />
+                      {heroDescriptions[nextTextIndex].mobile[1]}
+                    </span>
+
+                    <span className="hidden sm:block">
+                      {heroDescriptions[nextTextIndex].desktop}
+                    </span>
+                  </>
                 </p>
 
                 {/* Current text */}
                 <p
                   className={`
-                              col-start-1 row-start-1 m-0
-                              flex h-full w-full min-w-0 items-center justify-center
-                              text-center
-                              whitespace-nowrap
+                    col-start-1 row-start-1 m-0
+                    flex h-full w-full min-w-0 items-center justify-center
+                    text-center
+                    whitespace-nowrap
 
-                              font-poppins text-xs font-light tracking-tighter
-                              sm:text-sm
-                              md:text-lg
-                              lg:text-xl
-                              2xl:text-2xl
+                    font-poppins text-xs font-light
+                    sm:text-sm
+                    md:text-lg
+                    lg:text-xl
+                    2xl:text-2xl
 
-                              bg-gradient-to-r
-                              from-gray-100 via-amber-300 to-gray-100
-                              bg-clip-text text-transparent
-                              ${textCanAnimate ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]" : "transition-none"}
-                              ${textSliding ? "translate-y-12 opacity-0" : "translate-y-0 opacity-100"}
-                            `}
+                    bg-gradient-to-r
+                    from-gray-100 via-amber-300 to-gray-100
+                    bg-clip-text text-transparent
+                    ${
+                      textCanAnimate
+                        ? "transition-all duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+                        : "transition-none"
+                    }
+                    ${
+                      textSliding
+                        ? "translate-y-12 opacity-0"
+                        : "translate-y-0 opacity-100"
+                    }
+                  `}
                 >
-                  {heroDescriptions[currentTextIndex]}
+                  <span className="block sm:hidden">
+                    {heroDescriptions[currentTextIndex].mobile[0]}
+                    <br />
+                    {heroDescriptions[currentTextIndex].mobile[1]}
+                  </span>
+
+                  <span className="hidden sm:block">
+                    {heroDescriptions[currentTextIndex].desktop}
+                  </span>
                 </p>
               </div>
 
-              <div className="relative z-20 flex flex-col items-center gap-3 font-redHatDisplay">
+              <div
+                className="
+                  relative z-20
+                  flex flex-col items-center
+                  gap-2
+                  font-redHatDisplay
+                  sm:gap-3
+                "
+              >
                 <Link href="/music">
-                  <Button className="h-12 px-8 text-xl font-bold text-gray-300 bg-destructive hover:text-black cursor-pointer rounded-full">
-                    Music <ArrowRight className="ml-2" />
+                  <Button
+                    className="
+                      h-10 rounded-full
+                      bg-destructive
+                      px-5
+                      text-base font-bold text-gray-300
+                      cursor-pointer
+                      hover:text-black
+                      sm:h-12 sm:px-8 sm:text-xl
+                    "
+                  >
+                    Music
+                    <ArrowRight className="ml-1.5 h-4 w-4 sm:ml-2 sm:h-5 sm:w-5" />
                   </Button>
                 </Link>
-                <div className="flex gap-4">
-                  {/* <Link href="/updates">
-                    <Button
-                      size="lg"
-                      border border-solid border-black/[.08]
-                      className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
-                    >
-                      Updates
-                    </Button>
-                  </Link> */}
 
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4">
                   {!initialAuthChecked ? (
                     <></>
                   ) : (
                     !isLoggedIn && (
                       <Button
                         asChild
-                        className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                        className="
+                          h-8 rounded-full
+                          border-white bg-transparent
+                          px-4
+                          text-sm text-gray-300
+                          cursor-pointer
+                          hover:border-amber-400 hover:text-amber-400
+                          sm:h-9 sm:px-6 sm:text-base
+                        "
                       >
                         <Link
                           href="/#signup"
@@ -522,7 +472,15 @@ export default function Home() {
 
                   <Button
                     asChild
-                    className="h-9 px-6 text-base text-gray-300 bg-transparent border-white hover:text-amber-400 hover:border-amber-400 cursor-pointer rounded-full"
+                    className="
+                      h-8 rounded-full
+                      border-white bg-transparent
+                      px-4
+                      text-sm text-gray-300
+                      cursor-pointer
+                      hover:border-amber-400 hover:text-amber-400
+                      sm:h-9 sm:px-6 sm:text-base
+                    "
                   >
                     <Link
                       href="/#contact"
@@ -544,17 +502,26 @@ export default function Home() {
                 ) : (
                   !isLoggedIn && (
                     <Link href="/lessons">
-                      <div className="flex h-12 items-center">
-                        <Button className="py-1 px-6 text-lg font-bold text-black bg-gray-300 hover:bg-white hover:py-5 hover:px-8 hover:text-xl cursor-pointer rounded-full">
+                      <div className="flex h-10 items-center sm:h-12">
+                        <Button
+                          className="
+                            h-8 rounded-full
+                            bg-gray-300
+                            px-4
+                            text-base font-bold text-black
+                            cursor-pointer
+                            transition-all duration-300
+                            hover:bg-white
+                            sm:h-9 sm:px-6 sm:text-lg
+                            sm:hover:px-8 sm:hover:text-xl
+                          "
+                        >
                           Lessons
                         </Button>
                       </div>
                     </Link>
                   )
                 )}
-                {/* <p className="text-sm text-muted-foreground">
-                  professionalvibemaster@stevensun.com
-                </p> */}
               </div>
             </div>
 
@@ -562,7 +529,6 @@ export default function Home() {
               <div
                 aria-label="Treble clef"
                 className={`
-                  h-28 w-14
                   md:h-40 md:w-20
                   lg:h-56 lg:w-24
                   xl:h-80 xl:w-32
@@ -593,7 +559,6 @@ export default function Home() {
               <div
                 aria-label="Bass clef"
                 className={`
-                  h-28 w-14
                   md:h-40 md:w-20
                   lg:h-56 lg:w-24
                   xl:h-80 xl:w-32
@@ -628,180 +593,8 @@ export default function Home() {
         {/* Hero Image Section with Tabs */}
         <ImageTabs />
 
-        {/* Features Section: featureBackgroundImages */}
-        <section
-          id="description-cards"
-          className="relative overflow-hidden border-t border-white/15 bg-neutral-950 py-36"
-        >
-          {/* Background slideshow */}
-          <Image
-            src={featureBackgroundImages[currentIndex].src}
-            alt=""
-            fill
-            priority={currentIndex === 0}
-            sizes="100vw"
-            className={`
-                        object-cover object-center brightness-[0.85] opacity-85
-                        ${
-                          canAnimate
-                            ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                            : "transition-none"
-                        }
-                        ${sliding ? "-translate-x-full" : "translate-x-0"}
-                      `}
-          />
-
-          <Image
-            src={featureBackgroundImages[nextIndex].src}
-            alt=""
-            fill
-            sizes="100vw"
-            className={`
-                        object-cover brightness-[0.85] opacity-85
-                        ${
-                          canAnimate
-                            ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                            : "transition-none"
-                        }
-                        ${sliding ? "translate-x-0" : "translate-x-full"}
-                      `}
-          />
-
-          {/* Content */}
-          <div className="relative z-10 container mx-auto px-6">
-            {/* Apply md only when the screen is at least the Medium breakpoint (768px and wider). */}
-            <div className="grid items-stretch gap-6 sm:gap-5 md:grid-cols-3 md:gap-4 lg:gap-6 font-redHatDisplay">
-              <div className="group relative h-full">
-                {/* hidden layers */}
-                <div
-                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl md:translate-x-3 md:-translate-y-4
-                                bg-gradient-to-br from-amber-400/80 via-yellow-300/80 to-orange-400/80
-                                transition-all duration-300"
-                />
-                <div
-                  className="absolute inset-0 translate-x-1 -translate-y-1.5 rounded-3xl md:translate-x-1.5 md:-translate-y-2
-                                bg-gradient-to-br from-amber-300 via-yellow-200 to-orange-300
-                                transition-all duration-300"
-                />
-                {/* main card */}
-                {/* Teaching */}
-                <div
-                  className="relative z-10 group h-full flex flex-col rounded-3xl p-4 md:p-3 lg:p-5 xl:p-6
-                     bg-gradient-to-br from-amber-200 via-yellow-100 to-orange-200
-                     border border-amber-300/50
-                     ring-1 ring-amber-300/50
-                     transition-all duration-300
-                     hover:-translate-y-2
-                     hover:shadow-[0_0_36px_rgba(245,158,11,0.95)]"
-                >
-                  <div
-                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
-                       bg-gradient-to-br from-amber-500 via-yellow-300 to-orange-100
-                       ring-1 ring-amber-300/50
-                       shadow-[0_0_24px_rgba(245,158,11,0.95)]"
-                  >
-                    <Ear className="h-7 w-7 text-amber-800" />
-                  </div>
-                  <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
-                    Innovative Piano Learning
-                  </h3>
-                  <p className="mt-auto text-muted-foreground text-lg font-semibold">
-                    Practice theory with{" "}
-                    <span className="font-black">Steven</span> through real
-                    songs, ear training, and inspired playing from day one.
-                  </p>
-                </div>
-              </div>
-
-              <div className="group relative h-full">
-                {/* hidden layers */}
-                <div
-                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl md:translate-x-3 md:-translate-y-4
-                                bg-gradient-to-br from-violet-400/80 via-purple-300/80 to-fuchsia-400/80
-                                transition-all duration-300"
-                />
-                <div
-                  className="absolute inset-0 translate-x-1 -translate-y-1.5 rounded-3xl md:translate-x-1.5 md:-translate-y-2
-                                bg-gradient-to-br from-violet-300 via-purple-200 to-fuchsia-300
-                                transition-all duration-300"
-                />
-                {/* main card */}
-                {/* Content Creation */}
-                <div
-                  className="relative z-10 group h-full flex flex-col rounded-3xl p-4 md:p-3 lg:p-5 xl:p-6
-                              bg-gradient-to-br from-violet-200 via-purple-100 to-fuchsia-200
-                              border border-violet-300/50
-                              ring-1 ring-violet-300/50
-                              transition-all duration-300
-                              hover:-translate-y-2
-                              hover:shadow-[0_0_36px_rgba(139,92,246,0.95)]"
-                >
-                  <div
-                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
-                                bg-gradient-to-br from-violet-500 via-purple-300 to-fuchsia-100
-                                ring-1 ring-violet-300/50
-                                shadow-[0_0_24px_rgba(139,92,246,0.95)]"
-                  >
-                    <Video className="h-7 w-7 text-violet-800" />
-                  </div>
-                  <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
-                    Professional Vibemaster
-                  </h3>
-                  <p className="mt-auto text-muted-foreground text-lg font-semibold">
-                    Crafting immersive musical experiences through performance,
-                    personality, and digital storytelling.
-                  </p>
-                </div>
-              </div>
-
-              <div className="group relative h-full">
-                {/* hidden layers */}
-                <div
-                  className="absolute inset-0 translate-x-2 -translate-y-3 rounded-3xl md:translate-x-3 md:-translate-y-4
-                                bg-gradient-to-br from-rose-400/80 via-pink-300/80 to-red-400/80
-                                transition-all duration-300"
-                />
-                <div
-                  className="absolute inset-0 translate-x-1 -translate-y-1.5 rounded-3xl md:translate-x-1.5 md:-translate-y-2
-                                bg-gradient-to-br from-rose-300 via-pink-200 to-red-300
-                                transition-all duration-300"
-                />
-                {/* Musicianship */}
-                <div
-                  className="relative z-10 group h-full flex flex-col rounded-3xl p-4 md:p-3 lg:rounded-3xl lg:p-5 xl:p-6
-                              bg-gradient-to-br
-                              from-rose-200
-                              via-pink-100
-                              to-red-200
-                              border border-rose-300/50
-                              ring-1 ring-rose-300/50
-                              transition-all duration-300
-                              hover:-translate-y-2
-                              hover:shadow-[0_0_36px_rgba(244,63,94,0.95)]"
-                >
-                  <div
-                    className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-2xl
-                                bg-gradient-to-br
-                                from-rose-500
-                                via-pink-300
-                                to-red-100
-                                ring-1 ring-rose-300/50
-                                shadow-[0_0_24px_rgba(244,63,94,0.95)]"
-                  >
-                    <AudioLines className="h-7 w-7 text-rose-700" />
-                  </div>
-                  <h3 className="mb-3 text-3xl font-bold font-marcellus text-gray-700">
-                    Genre-Spanning Creativity
-                  </h3>
-                  <p className="mt-auto text-muted-foreground text-lg font-semibold">
-                    Internalizing jazz, R&B, rock, East-Asian pop, and
-                    classical, into a distinctive creative voice.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Hero Descriptions Section*/}
+        <HeroDescriptionsSection />
 
         {/* Sign Up Section */}
 

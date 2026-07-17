@@ -82,14 +82,17 @@ export default function NavbarRightCorner() {
   }
 
   return (
-    <div className="flex justify-center">
+    <div className="flex min-w-0 items-center justify-center gap-1 lg:gap-2">
       {!initialAuthChecked ? (
         <></>
       ) : !isLoggedIn ? (
         <Link href="/sign-in">
           <Button
-            className="relative overflow-hidden h-10 w-28 bg-amber-400 text-black text-xl rounded-xl 
-                             cursor-pointer group"
+            className="group relative h-9 w-20 overflow-hidden rounded-lg
+                        bg-amber-400 px-2 text-base text-black
+                        cursor-pointer
+                        sm:w-24 sm:text-lg
+                        lg:h-10 lg:w-28 lg:rounded-xl lg:px-4 lg:text-xl"
           >
             <span
               className="
@@ -113,8 +116,10 @@ export default function NavbarRightCorner() {
           >
             <DropdownMenuTrigger asChild>
               <Button
-                className="group relative h-10 w-40 overflow-hidden rounded-xl
-                                 bg-amber-500/80 text-black text-xl cursor-pointer
+                className="group relative h-9 w-[6rem] overflow-hidden rounded-lg
+                                bg-amber-500/80 px-1 text-black text-sm cursor-pointer
+                                sm:w-32 sm:text-lg sm:text-base
+                                lg:h-10 lg:w-40 lg:rounded-xl lg:px-4 lg:text-xl
                                  hover:[filter:drop-shadow(0_0_6px_orange)]
                                  data-[state=open]:drop-shadow-[0_0_6px_orange]"
               >
@@ -126,24 +131,45 @@ export default function NavbarRightCorner() {
                                  group-hover:scale-y-0
                                  group-data-[state=open]:scale-y-0"
                 />
-                <span className="relative z-10 flex items-center gap-2">
-                  <PlusSquare className="h-8 w-8" />
-                  <span className="relative bottom-[1px]">Dashboard</span>
+                <span className="relative z-10 flex min-w-0 items-center gap-1 lg:gap-2">
+                  <PlusSquare className="h-4 w-4 shrink-0 lg:h-8 lg:w-8" />
+                  <span className="relative whitespace-nowrap">Dashboard</span>
                 </span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              sideOffset={16}
-              className="w-72 rounded-2xl border border-white/5 ring-1 ring-white/10
-                                                                        bg-black/80 backdrop-blur-xs
-                                                                        shadow-[0_0_20px_rgba(245,158,11,0.25)]
-                                                                        animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-300"
+              sideOffset={8}
+              collisionPadding={8}
+              className="
+                w-[calc(100vw-1rem)]
+                max-w-72
+                rounded-xl
+                border border-white/5
+                bg-black/80
+                backdrop-blur-xs
+                ring-1 ring-white/10
+                shadow-[0_0_20px_rgba(245,158,11,0.25)]
+                animate-in fade-in-0 zoom-in-95 slide-in-from-top-2
+                duration-300
+                sm:w-72
+                sm:rounded-2xl
+              "
             >
-              <DropdownMenuLabel className="font-playfairDisplay border-b border-gray-300/30 px-4 py-4">
-                <div className="flex flex-col gap-1 items-center">
-                  <p className="text-xl text-gray-100">Manage Videos</p>
-                  <p className="text-sm text-gray-100/60">
+              <DropdownMenuLabel
+                className="
+                  border-b border-gray-300/30
+                  px-3 py-3
+                  font-playfairDisplay
+                  sm:px-4 sm:py-4
+                "
+              >
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <p className="text-lg text-gray-100 sm:text-xl">
+                    Manage Videos
+                  </p>
+
+                  <p className="text-xs text-gray-100/60 sm:text-sm">
                     Choose a video format to manage.
                   </p>
                 </div>
@@ -154,14 +180,31 @@ export default function NavbarRightCorner() {
                   e.preventDefault();
                   goToVideoDashboardPage("/dashboard-landscape-videos");
                 }}
-                className="group font-playfairDisplay mx-2 mt-2 cursor-pointer rounded-md text-base
-                                             px-3 py-3 text-gray-100 font-medium transition-all duration-200
-                                             data-[highlighted]:bg-amber-500/15
-                                             data-[highlighted]:text-white
-                                             data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+                className="
+                  group mx-1.5 mt-1.5
+                  cursor-pointer rounded-md
+                  px-2.5 py-2.5
+                  font-playfairDisplay
+                  text-sm font-medium text-gray-100
+                  transition-all duration-200
+                  data-[highlighted]:bg-amber-500/15
+                  data-[highlighted]:text-white
+                  data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]
+                  sm:mx-2 sm:mt-2
+                  sm:px-3 sm:py-3
+                  sm:text-base
+                "
               >
-                <MonitorPlay className="h-5 w-5 transition-colors duration-200 group-data-[highlighted]:stroke-white" />
-                Videos - Landscape
+                <MonitorPlay
+                  className="
+                    h-4 w-4 shrink-0
+                    transition-colors duration-200
+                    group-data-[highlighted]:stroke-white
+                    sm:h-5 sm:w-5
+                  "
+                />
+
+                <span>Videos - Landscape</span>
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -169,14 +212,31 @@ export default function NavbarRightCorner() {
                   e.preventDefault();
                   goToVideoDashboardPage("/dashboard-portrait-videos");
                 }}
-                className="group font-playfairDisplay mx-2 mt-2 cursor-pointer rounded-md text-base
-                                             px-3 py-3 text-gray-100 font-medium transition-all duration-200
-                                             data-[highlighted]:bg-amber-500/15
-                                             data-[highlighted]:text-white
-                                             data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+                className="
+                  group mx-1.5 mt-1.5
+                  cursor-pointer rounded-md
+                  px-2.5 py-2.5
+                  font-playfairDisplay
+                  text-sm font-medium text-gray-100
+                  transition-all duration-200
+                  data-[highlighted]:bg-amber-500/15
+                  data-[highlighted]:text-white
+                  data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]
+                  sm:mx-2 sm:mt-2
+                  sm:px-3 sm:py-3
+                  sm:text-base
+                "
               >
-                <Smartphone className="h-5 w-5 transition-colors duration-200 group-data-[highlighted]:stroke-white" />
-                Shorts - Portrait
+                <Smartphone
+                  className="
+                    h-4 w-4 shrink-0
+                    transition-colors duration-200
+                    group-data-[highlighted]:stroke-white
+                    sm:h-5 sm:w-5
+                  "
+                />
+
+                <span>Shorts - Portrait</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -184,12 +244,13 @@ export default function NavbarRightCorner() {
           <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
-                className="group cursor-pointer hover:[filter:drop-shadow(0_0_6px_orange)]
+                className="group h-9 w-9 p-0 shrink-0 cursor-pointer hover:[filter:drop-shadow(0_0_6px_orange)]
                            data-[state=open]:drop-shadow-[0_0_6px_orange]
-                           data-[state=open]:cursor-pointer"
+                           data-[state=open]:cursor-pointer
+                           lg:h-12 lg:w-12"
               >
-                <Avatar className="w-12 h-12">
-                  <AvatarFallback className="bg-amber-600 text-black text-xl font-bold">
+                <Avatar className="h-9 w-9 lg:h-12 lg:w-12">
+                  <AvatarFallback className="bg-amber-600 text-base font-bold text-black lg:text-xl">
                     {session?.user?.name ? (
                       <span
                         className="inline-block transition-transform duration-300 group-hover:scale-125
@@ -205,54 +266,90 @@ export default function NavbarRightCorner() {
               </Button>
             </DropdownMenuTrigger>
 
-            {/* align="end" means right edge alignment, 
-                sideOffset={} gives a margin between the dropdown menu Trigger and the dropdown menu content */}
             <DropdownMenuContent
               align="end"
-              sideOffset={24}
-              /* shadow of roughly amber-500 */
-              className="w-56 rounded-2xl 
-                         border border-white/5 ring-1 ring-white/10
-                         bg-black/80 backdrop-blur-xs
-                         shadow-[0_0_20px_rgba(245,158,11,0.25)]
-                         animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-300"
+              sideOffset={8}
+              collisionPadding={8}
+              className="
+                w-[calc(100vw-1rem)]
+                max-w-56
+                rounded-xl
+                border border-white/5
+                bg-black/80
+                backdrop-blur-xs
+                ring-1 ring-white/10
+                shadow-[0_0_20px_rgba(245,158,11,0.25)]
+                animate-in fade-in-0 zoom-in-95 slide-in-from-top-2
+                duration-300
+                sm:w-56
+                sm:rounded-2xl
+              "
             >
-              {/* <DropdownMenuLabel className="border-b border-amber-600/30 pb-3">
-                    <div className="space-y-1">
-                      <p>{session.user.name}</p>
-                      <p>{session.user.email}</p>
-                    </div>
-                  </DropdownMenuLabel> */}
-
-              <DropdownMenuLabel className="font-playfairDisplay border-b border-gray-300/30 py-8">
-                <div className="flex flex-col items-center space-y-4">
+              <DropdownMenuLabel
+                className="
+                  border-b border-gray-300/30
+                  px-3 py-5
+                  font-playfairDisplay
+                  sm:px-4 sm:py-8
+                "
+              >
+                <div className="flex flex-col items-center space-y-3 sm:space-y-4">
                   {session?.user?.name ? (
                     <>
-                      <Avatar className="w-14 h-14">
-                        <AvatarFallback className="bg-amber-600 text-black text-2xl font-bold">
-                          {session?.user.name[0].toUpperCase()}
+                      <Avatar className="h-11 w-11 sm:h-14 sm:w-14">
+                        <AvatarFallback
+                          className="
+                            bg-amber-600
+                            text-lg font-bold text-black
+                            sm:text-2xl
+                          "
+                        >
+                          {session.user.name[0].toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex flex-col items-center text-center gap-1">
-                        <p className="text-xl text-gray-100">
-                          {session?.user.name}
+
+                      <div className="flex min-w-0 flex-col items-center gap-1 text-center">
+                        <p className="max-w-full truncate text-lg text-gray-100 sm:text-xl">
+                          {session.user.name}
                         </p>
-                        <p className="text-base text-gray-100/80">
-                          {session?.user.email}
+
+                        <p
+                          className="
+                            max-w-full break-all
+                            text-sm text-gray-100/80
+                            sm:text-base
+                          "
+                        >
+                          {session.user.email}
                         </p>
                       </div>
                     </>
                   ) : (
                     <>
-                      <Avatar className="w-14 h-14">
-                        <AvatarFallback className="bg-amber-600 text-black text-2xl font-bold">
-                          <span className="h-6 w-6 animate-spin rounded-full border-3 border-black/30 border-t-black" />
+                      <Avatar className="h-11 w-11 sm:h-14 sm:w-14">
+                        <AvatarFallback
+                          className="
+                            bg-amber-600
+                            text-lg font-bold text-black
+                            sm:text-2xl
+                          "
+                        >
+                          <span
+                            className="
+                              h-5 w-5 animate-spin rounded-full
+                              border-3 border-black/30 border-t-black
+                              sm:h-6 sm:w-6
+                            "
+                          />
                         </AvatarFallback>
                       </Avatar>
 
-                      <div className="flex flex-col items-center text-center gap-1">
-                        <p className="text-xl text-gray-100">Loading...</p>
-                        <p className="text-base text-gray-100/80">
+                      <div className="flex flex-col items-center gap-1 text-center">
+                        <p className="text-lg text-gray-100 sm:text-xl">
+                          Loading...
+                        </p>
+
+                        <p className="text-sm text-gray-100/80 sm:text-base">
                           Please wait
                         </p>
                       </div>
@@ -263,16 +360,42 @@ export default function NavbarRightCorner() {
 
               <DropdownMenuItem
                 onClick={handleSignOut}
-                className="group font-playfairDisplay mx-2 my-2 cursor-pointer 
-                           rounded-md text-gray-100/80 font-medium transition-all duration-200
-                           data-[highlighted]:bg-amber-500/15 data-[highlighted]:text-white
-                           data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]"
+                className="
+                  group mx-1.5 my-1.5
+                  cursor-pointer rounded-md
+                  px-2.5 py-2.5
+                  font-playfairDisplay
+                  text-sm font-medium text-gray-100/80
+                  transition-all duration-200
+                  data-[highlighted]:bg-amber-500/15
+                  data-[highlighted]:text-white
+                  data-[highlighted]:shadow-[0_0_20px_rgba(245,158,11,0.25)]
+                  sm:mx-2 sm:my-2
+                  sm:px-3
+                  sm:text-base
+                "
               >
-                <LogOut className="transition-colors duration-200 group-data-[highlighted]:stroke-white" />
-                Log out
+                <LogOut
+                  className="
+                    h-4 w-4 shrink-0
+                    transition-colors duration-200
+                    group-data-[highlighted]:stroke-white
+                    sm:h-5 sm:w-5
+                  "
+                />
+
+                <span>Log out</span>
               </DropdownMenuItem>
+
               {error && (
-                <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                <div
+                  className="
+                    mx-1.5 mb-1.5
+                    rounded-md bg-destructive/15
+                    p-2.5 text-xs text-destructive
+                    sm:mx-2 sm:mb-2 sm:p-3 sm:text-sm
+                  "
+                >
                   {error}
                 </div>
               )}

@@ -117,7 +117,7 @@ export default function ImageTabs() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`
-                          group relative w-2/5 mx-auto overflow-hidden rounded-lg px-6 py-2 text-base font-bold
+                          group relative w-1/2 mx-auto overflow-hidden rounded-lg px-6 py-1 text-sm font-bold
                           md:mx-0 md:w-auto md:text-lg
                           transition-all duration-400 ease-out
                           hover:cursor-pointer
@@ -145,8 +145,8 @@ export default function ImageTabs() {
         </div>
         <div
           className="
-                      mx-auto h-[560px] w-full max-w-5xl
-                      sm:h-[620px]
+                      mx-auto h-[480px] w-full max-w-5xl
+                      sm:h-[560px]
                       lg:h-[700px]
                       flex items-center justify-center
                       overflow-hidden rounded-4xl
@@ -189,13 +189,13 @@ export default function ImageTabs() {
                             ${
                               displayedHeroImage?.imgName === "icon"
                                 ? `
-                                  h-[320px] w-[320px]
+                                  h-[280px] w-[280px]
                                   sm:h-[340px] sm:w-[340px]
                                   md:h-[440px] md:w-[440px]
                                   lg:h-[520px] lg:w-[520px]
                                 `
                                 : `
-                                  h-[420px] w-[320px]
+                                  h-[400px] w-[280px]
                                   sm:h-[460px] sm:w-[460px]
                                   md:h-[480px] md:w-[480px]
                                   lg:h-[480px] lg:w-[720px]

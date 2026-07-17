@@ -72,9 +72,9 @@ export default function SignIn() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex min-h-screen flex-col">
       <main className="flex-1">
-        <section className="relative mx-auto py-32 px-4 bg-neutral-950 min-h-screen">
+        <section className="relative flex min-h-screen items-center overflow-hidden bg-neutral-950 px-4 py-24 sm:px-6 sm:py-28 lg:py-32">
           <Image
             src="/hero-images/AI_Generated_Basement_Studio.png"
             alt=""
@@ -83,38 +83,45 @@ export default function SignIn() {
             priority
             onLoad={() => setHeroImageLoaded(true)}
             className={`object-cover object-center transition-all duration-[1400ms] ease-out
-                                  ${heroBackgroundVisible ? "opacity-100" : "opacity-0"}`}
+              ${heroBackgroundVisible ? "opacity-100" : "opacity-0"}
+            `}
           />
+
           <div className="absolute inset-0 bg-black/80" />
 
           <div
-            className={`container mx-auto flex justify-center p-16 relative z-10
-                           transition-all duration-[1200ms] ease-[cubic-bezier(0.20,1.80,0.30,1)]
-                           ${visible ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0"}
-          `}
+            className={`relative z-10 mx-auto flex w-full max-w-screen-xl min-w-0 justify-center
+              transition-all duration-[1200ms] ease-[cubic-bezier(0.20,1.80,0.30,1)]
+              ${visible ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0"}
+            `}
           >
-            {/* overflow-visible  */}
-            <Card className="w-full max-w-lg border-gray-200 shadow-lg bg-neutral-950">
-              <CardHeader className="space-y-1 text-center">
-                <CardTitle className="text-4xl font-bold text-neutral-50 font-figtree">
+            <Card className="w-full min-w-0 max-w-lg border-gray-200 bg-neutral-950 shadow-lg">
+              <CardHeader className="space-y-2 px-4 text-center sm:px-6">
+                <CardTitle className="font-figtree text-3xl font-bold text-neutral-50 sm:text-4xl">
                   Sign In
                 </CardTitle>
-                <CardDescription className="text-xl text-neutral-400 font-figtree">
+
+                <CardDescription className="font-figtree text-base leading-relaxed text-neutral-400 sm:text-lg md:text-xl">
                   Enter your credentials to access your account
                 </CardDescription>
               </CardHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
+
+              <form onSubmit={handleSubmit} className="w-full min-w-0">
                 <div
-                  className="py-4 pt-12 rounded-2xl border border-amber-500/50 bg-neutral-900
-                                font-figtree"
+                  className="
+                    w-full min-w-0 overflow-hidden rounded-2xl
+                    border border-amber-500/50 bg-neutral-900
+                    pt-8 font-figtree sm:pt-12
+                  "
                 >
-                  <CardContent className="space-y-4">
+                  <CardContent className="w-full min-w-0 space-y-4 px-4 sm:px-6">
                     {error && (
-                      <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                      <div className="w-full min-w-0 break-words rounded-md bg-destructive/15 p-3 text-sm text-destructive">
                         {error}
                       </div>
                     )}
-                    <div className="grid gap-2">
+
+                    <div className="grid min-w-0 gap-2">
                       <Input
                         id="email"
                         type="email"
@@ -122,13 +129,18 @@ export default function SignIn() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="h-10 md:text-lg placeholder:text-lg
-                               bg-neutral-50 border-gray-300 transition-all duration-300
-                               focus-visible:border-amber-500
-                               focus-visible:ring-2 focus-visible:ring-amber-500"
+                        className="
+                          h-10 w-full min-w-0 border-gray-300 bg-neutral-50
+                          text-base transition-all duration-300
+                          placeholder:text-base
+                          focus-visible:border-amber-500
+                          focus-visible:ring-2 focus-visible:ring-amber-500
+                          sm:h-11 sm:text-lg sm:placeholder:text-lg
+                        "
                       />
                     </div>
-                    <div className="grid gap-2">
+
+                    <div className="grid min-w-0 gap-2">
                       <Input
                         id="password"
                         type="password"
@@ -137,23 +149,33 @@ export default function SignIn() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                         minLength={8}
-                        className="h-10 md:text-lg placeholder:text-lg
-                               bg-neutral-50 border-gray-300 transition-all duration-300
-                               focus-visible:border-amber-500
-                               focus-visible:ring-2 focus-visible:ring-amber-500"
+                        className="
+                          h-10 w-full min-w-0 border-gray-300 bg-neutral-50
+                          text-base transition-all duration-300
+                          placeholder:text-base
+                          focus-visible:border-amber-500
+                          focus-visible:ring-2 focus-visible:ring-amber-500
+                          sm:h-11 sm:text-lg sm:placeholder:text-lg
+                        "
                       />
                     </div>
                   </CardContent>
-                  <CardFooter className="flex flex-col space-y-4 border-none bg-neutral-900">
+
+                  <CardFooter className="flex w-full min-w-0 flex-col space-y-4 border-none bg-neutral-900 px-4 pb-6 sm:px-6">
                     <Button
                       type="submit"
-                      className="h-10 text-lg w-full bg-amber-500 text-neutral-950 hover:cursor-pointer hover:bg-amber-500/70"
                       disabled={loading}
+                      className="
+                        h-10 w-full min-w-0 bg-amber-500 text-base text-neutral-950
+                        hover:cursor-pointer hover:bg-amber-500/70
+                        sm:h-11 sm:text-lg
+                      "
                     >
                       {loading ? "Signing in..." : "Sign In"}
                     </Button>
-                    <p className="text-lg text-center text-neutral-200">
-                      Don't have an account?{" "}
+
+                    <p className="w-full break-words text-center text-base text-neutral-200 sm:text-lg">
+                      Don&apos;t have an account?{" "}
                       <Link
                         href="/sign-up"
                         className="font-medium text-amber-500 hover:underline"
@@ -166,75 +188,6 @@ export default function SignIn() {
               </form>
             </Card>
           </div>
-
-          {/* <div className="container mx-auto flex justify-center p-16">
-            <Card className="w-full max-w-md border-gray-200 shadow-lg">
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl font-bold text-black">
-                  Sign In
-                </CardTitle>
-                <CardDescription className="text-gray-600">
-                  Enter your credentials to access your account
-                </CardDescription>
-              </CardHeader>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <CardContent className="space-y-4">
-                  {error && (
-                    <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-                      {error}
-                    </div>
-                  )}
-                  <div className="grid gap-2">
-                    <label htmlFor="email" className="text-gray-700">
-                      Email
-                    </label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="John@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="border-gray-300 transition-all duration-300 focus-visible:border-amber-400 focus-visible:ring-amber-400"
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <label htmlFor="password" className="text-gray-700">
-                      Password
-                    </label>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="John Doe"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      minLength={8}
-                      className="border-gray-300 transition-all duration-300 focus-visible:border-amber-400 focus-visible:ring-amber-400"
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col space-y-4">
-                  <Button
-                    type="submit"
-                    className="w-full bg-amber-400 hover:cursor-pointer hover:bg-amber-400/70"
-                    disabled={loading}
-                  >
-                    {loading ? "Signing in..." : "Sign In"}
-                  </Button>
-                  <p className="text-center text-sm text-gray-600">
-                    Don't have an account?{" "}
-                    <Link
-                      href="/sign-up"
-                      className="font-medium text-amber-400 hover:underline"
-                    >
-                      Sign Up
-                    </Link>
-                  </p>
-                </CardFooter>
-              </form>
-            </Card>
-          </div> */}
         </section>
       </main>
     </div>

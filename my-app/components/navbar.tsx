@@ -287,7 +287,7 @@ export default function Navbar() {
     /* <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xs 
     bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent"> */
     <nav
-      className={`fixed top-0 left-0 w-[100vw] z-50
+      className={`fixed left-0 top-0 z-50 w-full
                   ${
                     animate
                       ? "transition-all duration-1000 ease-[cubic-bezier(0.30,1,0.50,1)]"
@@ -299,9 +299,10 @@ export default function Navbar() {
       <div
         ref={navRailRef}
         className={`
-                    relative flex h-24 items-center
-                    justify-between px-4 font-playfairDisplay
+                    relative grid h-20 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]
+                    items-center px-2 font-playfairDisplay
                     transition-none
+                    lg:flex lg:h-24 lg:justify-between lg:px-4
                     ${
                       mobileMenuOpen
                         ? "bg-black"
@@ -344,7 +345,7 @@ export default function Navbar() {
         />
 
         {/* Left item */}
-        <div className="flex flex-1 justify-start lg:w-60 lg:flex-none">
+        <div className="flex min-w-0 justify-center lg:w-60 lg:flex-none lg:justify-start">
           <Link
             ref={itemRefs.stevensun}
             href="/"
@@ -353,7 +354,8 @@ export default function Navbar() {
               setHoverBarStyle((prev) => ({ ...prev, opacity: 0 }))
             }
             onClick={(e) => handleTopNav(e, "/", "stevensun")}
-            className={`flex w-auto items-center gap-2 text-2xl font-semibold text-gray-300s transition-all duration-300 lg:w-60
+            className={`group flex min-w-0 items-center gap-1.5 text-lg font-semibold
+                  transition-all duration-300 sm:text-xl lg:w-60 lg:gap-2 lg:text-2xl
                           hover:text-amber-300 group
                           ${
                             activeId === "stevensun"
@@ -364,9 +366,11 @@ export default function Navbar() {
             <img
               src="/hero-images/icon.png"
               alt="Steven Sun Logo"
-              className="h-12 w-12 transition duration-300 group-hover:scale-105"
+              className="h-9 w-9 shrink-0 transition duration-300 group-hover:scale-105 lg:h-12 lg:w-12"
             />
-            <span className="">Steven Sun</span>
+            <span className="whitespace-nowrap max-[319px]:text-base">
+              Steven Sun
+            </span>
           </Link>
         </div>
 
@@ -379,16 +383,17 @@ export default function Navbar() {
           aria-controls="mobile-navigation"
           onClick={() => setMobileMenuOpen((previous) => !previous)}
           className="
-                      ml-3 flex h-11 w-11 shrink-0 cursor-pointer
-                      items-center justify-center rounded-xl text-gray-200
+                      flex h-9 w-9 shrink-0 cursor-pointer
+                      items-center justify-center justify-self-center
+                      rounded-xl text-gray-200
                       transition-colors hover:bg-white/10 hover:text-white
                       lg:hidden
                     "
         >
           {mobileMenuOpen ? (
-            <X className="h-7 w-7" />
+            <X className="h-5 w-5 lg:h-7 lg:w-7" />
           ) : (
-            <Menu className="h-7 w-7" />
+            <Menu className="h-5 w-5 lg:h-7 lg:w-7" />
           )}
         </button>
 
@@ -484,7 +489,7 @@ export default function Navbar() {
         </div>
 
         {/* Right Corner */}
-        <div className="flex flex-1 items-center justify-end lg:w-60 lg:flex-none xl:w-64">
+        <div className="flex min-w-0 items-center justify-center pr-1 lg:w-60 lg:flex-none lg:justify-end lg:pr-0 xl:w-64">
           <NavbarRightCorner />
         </div>
       </div>
@@ -502,12 +507,12 @@ export default function Navbar() {
                     lg:hidden
                     ${
                       mobileMenuOpen
-                        ? "max-h-10 px-4 py-0 opacity-100"
+                        ? "max-h-80 px-4 py-2 opacity-100"
                         : "pointer-events-none max-h-0 px-4 py-0 opacity-0"
                     }
                   `}
       >
-        <div className="flex justify-center gap-2">
+        <div className="flex flex-col items-center gap-2">
           <Link
             href="/about"
             onClick={(e) => {
@@ -516,7 +521,7 @@ export default function Navbar() {
             }}
           >
             <Button
-              className={`h-10 w-20 justify-center px-4 text-md
+              className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "about" ? "text-white" : "text-gray-300"}`}
@@ -533,7 +538,7 @@ export default function Navbar() {
           >
             <Button
               className="
-                          h-10 w-20 justify-center rounded-xl bg-destructive
+                          h-8 w-40 justify-center rounded-xl bg-destructive
                           px-4 text-md text-gray-300 hover:text-black
                           cursor-pointer
                         "
@@ -550,7 +555,7 @@ export default function Navbar() {
             }}
           >
             <Button
-              className={`h-10 w-20 justify-center px-4 text-md
+              className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "music" ? "text-white" : "text-gray-300"}`}
@@ -567,7 +572,7 @@ export default function Navbar() {
             }}
           >
             <Button
-              className={`h-10 w-20 justify-center px-4 text-md
+              className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "updates" ? "text-white" : "text-gray-300"}`}
@@ -592,7 +597,7 @@ export default function Navbar() {
             }}
           >
             <Button
-              className={`h-10 w-20 justify-center px-4 text-md
+              className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "contact" ? "text-white" : "text-gray-300"}`}

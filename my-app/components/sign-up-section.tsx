@@ -56,35 +56,34 @@ export default function SignUpSection() {
   return (
     <section
       id="signup"
-      className="border-t border-white/15 bg-neutral-950 px-4 py-16"
+      className="border-t border-white/15 bg-neutral-950 px-4 py-12 sm:px-6 sm:py-16"
     >
-      <div className="container mx-auto flex justify-center p-16">
-        {/* overflow-visible  */}
-        <Card className="w-full max-w-lg border-gray-200 shadow-lg bg-neutral-950">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-4xl font-bold text-neutral-50 font-figtree">
-              Let's Connect
+      <div className="container mx-auto flex justify-center px-0 sm:px-4 lg:px-16">
+        <Card className="w-full max-w-lg border-gray-200 bg-neutral-950 shadow-lg">
+          <CardHeader className="space-y-2 px-4 text-center sm:px-6">
+            <CardTitle className="font-figtree text-3xl font-bold text-neutral-50 sm:text-4xl">
+              Let&apos;s Connect
             </CardTitle>
-            {/* Stay updated with new music videos and piano tips*/}
-            {/* Get the latest music videos and piano learning tips */}
-            {/* Discover new music videos and piano practice tips */}
-            {/* Follow for fresh music videos and piano insights */}
-            {/* Stay inspired with music videos and piano guidance */}
-            <CardDescription className="text-xl text-neutral-400 font-figtree">
+
+            <CardDescription className="font-figtree text-base text-neutral-400 sm:text-lg md:text-xl">
               Latest music content and piano tips, all in one.
             </CardDescription>
           </CardHeader>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div
-              className="py-4 pt-12 rounded-2xl border border-amber-500/50 bg-neutral-900 
-                            font-figtree"
+              className="
+                rounded-2xl overflow-hidden border border-amber-500/50 bg-neutral-900
+                pt-8 font-figtree sm:pt-12
+              "
             >
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 px-4 sm:px-6">
                 {error && (
-                  <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                  <div className="break-words rounded-md bg-destructive/15 p-3 text-sm text-destructive">
                     {error}
                   </div>
                 )}
+
                 <div className="grid gap-2">
                   <Input
                     id="name"
@@ -93,16 +92,17 @@ export default function SignUpSection() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="h-10 md:text-lg placeholder:text-lg
-                               bg-neutral-50 border-gray-300 transition-all duration-300
-                               focus-visible:border-amber-500
-                               focus-visible:ring-2 focus-visible:ring-amber-500"
+                    className="
+                      h-10 bg-neutral-50 text-base
+                      border-gray-300 transition-all duration-300
+                      placeholder:text-base sm:h-11 sm:text-lg sm:placeholder:text-lg
+                      focus-visible:border-amber-500
+                      focus-visible:ring-2 focus-visible:ring-amber-500
+                    "
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  {/* <label htmlFor="email" className="text-gray-700">
-                    Email
-                  </label> */}
                   <Input
                     id="email"
                     type="email"
@@ -110,40 +110,50 @@ export default function SignUpSection() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-10 md:text-lg placeholder:text-lg
-                               bg-neutral-50 border-gray-300 transition-all duration-300
-                               focus-visible:border-amber-500
-                               focus-visible:ring-2 focus-visible:ring-amber-500"
+                    className="
+                      h-10 bg-neutral-50 text-base
+                      border-gray-300 transition-all duration-300
+                      placeholder:text-base sm:h-11 sm:text-lg sm:placeholder:text-lg
+                      focus-visible:border-amber-500
+                      focus-visible:ring-2 focus-visible:ring-amber-500
+                    "
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  {/* <label htmlFor="password" className="text-gray-700">
-                    Password
-                  </label> */}
                   <Input
                     id="password"
                     type="password"
-                    placeholder="Password Mininum 8 Characters"
+                    placeholder="Password Minimum 8 Characters"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     minLength={8}
-                    className="h-10 md:text-lg placeholder:text-lg
-                               bg-neutral-50 border-gray-300 transition-all duration-300
-                               focus-visible:border-amber-500
-                               focus-visible:ring-2 focus-visible:ring-amber-500"
+                    className="
+                      h-10 bg-neutral-50 text-base
+                      border-gray-300 transition-all duration-300
+                      placeholder:text-sm sm:h-11 sm:text-lg sm:placeholder:text-lg
+                      focus-visible:border-amber-500
+                      focus-visible:ring-2 focus-visible:ring-amber-500
+                    "
                   />
                 </div>
               </CardContent>
-              <CardFooter className="flex flex-col space-y-4 border-none bg-neutral-900">
+
+              <CardFooter className="flex flex-col space-y-4 border-none bg-neutral-900 px-4 pb-6 sm:px-6">
                 <Button
                   type="submit"
-                  className="h-10 text-lg w-full bg-amber-500 text-neutral-950 hover:cursor-pointer hover:bg-amber-500/70"
                   disabled={loading}
+                  className="
+                    h-10 w-full bg-amber-500 text-base text-neutral-950
+                    hover:cursor-pointer hover:bg-amber-500/70
+                    sm:h-11 sm:text-lg
+                  "
                 >
                   {loading ? "Creating account..." : "Sign Up"}
                 </Button>
-                <p className="text-lg text-center text-neutral-200">
+
+                <p className="text-center text-base text-neutral-200 sm:text-lg">
                   Already have an account?{" "}
                   <Link
                     href="/sign-in"
