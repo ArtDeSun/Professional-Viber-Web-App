@@ -383,8 +383,7 @@ export default function NavbarRightCorner() {
                     sm:h-5 sm:w-5
                   "
                 />
-
-                <span>Log out</span>
+                Log out
               </DropdownMenuItem>
 
               {error && (

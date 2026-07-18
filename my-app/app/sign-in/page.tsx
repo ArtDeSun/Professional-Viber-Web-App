@@ -136,6 +136,7 @@ export default function SignIn() {
                           focus-visible:border-amber-500
                           focus-visible:ring-2 focus-visible:ring-amber-500
                           sm:h-11 sm:text-lg sm:placeholder:text-lg
+                          md:text-lg
                         "
                       />
                     </div>
@@ -156,6 +157,7 @@ export default function SignIn() {
                           focus-visible:border-amber-500
                           focus-visible:ring-2 focus-visible:ring-amber-500
                           sm:h-11 sm:text-lg sm:placeholder:text-lg
+                          md:text-lg
                         "
                       />
                     </div>

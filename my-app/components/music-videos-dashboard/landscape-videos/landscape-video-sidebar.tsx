@@ -42,16 +42,12 @@ export function LandscapeVideoSidebar({
 
   return (
     <aside
-      className={`
-        fixed left-3 top-40 z-40 h-fit
-        transition-[width] duration-300
-        ease-[cubic-bezier(0.22,1,0.36,1)]
-
-        ${open ? "w-72" : "w-14"}
-
-        sm:left-4
-        lg:left-6 lg:w-56
-      `}
+      className="
+                  fixed left-2 top-24 z-40
+                  w-12
+                  sm:left-4 sm:top-20 sm:w-14
+                  lg:left-6 lg:top-34 lg:w-56
+                "
     >
       <button
         type="button"
@@ -59,26 +55,42 @@ export function LandscapeVideoSidebar({
         aria-expanded={open}
         aria-controls="landscape-video-sidebar-content"
         onClick={() => onOpenChange(!open)}
-        className="
-          mb-3 flex h-12 w-full cursor-pointer
-          items-center rounded-2xl
-          border border-amber-400/20 bg-black/70
-          px-4 text-gray-100
+        className={`
+          mb-3 flex h-11 cursor-pointer
+          items-center rounded-xl
+          border border-amber-400/20
+          bg-black/70 text-gray-100
           shadow-[0_0_18px_rgba(245,158,11,0.25)]
           backdrop-blur-md
-          transition-all duration-300
+          transition-[width,border-color,color] duration-300
+          ease-[cubic-bezier(0.22,1,0.36,1)]
           hover:border-amber-300/40
           hover:text-amber-200
+          sm:h-12 sm:rounded-2xl
           lg:hidden
-        "
+
+          ${
+            open
+              ? `
+                w-[calc(100vw-4rem)]
+                justify-start px-3
+                max-w-72 sm:px-4
+              `
+              : `
+                w-12 justify-center px-0
+                sm:w-14
+              `
+          }
+        `}
       >
         <PanelLeft className="h-5 w-5 shrink-0 text-amber-300" />
 
         <span
           className={`
             min-w-0 overflow-hidden whitespace-nowrap
-            font-marcellus text-lg
+            font-marcellus text-base
             transition-[width,opacity,margin] duration-300
+            sm:text-lg
 
             ${open ? "ml-3 w-full opacity-100" : "ml-0 w-0 opacity-0"}
           `}
@@ -88,10 +100,14 @@ export function LandscapeVideoSidebar({
 
         <ChevronRight
           className={`
-            h-5 w-5 shrink-0 text-amber-300
-            transition-transform duration-300
+            shrink-0 text-amber-300
+            transition-[width,opacity,transform] duration-300
 
-            ${open ? "rotate-180" : "rotate-0"}
+            ${
+              open
+                ? "h-5 w-5 rotate-180 opacity-100"
+                : "h-5 w-0 rotate-0 opacity-0"
+            }
           `}
         />
       </button>
@@ -99,16 +115,38 @@ export function LandscapeVideoSidebar({
       <div
         id="landscape-video-sidebar-content"
         className={`
-          origin-left transition-all duration-300
+          absolute left-0 top-14
+          w-[calc(100vw-4rem)]
+          max-w-72
+          origin-left
+          transition-[opacity,transform,visibility] duration-300
           ease-[cubic-bezier(0.22,1,0.36,1)]
+
+          sm:top-15 sm:w-72
 
           ${
             open
-              ? "visible translate-x-0 opacity-100"
-              : "invisible -translate-x-3 opacity-0"
+              ? `
+                visible
+                pointer-events-auto
+                translate-x-0
+                opacity-100
+              `
+              : `
+                invisible
+                pointer-events-none
+                -translate-x-3
+                opacity-0
+              `
           }
 
-          lg:visible lg:translate-x-0 lg:opacity-100
+          lg:static
+          lg:w-full
+          lg:max-w-none
+          lg:visible
+          lg:pointer-events-auto
+          lg:translate-x-0
+          lg:opacity-100
         `}
       >
         {loading ? (
@@ -116,25 +154,36 @@ export function LandscapeVideoSidebar({
         ) : (
           <Card
             className="
-              overflow-hidden rounded-3xl
-              border-amber-400/20 bg-black/70
+              max-h-[calc(100dvh-10rem)]
+              overflow-x-hidden overflow-y-auto
+              rounded-2xl
+              border-amber-400/20 bg-black/85
               shadow-[0_0_18px_rgba(245,158,11,0.5)]
               backdrop-blur-md
-              lg:bg-black/45
+              sm:rounded-3xl
+              lg:max-h-none lg:overflow-visible lg:bg-black/45
             "
           >
-            <CardContent className="space-y-8 p-4 lg:space-y-12">
+            <CardContent
+              className="
+                min-w-0 space-y-6 p-3
+                sm:space-y-8 sm:p-4
+                lg:space-y-12
+              "
+            >
               <div className="flex justify-center">
                 <Button
                   type="button"
                   onClick={handleScrollToTop}
                   className="
-                    group relative h-10 w-3/4
+                    group relative h-9 w-full
                     cursor-pointer overflow-hidden rounded-xl
-                    bg-amber-400 text-sm text-black
+                    bg-amber-400 px-2
+                    text-xs text-black
                     shadow-[0_0_14px_rgba(245,158,11,0.35)]
                     transition-shadow duration-300
                     hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]
+                    sm:h-10 sm:w-3/4 sm:text-sm
                   "
                 >
                   <span
@@ -146,19 +195,27 @@ export function LandscapeVideoSidebar({
                     "
                   />
 
-                  <span className="relative z-10 flex items-center justify-center gap-2">
-                    <ArrowUp className="h-4 w-4" />
-                    Back to Top
+                  <span className="relative z-10 flex min-w-0 items-center justify-center gap-2">
+                    <ArrowUp className="h-4 w-4 shrink-0" />
+                    <span className="truncate">Back to Top</span>
                   </span>
                 </Button>
               </div>
 
-              <nav className="space-y-6">
-                <p className="text-center font-marcellus text-4xl tracking-wide text-gray-100">
+              <nav className="min-w-0 space-y-4 sm:space-y-6">
+                <p
+                  className="
+                    break-words text-center
+                    font-marcellus text-2xl
+                    tracking-wide text-gray-100
+                    sm:text-3xl
+                    lg:text-4xl
+                  "
+                >
                   Sections
                 </p>
 
-                <div className="space-y-2">
+                <div className="min-w-0 space-y-1.5 sm:space-y-2">
                   <SidebarButton
                     id="featured"
                     label="Featured"
@@ -182,18 +239,21 @@ export function LandscapeVideoSidebar({
                 <Button
                   type="button"
                   className="
-                    flex h-10 w-full cursor-pointer
-                    items-center justify-center gap-2
-                    rounded-xl border border-gray-300/20
-                    bg-black/30 font-marcellus text-lg text-gray-100
+                    flex h-9 w-full min-w-0
+                    cursor-pointer items-center justify-center
+                    gap-2 rounded-xl
+                    border border-gray-300/20
+                    bg-black/30 px-2
+                    font-marcellus text-sm text-gray-100
                     transition-all duration-300
                     hover:border-amber-300/30
                     hover:bg-white/10 hover:text-amber-200
                     hover:shadow-[0_0_12px_rgba(245,158,11,0.18)]
+                    sm:h-10 sm:text-lg
                   "
                 >
-                  <Plus className="h-4 w-4" />
-                  Add Section
+                  <Plus className="h-4 w-4 shrink-0" />
+                  <span className="truncate">Add Section</span>
                 </Button>
               </nav>
             </CardContent>
@@ -223,51 +283,114 @@ function SidebarButton({
     <button
       type="button"
       onClick={() => onClick(id)}
-      className={`flex w-full cursor-pointer items-center gap-3 rounded-2xl px-3 py-3 text-left text-lg transition-all duration-300 ${
-        isActive
-          ? "bg-gradient-to-r from-amber-300 via-amber-400 to-orange-500 text-xl font-bold text-black shadow-[0_0_16px_rgba(245,158,11,0.45)]"
-          : "text-gray-300 hover:bg-white/10 hover:text-amber-200 hover:shadow-[0_0_14px_rgba(245,158,11,0.18)]"
-      }`}
+      className={`
+        flex w-full min-w-0 cursor-pointer
+        items-center gap-2
+        rounded-xl px-2.5 py-2.5
+        text-left text-sm
+        transition-all duration-300
+        sm:gap-3 sm:rounded-2xl
+        sm:px-3 sm:py-3 sm:text-base
+        lg:text-lg
+
+        ${
+          isActive
+            ? `
+              bg-gradient-to-r
+              from-amber-300 via-amber-400 to-orange-500
+              font-bold text-black
+              shadow-[0_0_16px_rgba(245,158,11,0.45)]
+              sm:text-lg
+              lg:text-xl
+            `
+            : `
+              text-gray-300
+              hover:bg-white/10
+              hover:text-amber-200
+              hover:shadow-[0_0_14px_rgba(245,158,11,0.18)]
+            `
+        }
+      `}
     >
       <Icon
-        className={`h-5 w-5 shrink-0 ${
-          isActive ? "text-black" : "text-amber-300"
-        }`}
+        className={`
+          h-4 w-4 shrink-0
+          sm:h-5 sm:w-5
+
+          ${isActive ? "text-black" : "text-amber-300"}
+        `}
       />
 
-      <span className="font-marcellus leading-tight">{label}</span>
+      <span className="min-w-0 break-words font-marcellus leading-tight">
+        {label}
+      </span>
     </button>
   );
 }
 
 function LeftColumnLoadingBox({ sectionCount }: { sectionCount: number }) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl border-amber-400/15 bg-black/45 shadow-[0_0_18px_rgba(245,158,11,0.25)] backdrop-blur-md">
+    <Card
+      className="
+        relative max-h-[calc(100dvh-10rem)]
+        overflow-x-hidden overflow-y-auto
+        rounded-2xl
+        border-amber-400/15 bg-black/85
+        shadow-[0_0_18px_rgba(245,158,11,0.25)]
+        backdrop-blur-md
+        sm:rounded-3xl
+        lg:max-h-none lg:overflow-hidden lg:bg-black/45
+      "
+    >
       <div className="pointer-events-none absolute inset-0 -translate-x-full animate-[sidebar-shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-      <CardContent className="relative space-y-12 p-4">
+      <CardContent
+        className="
+          relative min-w-0 space-y-6 p-3
+          sm:space-y-8 sm:p-4
+          lg:space-y-12
+        "
+      >
         <div className="flex justify-center">
-          <div className="h-10 w-3/4 animate-pulse rounded-xl bg-neutral-700/80" />
+          <div className="h-9 w-full animate-pulse rounded-xl bg-neutral-700/80 sm:h-10 sm:w-3/4" />
         </div>
 
-        <div className="space-y-6">
-          <div className="mx-auto h-10 w-40 animate-pulse rounded-xl bg-neutral-700/80" />
+        <div className="min-w-0 space-y-4 sm:space-y-6">
+          <div className="mx-auto h-8 w-32 max-w-full animate-pulse rounded-xl bg-neutral-700/80 sm:h-10 sm:w-40" />
 
-          <div className="space-y-2">
+          <div className="min-w-0 space-y-2">
             {Array.from({ length: sectionCount + 1 }).map((_, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 rounded-2xl bg-neutral-800/80 px-3 py-3"
+                className="
+                  flex min-w-0 items-center
+                  gap-2 rounded-xl
+                  bg-neutral-800/80 px-2.5 py-2.5
+                  sm:gap-3 sm:rounded-2xl
+                  sm:px-3 sm:py-3
+                "
               >
-                <div className="h-5 w-5 shrink-0 animate-pulse rounded-md bg-neutral-600/80" />
-                <div className="h-5 flex-1 animate-pulse rounded-md bg-neutral-600/80" />
+                <div className="h-4 w-4 shrink-0 animate-pulse rounded-md bg-neutral-600/80 sm:h-5 sm:w-5" />
+
+                <div className="h-4 min-w-0 flex-1 animate-pulse rounded-md bg-neutral-600/80 sm:h-5" />
               </div>
             ))}
           </div>
 
-          <div className="flex h-10 w-full items-center justify-center gap-2 rounded-xl border border-gray-300/10 bg-neutral-800/80">
-            <Loader2 className="h-4 w-4 animate-spin text-amber-300" />
-            <span className="text-lg text-gray-400">Loading sections</span>
+          <div
+            className="
+              flex h-9 w-full min-w-0
+              items-center justify-center gap-2
+              rounded-xl border border-gray-300/10
+              bg-neutral-800/80 px-2
+              sm:h-10
+            "
+          >
+            <Loader2 className="h-4 w-4 shrink-0 animate-spin text-amber-300" />
+
+            <span className="truncate text-sm text-gray-400 sm:text-base lg:text-lg">
+              Loading sections
+            </span>
           </div>
         </div>
       </CardContent>

@@ -88,8 +88,8 @@ export default function DashboardLandscapeVideos() {
     <main
       className="
       relative min-h-screen
-      py-32 font-redHatDisplay text-white
-      sm:py-36
+      py-36 font-redHatDisplay text-white
+      sm:py-32
       lg:py-46
     "
     >
@@ -98,7 +98,7 @@ export default function DashboardLandscapeVideos() {
       <div
         className="
                     relative mx-auto w-full max-w-8xl
-                    px-4 pl-20
+                    px-4 pl-4
                     sm:px-6 sm:pl-24
                     lg:pl-[17rem]
                   "
@@ -133,11 +133,38 @@ export default function DashboardLandscapeVideos() {
 
 function DashboardLandscapeHeader() {
   return (
-    <header className="flex flex-col justify-between gap-6 rounded-3xl border border-amber-400/15 bg-black/40 p-8 shadow-[0_0_18px_rgba(245,158,11,0.12)] backdrop-blur-md lg:flex-row lg:items-end">
-      <div className="max-w-4xl space-y-4">
-        <h1 className="font-marcellus text-6xl text-amber-300">Videos</h1>
+    <header
+      className="
+        flex min-w-0 flex-col justify-between
+        gap-5 rounded-2xl
+        border border-amber-400/15
+        bg-black/40 p-4
+        shadow-[0_0_18px_rgba(245,158,11,0.12)]
+        backdrop-blur-md
+        sm:gap-6 sm:rounded-3xl sm:p-6
+        lg:flex-row lg:items-end lg:p-8
+      "
+    >
+      <div className="min-w-0 max-w-4xl space-y-3 sm:space-y-4">
+        <h1
+          className="
+            break-words font-marcellus
+            text-4xl leading-none text-amber-300
+            sm:text-5xl
+            lg:text-6xl
+          "
+        >
+          Videos
+        </h1>
 
-        <p className="max-w-3xl text-lg leading-8 text-gray-300">
+        <p
+          className="
+            max-w-3xl break-words
+            text-sm leading-6 text-gray-300
+            sm:text-base sm:leading-7
+            lg:text-lg lg:leading-8
+          "
+        >
           Manage long-form videos, covers, performances, tutorials, and featured
           uploads.
         </p>
@@ -145,14 +172,32 @@ function DashboardLandscapeHeader() {
 
       <Button
         asChild
-        className="group relative h-11 cursor-pointer overflow-hidden rounded-xl bg-amber-400 px-5 text-xl font-bold text-black shadow-[0_0_14px_rgba(245,158,11,0.35)] transition-shadow duration-300 hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]"
+        className="
+          group relative h-10 w-full
+          cursor-pointer overflow-hidden
+          rounded-xl bg-amber-400
+          px-3 text-sm font-bold text-black
+          shadow-[0_0_14px_rgba(245,158,11,0.35)]
+          transition-shadow duration-300
+          hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]
+          sm:h-11 sm:w-fit sm:px-5 sm:text-base
+          lg:text-xl
+        "
       >
-        <Link href="/dashboard-portrait-videos">
-          <span className="absolute inset-0 origin-right bg-amber-600 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-0" />
+        <Link href="/dashboard-portrait-videos" className="min-w-0">
+          <span
+            className="
+              absolute inset-0 origin-right bg-amber-600
+              transition-transform duration-500
+              ease-[cubic-bezier(0.22,1,0.36,1)]
+              group-hover:scale-x-0
+            "
+          />
 
-          <span className="relative z-10 flex items-center gap-2">
-            <Smartphone className="h-4 w-4 [stroke-width:3]" />
-            Manage Shorts
+          <span className="relative z-10 flex min-w-0 items-center justify-center gap-2">
+            <Smartphone className="h-4 w-4 shrink-0 [stroke-width:3]" />
+
+            <span className="truncate">Manage Shorts</span>
           </span>
         </Link>
       </Button>
@@ -162,17 +207,48 @@ function DashboardLandscapeHeader() {
 
 function EmptyLandscapeState() {
   return (
-    <section className="rounded-3xl border border-amber-400/15 bg-black/40 p-10 shadow-[0_0_18px_rgba(245,158,11,0.12)] backdrop-blur-md">
-      <div className="mx-auto flex max-w-xl flex-col items-center">
-        <div className="mb-5 rounded-full border border-white/10 bg-white/10 p-5">
-          <FaYoutube className="h-12 w-12 text-red-500" />
+    <section
+      className="
+        min-w-0 rounded-2xl
+        border border-amber-400/15
+        bg-black/40 p-5
+        shadow-[0_0_18px_rgba(245,158,11,0.12)]
+        backdrop-blur-md
+        sm:rounded-3xl sm:p-8
+        lg:p-10
+      "
+    >
+      <div className="mx-auto flex min-w-0 max-w-xl flex-col items-center text-center">
+        <div
+          className="
+            mb-4 rounded-full
+            border border-white/10
+            bg-white/10 p-4
+            sm:mb-5 sm:p-5
+          "
+        >
+          <FaYoutube className="h-9 w-9 text-red-500 sm:h-12 sm:w-12" />
         </div>
 
-        <h2 className="font-marcellus text-4xl text-white">
+        <h2
+          className="
+            max-w-full break-words
+            font-marcellus text-2xl
+            leading-tight text-white
+            sm:text-3xl
+            lg:text-4xl
+          "
+        >
           No landscape videos yet
         </h2>
 
-        <p className="mt-3 text-base leading-7 text-gray-300">
+        <p
+          className="
+            mt-3 max-w-full break-words
+            text-sm leading-6 text-gray-300
+            sm:text-base sm:leading-7
+          "
+        >
           Upload your first long-form video or add a YouTube embed.
         </p>
       </div>

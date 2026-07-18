@@ -95,7 +95,8 @@ export default function SignUpSection() {
                     className="
                       h-10 bg-neutral-50 text-base
                       border-gray-300 transition-all duration-300
-                      placeholder:text-base sm:h-11 sm:text-lg sm:placeholder:text-lg
+                      placeholder:text-base sm:h-11 sm:text-lg sm:placeholder:text-lg 
+                      md:text-lg
                       focus-visible:border-amber-500
                       focus-visible:ring-2 focus-visible:ring-amber-500
                     "
@@ -114,6 +115,7 @@ export default function SignUpSection() {
                       h-10 bg-neutral-50 text-base
                       border-gray-300 transition-all duration-300
                       placeholder:text-base sm:h-11 sm:text-lg sm:placeholder:text-lg
+                      md:text-lg
                       focus-visible:border-amber-500
                       focus-visible:ring-2 focus-visible:ring-amber-500
                     "
@@ -133,6 +135,7 @@ export default function SignUpSection() {
                       h-10 bg-neutral-50 text-base
                       border-gray-300 transition-all duration-300
                       placeholder:text-sm sm:h-11 sm:text-lg sm:placeholder:text-lg
+                      md:text-lg
                       focus-visible:border-amber-500
                       focus-visible:ring-2 focus-visible:ring-amber-500
                     "

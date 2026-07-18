@@ -7,27 +7,27 @@ import { Button } from "./ui/button";
 const tabs = [
   {
     id: "AI_Basement_Music_Studio_1",
-    label: "Studio",
+    label: "Vibes",
     imgName: "AI_Generated_Basement_Studio",
   },
   {
     id: "Steven_Sun_Logo_2",
-    label: "Steven Sun Logo",
+    label: "More Vibes",
     imgName: "icon",
   },
   {
     id: "AI_Basement_Music_Studio_3",
-    label: "Studio",
+    label: "Vibes",
     imgName: "AI_Generated_Basement_Studio",
   },
   {
     id: "Steven_Sun_Logo_4",
-    label: "Steven Sun Logo",
+    label: "More Vibes",
     imgName: "icon",
   },
   {
     id: "AI_Basement_Music_Studio_5",
-    label: "Studio",
+    label: "Vibes",
     imgName: "AI_Generated_Basement_Studio",
   },
 ];

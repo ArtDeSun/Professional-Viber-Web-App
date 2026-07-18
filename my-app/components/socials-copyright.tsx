@@ -14,16 +14,17 @@ export default function SocialsCopyright() {
     >
       <div className="container mx-auto flex min-w-0 flex-col items-center text-center font-roboto">
         <p className="max-w-full text-base leading-relaxed text-gray-300 sm:text-lg">
+          {/* professionalvibemaster@stevensun.com */}
           Inquiries:{" "}
           <a
-            href="mailto:professionalvibemaster@stevensun.com"
+            href="jiasun0916@gmail.com"
             className="
               break-all text-amber-400 transition-colors duration-300
               hover:text-amber-300 hover:underline
               sm:break-normal
             "
           >
-            professionalvibemaster@stevensun.com
+            jiasun0916@gmail.com
           </a>
         </p>
 

@@ -5,10 +5,10 @@ import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 const images = [
-  { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Studio" },
+  { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Vibes" },
   {
     src: "/hero-images/icon.png",
-    title: "Logo",
+    title: "More Vibes",
   },
 ];
 

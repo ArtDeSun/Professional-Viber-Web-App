@@ -399,7 +399,7 @@ export default function HeroDescriptionsSection() {
                     "
               >
                 Internalizing jazz, R&amp;B, rock, East-Asian pop, and classical
-                into a distinctive creative voice.
+                into a distinctively creative voice.
               </p>
             </div>
           </div>
