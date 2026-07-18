@@ -1,3 +1,5 @@
+## NextJS-Powered Web Application
+
 This web application features a digital marketing platform for an independent musician surviving in the social media age.
 
 The core product is powered by [Next.js](https://nextjs.org) bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
@@ -8,17 +10,17 @@ The [Next.js](https://nextjs.org) framework introduces end-to-end development of
 
 The main purpose of this project is to develop, manage, and expand the online presence of Steven's music business.
 
-Personalization, customization, and ease of access are paramount to the design philosophy of the individual content creator who is also responsible for site reliability engineering.
+Personalization, customization, and accessibility are paramount to the design philosophy of the solo content creator who also performs site reliability engineering.
 
-Consequently, the proposed features need to adapt to the bandwidth of a solo developer. If complex features are to be implemented, then they should be maintainable by one person at all times. The static contents and interactive components within webpages need to render responsively. When uploading music videos to the website, the developer will be a special end user who receives administrative privileges to write to the database. Therefore for regular user and developer alike, the UI navigation must be intuitive and free of contradictions.
+Consequently, the proposed features need to adapt to the operating bandwidth of a solo developer. If complex features are to be implemented, then they should be maintainable by an individual at all times. The static contents and interactive components within webpages need to render responsively. When uploading music videos to the website, the developer will be a special end user who receives administrative privileges to write to the database. Therefore for unauthenticated users and developers alike, the UI navigation must be intuitive and free of contradictions.
 
-During the early stages of running the app post-deployment, only a small database will be necessary while handling low subscriber count. Scaling will be considered only after site traffic reaches a critical threshold beyond the carrying capacity of the application.
+During the early stages of running the app post-deployment, only a small database will be necessary while handling a smaller number of signed-up users. Scaling will be considered only after site traffic reaches a critical threshold beyond the carrying capacity of the application.
 
 ### Features
 
 - Webpages describing Steven's background as a content creator specializing in music videos and piano lessons.
 - Links to Steven's social media profiles such as Youtube.
-- Mechanism for uploading music videos as an admin.
+- Mechanism for uploading music videos as an admin or an authenticated user.
 - Contact information for booking shows and piano lessons.
 - MongoDB integration.
 - Vercel deployment.
