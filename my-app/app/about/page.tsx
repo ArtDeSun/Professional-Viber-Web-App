@@ -270,15 +270,22 @@ export default function getAbout() {
                       className="
                         pointer-events-none absolute right-3 top-4 h-14 w-14
                         text-amber-300/15
+                        max-[379px]:hidden
                         sm:right-6 sm:top-6 sm:h-20 sm:w-20 sm:text-amber-300/20
                       "
                     />
 
-                    <Code2
+                    {/* <Code2
                       className="
                         pointer-events-none absolute bottom-3 left-3 h-12 w-12
                         text-red-300/15
                         sm:bottom-4 sm:left-6 sm:h-16 sm:w-16 sm:text-red-300/20
+                      "
+                    /> */}
+                    <Code2
+                      className="
+                        pointer-events-none absolute hidden lg:block
+                        lg:bottom-4 lg:left-6 lg:h-16 lg:w-16 lg:text-red-300/20
                       "
                     />
 

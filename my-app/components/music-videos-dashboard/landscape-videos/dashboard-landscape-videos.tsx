@@ -36,7 +36,7 @@ export default function DashboardLandscapeVideos() {
       ...videoSectionIds.split("|").filter(Boolean),
     ];
 
-    const observer = new IntersectionObserver(
+    /* const observer = new IntersectionObserver(
       (entries) => {
         const visibleEntry = entries
           .filter((entry) => entry.isIntersecting)
@@ -50,6 +50,21 @@ export default function DashboardLandscapeVideos() {
         root: null,
         rootMargin: "-25% 0px -55% 0px",
         threshold: [0.15, 0.35, 0.6],
+      },
+    ); */
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntry = entries.find((entry) => entry.isIntersecting);
+
+        if (visibleEntry?.target.id) {
+          setActiveSection(visibleEntry.target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "-25% 0px -55% 0px",
+        threshold: 0,
       },
     );
 
@@ -65,7 +80,7 @@ export default function DashboardLandscapeVideos() {
   }, [videoSectionIds]);
 
   const scrollToTop = () => {
-    setActiveSection("featured");
+    //setActiveSection("featured");
     window.history.replaceState(null, "", window.location.pathname);
 
     window.dispatchEvent(new Event("navbar-route-change"));
@@ -77,7 +92,7 @@ export default function DashboardLandscapeVideos() {
   };
 
   const scrollToSection = (id: string) => {
-    setActiveSection(id);
+    //setActiveSection(id);
     document.getElementById(id)?.scrollIntoView({
       behavior: "smooth",
       block: "start",

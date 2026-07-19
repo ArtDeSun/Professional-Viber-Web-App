@@ -42,7 +42,7 @@ export function LandscapeVideoSidebar({
 
   return (
     <aside
-      className="
+      className="pointer-events-none
                   fixed left-2 top-24 z-40
                   sm:left-4 sm:top-20
                   lg:left-6 lg:top-32
@@ -81,6 +81,7 @@ export function LandscapeVideoSidebar({
           aria-controls="landscape-video-sidebar-content"
           onClick={() => onOpenChange(!open)}
           className={`
+            pointer-events-auto
             relative z-10
             flex h-11 cursor-pointer
             items-center justify-between px-3 text-gray-100
@@ -324,10 +325,9 @@ function SidebarButton({
             ? `
               bg-gradient-to-r
               from-amber-300 via-amber-400 to-orange-500
-              font-bold text-black
+              text-black
               shadow-[0_0_16px_rgba(245,158,11,0.45)]
               sm:text-lg
-              lg:text-xl
             `
             : `
               text-gray-300
