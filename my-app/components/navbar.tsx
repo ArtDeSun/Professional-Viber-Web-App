@@ -355,7 +355,7 @@ export default function Navbar() {
             }
             onClick={(e) => handleTopNav(e, "/", "stevensun")}
             className={`group flex min-w-0 items-center gap-1.5 text-lg font-semibold
-                  transition-all duration-300 sm:text-xl lg:w-60 lg:gap-2 lg:text-2xl
+                  transition-all duration-300 sm:text-lg md:text-xl lg:w-60 lg:gap-2 lg:text-2xl
                           hover:text-amber-300 group
                           ${
                             activeId === "stevensun"
@@ -497,114 +497,124 @@ export default function Navbar() {
       <div
         id="mobile-navigation"
         className={`
-                    overflow-hidden
-                    bg-gradient-to-b
-                    from-black via-black/80 via-20% to-transparent
-                    backdrop-blur-xs
-                    font-playfairDisplay
-                    transition-[max-height,opacity,padding]
-                    duration-300 ease-out
-                    lg:hidden
-                    ${
-                      mobileMenuOpen
-                        ? "max-h-80 px-4 py-2 opacity-100"
-                        : "pointer-events-none max-h-0 px-4 py-0 opacity-0"
-                    }
-                  `}
+          grid overflow-hidden
+          transition-[grid-template-rows]
+          duration-300
+          ease-in-out
+          lg:hidden
+          ${
+            mobileMenuOpen
+              ? "grid-rows-[1fr]"
+              : "pointer-events-none grid-rows-[0fr]"
+          }
+        `}
       >
-        <div className="flex flex-col items-center gap-2">
-          <Link
-            href="/about"
-            onClick={(e) => {
-              setMobileMenuOpen(false);
-              handleTopNav(e, "/about", "about");
-            }}
+        <div className="min-h-0 overflow-hidden">
+          <div
+            className={`
+              bg-gradient-to-b
+              from-black via-black/80 via-80% to-transparent
+              px-4 py-2
+              font-playfairDisplay
+              backdrop-blur-md
+            `}
           >
-            <Button
-              className={`h-8 w-40 justify-center px-4 text-md
+            <div className="flex flex-col items-center gap-2">
+              {/* links */}
+              <Link
+                href="/about"
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleTopNav(e, "/about", "about");
+                }}
+              >
+                <Button
+                  className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "about" ? "text-white" : "text-gray-300"}`}
-            >
-              About
-            </Button>
-          </Link>
+                >
+                  About
+                </Button>
+              </Link>
 
-          <a
-            href="https://www.youtube.com/@StevenVibemasterSun"
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <Button
-              className="
+              <a
+                href="https://www.youtube.com/@StevenVibemasterSun"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <Button
+                  className="
                           h-8 w-40 justify-center rounded-xl bg-destructive
                           px-4 text-md text-gray-300 hover:text-black
                           cursor-pointer
                         "
-            >
-              YouTube
-            </Button>
-          </a>
+                >
+                  YouTube
+                </Button>
+              </a>
 
-          <Link
-            href="/music"
-            onClick={(e) => {
-              setMobileMenuOpen(false);
-              handleTopNav(e, "/music", "music");
-            }}
-          >
-            <Button
-              className={`h-8 w-40 justify-center px-4 text-md
+              <Link
+                href="/music"
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleTopNav(e, "/music", "music");
+                }}
+              >
+                <Button
+                  className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "music" ? "text-white" : "text-gray-300"}`}
-            >
-              Music
-            </Button>
-          </Link>
+                >
+                  Music
+                </Button>
+              </Link>
 
-          <Link
-            href="/updates"
-            onClick={(e) => {
-              setMobileMenuOpen(false);
-              handleTopNav(e, "/updates", "updates");
-            }}
-          >
-            <Button
-              className={`h-8 w-40 justify-center px-4 text-md
+              <Link
+                href="/updates"
+                onClick={(e) => {
+                  setMobileMenuOpen(false);
+                  handleTopNav(e, "/updates", "updates");
+                }}
+              >
+                <Button
+                  className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "updates" ? "text-white" : "text-gray-300"}`}
-            >
-              Updates
-            </Button>
-          </Link>
+                >
+                  Updates
+                </Button>
+              </Link>
 
-          <Link
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
+              <Link
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
 
-              setActiveId("contact");
-              setMobileMenuOpen(false);
+                  setActiveId("contact");
+                  setMobileMenuOpen(false);
 
-              history.replaceState(null, "", `${pathname}#contact`);
+                  history.replaceState(null, "", `${pathname}#contact`);
 
-              document.getElementById("contact")?.scrollIntoView({
-                behavior: "smooth",
-              });
-            }}
-          >
-            <Button
-              className={`h-8 w-40 justify-center px-4 text-md
+                  document.getElementById("contact")?.scrollIntoView({
+                    behavior: "smooth",
+                  });
+                }}
+              >
+                <Button
+                  className={`h-8 w-40 justify-center px-4 text-md
                           hover:font-bold hover:text-white
                           cursor-pointer
                           ${activeId === "contact" ? "text-white" : "text-gray-300"}`}
-            >
-              Contact
-            </Button>
-          </Link>
+                >
+                  Contact
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </nav>

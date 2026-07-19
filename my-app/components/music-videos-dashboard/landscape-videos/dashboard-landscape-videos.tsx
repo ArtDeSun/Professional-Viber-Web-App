@@ -88,8 +88,8 @@ export default function DashboardLandscapeVideos() {
     <main
       className="
       relative min-h-screen
-      py-36 font-redHatDisplay text-white
-      sm:py-32
+      py-38 font-redHatDisplay text-white
+      sm:py-20
       lg:py-46
     "
     >

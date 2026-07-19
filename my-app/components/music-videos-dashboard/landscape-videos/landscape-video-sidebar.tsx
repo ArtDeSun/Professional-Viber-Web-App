@@ -44,82 +44,114 @@ export function LandscapeVideoSidebar({
     <aside
       className="
                   fixed left-2 top-24 z-40
-                  w-12
-                  sm:left-4 sm:top-20 sm:w-14
-                  lg:left-6 lg:top-34 lg:w-56
+                  sm:left-4 sm:top-20
+                  lg:left-6 lg:top-32
                 "
     >
-      <button
-        type="button"
-        aria-label={open ? "Collapse sections" : "Expand sections"}
-        aria-expanded={open}
-        aria-controls="landscape-video-sidebar-content"
-        onClick={() => onOpenChange(!open)}
-        className={`
-          mb-3 flex h-11 cursor-pointer
-          items-center rounded-xl
-          border border-amber-400/20
-          bg-black/70 text-gray-100
-          shadow-[0_0_18px_rgba(245,158,11,0.25)]
-          backdrop-blur-md
-          transition-[width,border-color,color] duration-300
-          ease-[cubic-bezier(0.22,1,0.36,1)]
-          hover:border-amber-300/40
-          hover:text-amber-200
-          sm:h-12 sm:rounded-2xl
-          lg:hidden
-
-          ${
-            open
-              ? `
-                w-[calc(100vw-4rem)]
-                justify-start px-3
-                max-w-72 sm:px-4
-              `
-              : `
-                w-12 justify-center px-0
-                sm:w-14
-              `
-          }
-        `}
-      >
-        <PanelLeft className="h-5 w-5 shrink-0 text-amber-300" />
-
-        <span
+      <div className="relative mb-3 h-11 w-[calc(100vw-4rem)] max-w-72 sm:h-12 lg:hidden">
+        <div
+          aria-hidden="true"
           className={`
-            min-w-0 overflow-hidden whitespace-nowrap
-            font-marcellus text-base
-            transition-[width,opacity,margin] duration-300
-            sm:text-lg
-
-            ${open ? "ml-3 w-full opacity-100" : "ml-0 w-0 opacity-0"}
-          `}
-        >
-          Sections
-        </span>
-
-        <ChevronRight
-          className={`
-            shrink-0 text-amber-300
-            transition-[width,opacity,transform] duration-300
+            absolute inset-0
+            rounded-xl
+            border border-amber-400/20
+            bg-black/70
+            shadow-[0_0_18px_rgba(245,158,11,0.25)]
+            backdrop-blur-md
+            transition-[width] duration-300
+            ease-[cubic-bezier(0.22,1,0.36,1)]
+            sm:rounded-2xl
 
             ${
               open
-                ? "h-5 w-5 rotate-180 opacity-100"
-                : "h-5 w-0 rotate-0 opacity-0"
+                ? `w-full
+                   sm:px-4
+                `
+                : `w-16
+                   sm:w-18
+                `
             }
           `}
         />
-      </button>
+
+        <button
+          type="button"
+          aria-label={open ? "Collapse sections" : "Expand sections"}
+          aria-expanded={open}
+          aria-controls="landscape-video-sidebar-content"
+          onClick={() => onOpenChange(!open)}
+          className={`
+            relative z-10
+            flex h-11 cursor-pointer
+            items-center justify-between px-3 text-gray-100
+            transition-[width,color] duration-300
+            hover:text-amber-400
+            sm:h-12
+
+            ${
+              open
+                ? `
+                  w-full
+                  sm:px-4
+                `
+                : `
+                  w-16
+                  sm:w-18
+                `
+            }
+          `}
+        >
+          <PanelLeft className="h-5 w-5 shrink-0" />
+
+          <span
+            className={`
+              min-w-0 overflow-hidden whitespace-nowrap
+              font-marcellus text-base
+              transition-[width,margin-left] duration-200
+              sm:text-lg
+
+              ${
+                open
+                  ? `
+                    ml-3 
+                    w-24
+                  `
+                  : `
+                    ml-0 
+                    w-0
+                  `
+              }
+            `}
+          >
+            Sections
+          </span>
+
+          <ChevronRight
+            className={`
+              h-5 w-5 shrink-0
+              transition-[transform] duration-200
+
+              ${
+                open
+                  ? `
+                    rotate-180
+                  `
+                  : `
+                    rotate-0
+                  `
+              }
+            `}
+          />
+        </button>
+      </div>
 
       <div
         id="landscape-video-sidebar-content"
         className={`
-          absolute left-0 top-14
+          left-0
           w-[calc(100vw-4rem)]
           max-w-72
-          origin-left
-          transition-[opacity,transform,visibility] duration-300
+          transition-[opacity] duration-400
           ease-[cubic-bezier(0.22,1,0.36,1)]
 
           sm:top-15 sm:w-72
@@ -127,15 +159,11 @@ export function LandscapeVideoSidebar({
           ${
             open
               ? `
-                visible
                 pointer-events-auto
-                translate-x-0
                 opacity-100
               `
               : `
-                invisible
                 pointer-events-none
-                -translate-x-3
                 opacity-0
               `
           }
@@ -143,9 +171,7 @@ export function LandscapeVideoSidebar({
           lg:static
           lg:w-full
           lg:max-w-none
-          lg:visible
           lg:pointer-events-auto
-          lg:translate-x-0
           lg:opacity-100
         `}
       >

@@ -203,8 +203,7 @@ export default function NavbarRightCorner() {
                     sm:h-5 sm:w-5
                   "
                 />
-
-                <span>Videos - Landscape</span>
+                Videos - Landscape
               </DropdownMenuItem>
 
               <DropdownMenuItem
@@ -235,8 +234,7 @@ export default function NavbarRightCorner() {
                     sm:h-5 sm:w-5
                   "
                 />
-
-                <span>Shorts - Portrait</span>
+                Shorts - Portrait
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
