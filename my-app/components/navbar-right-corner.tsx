@@ -4,7 +4,7 @@ import { signOut, useSession } from "@/lib/auth/auth-client";
 import { LogOut, MonitorPlay, PlusSquare, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -81,12 +81,17 @@ export default function NavbarRightCorner() {
     return <></>;
   }
 
+  const handleSignInNav = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.location.href = "/sign-in";
+  };
+
   return (
     <div className="flex min-w-0 items-center justify-center gap-1 lg:gap-2">
       {!initialAuthChecked ? (
         <></>
       ) : !isLoggedIn ? (
-        <Link href="/sign-in">
+        <Link href="/sign-in" onClick={handleSignInNav}>
           <Button
             className="group relative h-9 w-20 overflow-hidden rounded-lg
                         bg-amber-400 px-2 text-base text-black

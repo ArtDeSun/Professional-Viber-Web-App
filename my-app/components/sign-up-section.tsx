@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/card";
 import { signUp } from "@/lib/auth/auth-client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { MouseEvent, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -23,7 +22,7 @@ export default function SignUpSection() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter();
+  //const router = useRouter();
 
   /* React.useEffect(() => {
     console.log("SignUp mounted");
@@ -52,6 +51,11 @@ export default function SignUpSection() {
       setLoading(false);
     }
   }
+
+  const handleSignInFromSignUp = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.location.href = "/sign-in";
+  };
 
   return (
     <section
@@ -160,6 +164,7 @@ export default function SignUpSection() {
                   Already have an account?{" "}
                   <Link
                     href="/sign-in"
+                    onClick={handleSignInFromSignUp}
                     className="font-medium text-amber-500 hover:underline"
                   >
                     Sign In

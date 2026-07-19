@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { signIn, useSession } from "@/lib/auth/auth-client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 
 export default function SignIn() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
@@ -70,6 +70,11 @@ export default function SignIn() {
       setLoading(false);
     }
   }
+
+  const handleSignUpFromSignIn = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.location.href = "/?destination=signup";
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -179,7 +184,8 @@ export default function SignIn() {
                     <p className="w-full break-words text-center text-base text-neutral-200 sm:text-lg">
                       Don&apos;t have an account?{" "}
                       <Link
-                        href="/sign-up"
+                        href="/?destination=signup"
+                        onClick={handleSignUpFromSignIn}
                         className="font-medium text-amber-500 hover:underline"
                       >
                         Sign Up

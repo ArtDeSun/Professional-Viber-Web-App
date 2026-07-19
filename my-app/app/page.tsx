@@ -88,9 +88,29 @@ export default function Home() {
     const contentTimer = setTimeout(() => {
       setVisible(true);
     }, 900);
+
+    const destination = new URLSearchParams(window.location.search).get(
+      "destination",
+    );
+
+    const signUpScrollTimer =
+      destination === "signup"
+        ? window.setTimeout(() => {
+            history.replaceState(null, "", "/#signup");
+
+            document.getElementById("signup")?.scrollIntoView({
+              behavior: "smooth",
+            });
+          }, 2000)
+        : undefined;
+
     return () => {
-      clearTimeout(backgroundTimer);
-      clearTimeout(contentTimer);
+      window.clearTimeout(backgroundTimer);
+      window.clearTimeout(contentTimer);
+
+      if (signUpScrollTimer !== undefined) {
+        window.clearTimeout(signUpScrollTimer);
+      }
     };
   }, [initialAuthChecked, heroImageLoaded]);
 
