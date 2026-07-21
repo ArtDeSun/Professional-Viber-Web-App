@@ -17,7 +17,7 @@ export default function SocialsCopyright() {
           {/* professionalvibemaster@stevensun.com */}
           Inquiries:{" "}
           <a
-            href="jiasun0916@gmail.com"
+            href="mailto:jiasun0916@gmail.com"
             className="
               break-all text-amber-400 transition-colors duration-300
               hover:text-amber-300 hover:underline

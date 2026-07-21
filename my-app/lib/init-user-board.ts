@@ -12,7 +12,12 @@ const DEFAULT_COLUMNS = [
   { name: "Rejected", order: 4 },
 ];
 
-export async function initializeUserBoard(userId: string) {
+type UserInfo = {
+  name: string;
+  email: string;
+};
+
+export async function initializeUserBoard(userId: string, user: UserInfo) {
   try {
     await connectDB();
 

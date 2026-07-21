@@ -59,7 +59,7 @@ export default function ImageTabs() {
     (typeof tabs)[number] | null
   >(null);
 
-  //const [heroImageVisible, setHeroImageVisible] = useState(false);
+  const [isDisplayedImageSquare, setIsDisplayedImageSquare] = useState(false);
 
   const [animationState, setAnimationState] = useState<
     "entering" | "visible" | "exiting"
@@ -187,15 +187,15 @@ export default function ImageTabs() {
                 className={`
                             overflow-hidden rounded-[50%]
                             ${
-                              displayedHeroImage?.imgName === "icon"
+                              isDisplayedImageSquare
                                 ? `
-                                  h-[280px] w-[280px]
+                                  h-[270px] w-[270px]
                                   sm:h-[340px] sm:w-[340px]
                                   md:h-[440px] md:w-[440px]
                                   lg:h-[520px] lg:w-[520px]
                                 `
                                 : `
-                                  h-[400px] w-[280px]
+                                  h-[400px] w-[270px]
                                   sm:h-[460px] sm:w-[460px]
                                   md:h-[480px] md:w-[480px]
                                   lg:h-[480px] lg:w-[720px]
@@ -210,10 +210,17 @@ export default function ImageTabs() {
                     alt={displayedHeroImage.imgName}
                     width={1200}
                     height={800}
+                    onLoad={(event) => {
+                      const image = event.currentTarget;
+
+                      setIsDisplayedImageSquare(
+                        image.naturalWidth === image.naturalHeight,
+                      );
+                    }}
                     className={`
                                 h-full w-full
                                 ${
-                                  displayedHeroImage.imgName === "icon"
+                                  isDisplayedImageSquare
                                     ? "object-contain"
                                     : "object-cover"
                                 }

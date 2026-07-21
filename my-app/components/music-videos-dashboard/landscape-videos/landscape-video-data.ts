@@ -9,7 +9,7 @@ const TEST_YOUTUBE_URL = "https://www.youtube.com/watch?v=TuZ4Xcb7D9w";
 
 const TEST_YOUTUBE_EMBED = "https://www.youtube.com/embed/TuZ4Xcb7D9w";
 
-const TEST_THUMBNAIL_URL = "/hero-images/AI_Generated_Basement_Studio.png";
+const TEST_THUMBNAIL_URL = "/hero-images/icon.png";
 
 export const featuredLandscapeVideo: LandscapeVideo = {
   id: "featured-1",

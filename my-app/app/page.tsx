@@ -118,6 +118,16 @@ export default function Home() {
   useEffect(() => {
     if (!visible) return;
 
+    // Might fix racing between sign-up scroll and homeScrolY scroll
+    /* const destination = new URLSearchParams(window.location.search).get(
+      "destination",
+    );
+
+    if (destination === "signup") {
+      sessionStorage.removeItem("homeScrollY");
+      return;
+    } */
+
     const savedY = sessionStorage.getItem("homeScrollY");
     if (!savedY) return;
 

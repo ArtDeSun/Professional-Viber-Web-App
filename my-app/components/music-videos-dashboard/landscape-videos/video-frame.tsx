@@ -43,15 +43,13 @@ export function VideoFrame({ video, featured = false }: VideoFrameProps) {
           allowFullScreen
           className="absolute inset-0 block h-full w-full border-0"
         />
-      ) : previewImage ? (
+      ) : previewImage &&
+        video.sourceType === "youtube" &&
+        video.youtubeEmbedUrl ? (
         <Button
           type="button"
           aria-label={`Play ${video.title}`}
-          onClick={() => {
-            if (video.sourceType === "youtube" && video.youtubeEmbedUrl) {
-              setShowPlayer(true);
-            }
-          }}
+          onClick={() => setShowPlayer(true)}
           className="
             group relative block h-full w-full
             min-w-0 cursor-pointer
@@ -74,29 +72,39 @@ export function VideoFrame({ video, featured = false }: VideoFrameProps) {
             "
           />
 
-          {video.sourceType === "youtube" && video.youtubeEmbedUrl && (
-            <>
-              <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />
+          <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />
 
-              <span
-                className="
-                  absolute left-1/2 top-1/2
-                  flex h-11 w-16
-                  -translate-x-1/2 -translate-y-1/2
-                  items-center justify-center
-                  rounded-2xl bg-red-600/90
-                  shadow-[0_0_18px_rgba(239,68,68,0.45)]
-                  transition-all duration-300
-                  group-hover:scale-105
-                  group-hover:bg-red-500
-                  sm:h-12 sm:w-18
-                "
-              >
-                <FaYoutube className="h-6 w-6 text-white sm:h-7 sm:w-7" />
-              </span>
-            </>
-          )}
+          <span
+            className="
+              absolute left-1/2 top-1/2
+              flex h-11 w-16
+              -translate-x-1/2 -translate-y-1/2
+              items-center justify-center
+              rounded-2xl bg-red-600/90
+              shadow-[0_0_18px_rgba(239,68,68,0.45)]
+              transition-all duration-300
+              group-hover:scale-105
+              group-hover:bg-red-500
+              sm:h-12 sm:w-18
+            "
+          >
+            <FaYoutube className="h-6 w-6 text-white sm:h-7 sm:w-7" />
+          </span>
         </Button>
+      ) : previewImage ? (
+        <div className="relative h-full w-full min-w-0 overflow-hidden">
+          <Image
+            src={previewImage}
+            alt={video.title}
+            fill
+            className="object-cover"
+            sizes="
+              (max-width: 639px) calc(100vw - 6rem),
+              (max-width: 1023px) calc(100vw - 8rem),
+              50vw
+            "
+          />
+        </div>
       ) : (
         <div
           className="

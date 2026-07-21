@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { signUp } from "@/lib/auth/auth-client";
+import { signIn, signUp } from "@/lib/auth/auth-client";
 import Link from "next/link";
 import React, { MouseEvent, useState } from "react";
 import { Button } from "./ui/button";
@@ -21,6 +21,7 @@ export default function SignUpSection() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [socialsLoading, setSocialsLoading] = useState(false);
 
   //const router = useRouter();
 
@@ -49,6 +50,26 @@ export default function SignUpSection() {
     } catch (err) {
       setError("An unexpected error occurred");
       setLoading(false);
+    }
+  }
+
+  async function handleSocialSignUp(provider: "google" | "facebook") {
+    setError("");
+    setSocialsLoading(true);
+
+    try {
+      const result = await signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+
+      if (result.error) {
+        setError(result.error.message ?? `Failed to sign up with ${provider}`);
+        setSocialsLoading(false);
+      }
+    } catch {
+      setError(`An unexpected error occurred with ${provider}`);
+      setSocialsLoading(false);
     }
   }
 
@@ -159,6 +180,45 @@ export default function SignUpSection() {
                 >
                   {loading ? "Creating account..." : "Sign Up"}
                 </Button>
+
+                <div className="flex w-full items-center gap-3">
+                  <div className="h-px flex-1 bg-white/15" />
+                  <span className="text-base text-neutral-400 sm:text-lg">
+                    or
+                  </span>
+                  <div className="h-px flex-1 bg-white/15" />
+                </div>
+
+                <div className="flex flex-col items-center w-full gap-2">
+                  <Button
+                    type="button"
+                    disabled={socialsLoading}
+                    onClick={() => handleSocialSignUp("google")}
+                    className="
+                      h-10 w-9/10 rounded-3xl border-neutral-50/50
+                      text-base text-neutral-50 
+                      hover:text-amber-400 hover:cursor-pointer 
+                      hover:border-neutral-50 hover:scale-102
+                      sm:h-11 sm:text-lg
+                    "
+                  >
+                    {socialsLoading ? "Loading..." : "Sign up with Google"}
+                  </Button>
+                  {/*                   <Button
+                    type="button"
+                    disabled={socialsLoading}
+                    onClick={() => handleSocialSignUp("facebook")}
+                    className="
+                      h-10 w-9/10 rounded-3xl border-neutral-50/50
+                      text-base text-neutral-50 
+                      hover:text-amber-400 hover:cursor-pointer
+                      hover:border-neutral-50 hover:scale-102
+                      sm:h-11 sm:text-lg
+                    "
+                  >
+                    {socialsLoading ? "Loading..." : "Sign up with Facebook"}
+                  </Button> */}
+                </div>
 
                 <p className="text-center text-base text-neutral-200 sm:text-lg">
                   Already have an account?{" "}

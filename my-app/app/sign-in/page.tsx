@@ -47,6 +47,7 @@ export default function SignIn() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [socialsLoading, setSocialsLoading] = useState(false);
 
   /* const router = useRouter(); */
 
@@ -68,6 +69,26 @@ export default function SignIn() {
     } catch (err) {
       setError("An unexpected error occurred");
       setLoading(false);
+    }
+  }
+
+  async function handleSocialSignUp(provider: "google" | "facebook") {
+    setError("");
+    setSocialsLoading(true);
+
+    try {
+      const result = await signIn.social({
+        provider,
+        callbackURL: "/",
+      });
+
+      if (result.error) {
+        setError(result.error.message ?? `Failed to sign in with ${provider}`);
+        setSocialsLoading(false);
+      }
+    } catch {
+      setError(`An unexpected error occurred with ${provider}`);
+      setSocialsLoading(false);
     }
   }
 
@@ -179,6 +200,29 @@ export default function SignIn() {
                       "
                     >
                       {loading ? "Signing in..." : "Sign In"}
+                    </Button>
+
+                    <div className="flex w-full items-center gap-3">
+                      <div className="h-px flex-1 bg-white/15" />
+                      <span className="text-base text-neutral-400 sm:text-lg">
+                        or
+                      </span>
+                      <div className="h-px flex-1 bg-white/15" />
+                    </div>
+
+                    <Button
+                      type="button"
+                      disabled={socialsLoading}
+                      onClick={() => handleSocialSignUp("google")}
+                      className="
+                                          h-10 w-9/10 rounded-3xl border-neutral-50/50
+                                          text-base text-neutral-50 
+                                          hover:text-amber-400 hover:cursor-pointer 
+                                          hover:border-neutral-50 hover:scale-102
+                                          sm:h-11 sm:text-lg
+                                        "
+                    >
+                      {socialsLoading ? "Loading..." : "Sign in with Google"}
                     </Button>
 
                     <p className="w-full break-words text-center text-base text-neutral-200 sm:text-lg">

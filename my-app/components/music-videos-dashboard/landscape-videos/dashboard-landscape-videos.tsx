@@ -99,6 +99,51 @@ export default function DashboardLandscapeVideos() {
     });
   };
 
+  // 1. Save scroll position before unload,
+  // and only force top-of-page on real refresh
+  useEffect(() => {
+    history.scrollRestoration = "manual";
+
+    const navEntry = performance.getEntriesByType(
+      "navigation",
+    )[0] as PerformanceNavigationTiming;
+
+    const isReload = navEntry?.type === "reload";
+
+    if (!isReload) {
+      sessionStorage.removeItem("videoDashboardScrollY");
+    } else {
+      window.scrollTo(0, 0);
+    }
+
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("videoDashboardScrollY", String(window.scrollY));
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  // 2. Restore scroll after saving scroll position and refreshing the page
+  useEffect(() => {
+    const savedY = sessionStorage.getItem("videoDashboardScrollY");
+    if (!savedY) return;
+
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: Number(savedY),
+        behavior: "smooth",
+      });
+
+      sessionStorage.removeItem("videoDashboardScrollY");
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <main
       className="
