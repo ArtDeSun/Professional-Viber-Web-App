@@ -2,8 +2,9 @@ import connectDB from "@/lib/db";
 import "@/lib/models";
 import { Board, Column, JobApplication } from "@/lib/models";
 
-// Update userId from MongoDB Atlas as needed
+// Update USER from MongoDB Atlas as needed
 const USER_ID = "6a34509488eb8601635ea085";
+const USER = { name: "testname", email: "test@email.com" };
 
 const ADDITIONAL_JOB_COUNT = 13;
 
@@ -78,7 +79,7 @@ async function seed() {
     if (!board) {
       console.log("⚠️  Board not found. Creating board...");
       const { initializeUserBoard } = await import("../lib/init-user-board");
-      board = await initializeUserBoard(USER_ID);
+      board = await initializeUserBoard(USER_ID, USER);
       console.log("✅ Board created");
     } else {
       console.log("✅ Board found");
