@@ -219,7 +219,7 @@ export function LandscapeVideoSidebar({
                       absolute inset-0 origin-top bg-amber-600
                       transition-transform duration-500
                       ease-[cubic-bezier(0.22,1,0.36,1)]
-                      group-hover:scale-y-0
+                      group-hover:scale-y-0 active:transition-none active:bg-amber-400
                     "
                   />
 
@@ -276,7 +276,7 @@ export function LandscapeVideoSidebar({
                     transition-all duration-300
                     hover:border-amber-300/30
                     hover:bg-white/10 hover:text-amber-200
-                    active:bg-white/10
+                    active:transition-none active:bg-white/10 active:text-amber-200
                     hover:shadow-[0_0_12px_rgba(245,158,11,0.18)]
                     sm:h-10 sm:text-lg
                   "
@@ -333,9 +333,8 @@ function SidebarButton({
             `
             : `
               text-gray-300
-              hover:bg-white/10
-              active:bg-white/10
-              hover:text-amber-200
+              hover:bg-white/10 active:transition-none active:bg-white/10
+              hover:text-amber-200 active:text-amber-200
               hover:shadow-[0_0_14px_rgba(245,158,11,0.18)]
             `
         }

@@ -125,7 +125,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     shadow-[0_0_16px_rgba(239,68,68,0.35)]
                     transition-all duration-300
                     hover:-translate-y-0.5
-                    hover:bg-red-500/80
+                    hover:bg-red-500/80 active:transition-none active:bg-red-500/80
                     hover:shadow-[0_0_24px_rgba(239,68,68,0.6)]
                     sm:h-12 sm:w-fit sm:rounded-2xl
                     sm:px-5 sm:text-base
@@ -173,8 +173,8 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     transition-all duration-300
                     hover:-translate-y-0.5
                     hover:border-amber-300/60
-                    hover:bg-amber-400/15
-                    hover:text-white
+                    hover:bg-amber-400/15 active:transition-none active:bg-amber-400/15
+                    hover:text-white active:text-white
                     hover:shadow-[0_0_18px_rgba(245,158,11,0.35)]
                     sm:h-12 sm:w-fit sm:rounded-2xl
                     sm:px-5 sm:text-base
@@ -248,8 +248,8 @@ function FeaturedHeader() {
           text-sm font-bold text-amber-100
           transition-all duration-300
           hover:-translate-y-0.5
-          hover:bg-amber-400/80
-          hover:text-black
+          hover:bg-amber-400/80 active:transition-none active:bg-amber-400/80
+          hover:text-black active:text-black
           hover:shadow-[0_0_22px_rgba(245,158,11,0.48)]
           sm:h-11 sm:w-fit sm:rounded-2xl
           sm:px-4 sm:text-base

@@ -250,7 +250,7 @@ function DashboardLandscapeHeader() {
               absolute inset-0 origin-right bg-amber-600
               transition-transform duration-500
               ease-[cubic-bezier(0.22,1,0.36,1)]
-              group-hover:scale-x-0
+              group-hover:scale-x-0 active:bg-amber-400
             "
           />
 

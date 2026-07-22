@@ -130,8 +130,8 @@ function LandscapeSectionHeader({
           transition-all duration-300
 
           hover:-translate-y-0.5
-          hover:bg-amber-400/10
-          hover:text-white
+          hover:bg-amber-400/10 active:transition-none active:bg-amber-400/10
+          hover:text-white active:text-white
           hover:shadow-[0_0_16px_rgba(245,158,11,0.28)]
 
           sm:h-11
@@ -292,8 +292,8 @@ function LandscapeVideoMenu({ video }: { video: LandscapeVideo }) {
             transition-all duration-300
 
             hover:-translate-y-0.5
-            hover:bg-amber-400/80
-            hover:text-black
+            hover:bg-amber-400/80 active:transition-none active:bg-amber-400/80
+            hover:text-black active:text-black
             hover:shadow-[0_0_18px_rgba(245,158,11,0.45)]
 
             data-[state=open]:bg-amber-400/80

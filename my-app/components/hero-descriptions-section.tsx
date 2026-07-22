@@ -52,8 +52,8 @@ export default function HeroDescriptionsSection() {
             relative overflow-hidden
             border-t border-white/15
             bg-neutral-950
-            py-20
-            sm:py-28
+            py-28
+            sm:py-32
             md:py-36
           "
     >

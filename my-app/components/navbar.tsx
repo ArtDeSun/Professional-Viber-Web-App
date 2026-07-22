@@ -282,6 +282,22 @@ export default function Navbar() {
     };
   }, []);
 
+  const MOBILE_MENU_CLOSE_MS = 300;
+
+  const handleMobileTopNav = (
+    e: MouseEvent<HTMLAnchorElement>,
+    href: string,
+    id: NavId,
+  ) => {
+    e.preventDefault();
+
+    setMobileMenuOpen(false);
+
+    setTimeout(() => {
+      handleTopNav(e, href, id);
+    }, MOBILE_MENU_CLOSE_MS);
+  };
+
   return (
     /* border-b border-gray-200  */
     /* <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xs 
@@ -525,7 +541,7 @@ export default function Navbar() {
                 href="/about"
                 onClick={(e) => {
                   setMobileMenuOpen(false);
-                  handleTopNav(e, "/about", "about");
+                  handleMobileTopNav(e, "/about", "about");
                 }}
               >
                 <Button

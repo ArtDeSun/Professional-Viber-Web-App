@@ -543,7 +543,7 @@ export default function Home() {
                             transition-all duration-300
                             hover:bg-white
                             sm:h-9 sm:px-6 sm:text-lg
-                            sm:hover:px-8 sm:hover:text-xl
+                            sm:hover:px-7 sm:hover:h-10 sm:hover:text-xl
                           "
                         >
                           Lessons
