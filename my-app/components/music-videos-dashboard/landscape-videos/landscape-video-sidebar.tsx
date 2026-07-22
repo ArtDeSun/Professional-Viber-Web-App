@@ -58,7 +58,7 @@ export function LandscapeVideoSidebar({
             bg-black/70
             shadow-[0_0_18px_rgba(245,158,11,0.25)]
             backdrop-blur-md
-            transition-[width] duration-300
+            transition-[width] duration-600
             ease-[cubic-bezier(0.22,1,0.36,1)]
             sm:rounded-2xl
 
@@ -86,7 +86,7 @@ export function LandscapeVideoSidebar({
             flex h-11 cursor-pointer
             items-center justify-between px-3 text-gray-100
             transition-[width,color] duration-300
-            hover:text-amber-400
+            hover:text-amber-400 active:text-amber-400
             sm:h-12
 
             ${
@@ -108,7 +108,7 @@ export function LandscapeVideoSidebar({
             className={`
               min-w-0 overflow-hidden whitespace-nowrap
               font-marcellus text-base
-              transition-[width,margin-left] duration-200
+              transition-[width,margin-left] duration-300
               sm:text-lg
 
               ${
@@ -130,7 +130,7 @@ export function LandscapeVideoSidebar({
           <ChevronRight
             className={`
               h-5 w-5 shrink-0
-              transition-[transform] duration-200
+              transition-[transform] duration-300
 
               ${
                 open
@@ -151,6 +151,7 @@ export function LandscapeVideoSidebar({
         className={`
           left-0
           w-[calc(100vw-4rem)]
+          bg-black/70
           max-w-72
           transition-[opacity] duration-400
           ease-[cubic-bezier(0.22,1,0.36,1)]
@@ -275,6 +276,7 @@ export function LandscapeVideoSidebar({
                     transition-all duration-300
                     hover:border-amber-300/30
                     hover:bg-white/10 hover:text-amber-200
+                    active:bg-white/10
                     hover:shadow-[0_0_12px_rgba(245,158,11,0.18)]
                     sm:h-10 sm:text-lg
                   "
@@ -332,6 +334,7 @@ function SidebarButton({
             : `
               text-gray-300
               hover:bg-white/10
+              active:bg-white/10
               hover:text-amber-200
               hover:shadow-[0_0_14px_rgba(245,158,11,0.18)]
             `
