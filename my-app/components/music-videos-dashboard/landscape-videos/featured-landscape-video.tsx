@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Edit3, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import type { LandscapeVideo } from "./landscape-video-types";
 import { VideoFrame } from "./video-frame";
@@ -11,6 +12,11 @@ type FeaturedLandscapeVideoProps = {
 };
 
 export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
+  const [featuredVideoResetSignal, setFeaturedVideoResetSignal] = useState(0);
+  function resetFeaturedVideoFrame() {
+    setFeaturedVideoResetSignal((current) => current + 1);
+  }
+
   return (
     <section
       id="featured"
@@ -19,7 +25,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
         sm:scroll-mt-32 sm:space-y-5
       "
     >
-      <FeaturedHeader />
+      <FeaturedHeader resetFeaturedVideoFrame={resetFeaturedVideoFrame} />
 
       {!video ? (
         <Card
@@ -62,7 +68,11 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
             "
           >
             <div className="min-w-0">
-              <VideoFrame video={video} featured />
+              <VideoFrame
+                video={video}
+                featured
+                resetSignal={featuredVideoResetSignal}
+              />
             </div>
 
             <div
@@ -131,6 +141,9 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     sm:px-5 sm:text-base
                     lg:text-lg
                   "
+                  onClick={() => {
+                    resetFeaturedVideoFrame();
+                  }}
                 >
                   <Link
                     href={video.youtubeUrl ?? "#"}
@@ -147,6 +160,16 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                       "
                     />
 
+                    {/* function handleOpenYouTube() {
+                      resetFeaturedVideoFrame();
+
+                      window.open(
+                        featuredVideo.youtubeUrl,
+                        "_blank",
+                        "noopener,noreferrer",
+                      );
+                    } */}
+                    {/* onClick={handleOpenYouTube} */}
                     <span className="truncate">Open YouTube</span>
 
                     <ExternalLink
@@ -180,6 +203,9 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     sm:px-5 sm:text-base
                     lg:text-lg
                   "
+                  onClick={() => {
+                    resetFeaturedVideoFrame();
+                  }}
                 >
                   <Edit3
                     className="
@@ -191,6 +217,11 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     "
                   />
 
+                  {/* function handleEditFeatured() {
+                    resetFeaturedVideoFrame();
+                    setFeaturedEditorOpen(true);
+                  } */}
+                  {/* onClick={handleEditFeatured} */}
                   <span className="truncate">Edit Featured</span>
                 </Button>
               </div>
@@ -202,7 +233,11 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
   );
 }
 
-function FeaturedHeader() {
+function FeaturedHeader({
+  resetFeaturedVideoFrame,
+}: {
+  resetFeaturedVideoFrame: () => void;
+}) {
   return (
     <header
       className="
@@ -255,6 +290,9 @@ function FeaturedHeader() {
           sm:px-4 sm:text-base
           lg:h-12 lg:px-5 lg:text-lg
         "
+        onClick={() => {
+          resetFeaturedVideoFrame();
+        }}
       >
         <Star
           className="

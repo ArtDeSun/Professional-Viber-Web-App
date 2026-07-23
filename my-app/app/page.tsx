@@ -629,7 +629,6 @@ export default function Home() {
         {/* Sign Up Section */}
 
         {initialAuthChecked && !isLoggedIn && <SignUpSection />}
-        {/* {session?.user ? <></> : <SignUpSection />} */}
         {/*<SignUpSection />*/}
       </main>
     </div>

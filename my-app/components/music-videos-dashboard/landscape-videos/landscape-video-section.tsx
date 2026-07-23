@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Edit3, EllipsisVertical, Trash2, Upload } from "lucide-react";
-import { ElementType } from "react";
+import { ElementType, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import type {
   LandscapeVideo,
@@ -20,6 +20,30 @@ type LandscapeVideoSectionProps = {
 };
 
 export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
+  const [videoResetSignals, setVideoResetSignals] = useState<
+    Record<string, number>
+  >({});
+
+  function resetVideoFrame(videoId: string) {
+    setVideoResetSignals((current) => ({
+      ...current,
+      [videoId]: (current[videoId] ?? 0) + 1,
+    }));
+  }
+
+  //Upon clicking Add Video in LandscapeSectionHeader
+  function resetSectionVideoFrames(videos: LandscapeVideo[]) {
+    setVideoResetSignals((current) => {
+      const next = { ...current };
+
+      for (const video of videos) {
+        next[video.id] = (next[video.id] ?? 0) + 1;
+      }
+
+      return next;
+    });
+  }
+
   return (
     <section
       id={section.id}
@@ -37,7 +61,12 @@ export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
         sm:p-5
       "
     >
-      <LandscapeSectionHeader icon={section.icon} title={section.label} />
+      <LandscapeSectionHeader
+        icon={section.icon}
+        title={section.label}
+        section={section}
+        resetSectionVideoFrames={resetSectionVideoFrames}
+      />
 
       {section.videos.length === 0 ? (
         <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
@@ -62,7 +91,12 @@ export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
           "
         >
           {section.videos.map((video) => (
-            <LandscapeVideoCard key={video.id} video={video} />
+            <LandscapeVideoCard
+              key={video.id}
+              video={video}
+              resetSignal={videoResetSignals[video.id] ?? 0}
+              resetVideoFrame={resetVideoFrame}
+            />
           ))}
         </div>
       )}
@@ -73,9 +107,13 @@ export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
 function LandscapeSectionHeader({
   icon: Icon,
   title,
+  section,
+  resetSectionVideoFrames,
 }: {
   icon: ElementType;
   title: string;
+  section: LandscapeVideoSectionData;
+  resetSectionVideoFrames: (videos: LandscapeVideo[]) => void;
 }) {
   return (
     <header
@@ -144,6 +182,9 @@ function LandscapeSectionHeader({
           lg:px-5
           lg:text-lg
         "
+        onClick={() => {
+          resetSectionVideoFrames(section.videos);
+        }}
       >
         <Upload
           className="
@@ -163,7 +204,15 @@ function LandscapeSectionHeader({
   );
 }
 
-function LandscapeVideoCard({ video }: { video: LandscapeVideo }) {
+function LandscapeVideoCard({
+  video,
+  resetSignal,
+  resetVideoFrame,
+}: {
+  video: LandscapeVideo;
+  resetSignal: number;
+  resetVideoFrame: (videoId: string) => void;
+}) {
   return (
     <Card
       className="
@@ -192,7 +241,7 @@ function LandscapeVideoCard({ video }: { video: LandscapeVideo }) {
           sm:rounded-[1.35rem]
         "
       >
-        <VideoFrame video={video} />
+        <VideoFrame video={video} resetSignal={resetSignal} />
 
         <div
           className="
@@ -268,7 +317,10 @@ function LandscapeVideoCard({ video }: { video: LandscapeVideo }) {
               )}
             </div>
 
-            <LandscapeVideoMenu video={video} />
+            <LandscapeVideoMenu
+              video={video}
+              resetVideoFrame={resetVideoFrame}
+            />
           </div>
         </div>
       </CardContent>
@@ -276,7 +328,13 @@ function LandscapeVideoCard({ video }: { video: LandscapeVideo }) {
   );
 }
 
-function LandscapeVideoMenu({ video }: { video: LandscapeVideo }) {
+function LandscapeVideoMenu({
+  video,
+  resetVideoFrame,
+}: {
+  video: LandscapeVideo;
+  resetVideoFrame: (videoId: string) => void;
+}) {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -302,6 +360,10 @@ function LandscapeVideoMenu({ video }: { video: LandscapeVideo }) {
 
             sm:h-10 sm:w-10
           "
+          onClick={() => {
+            resetVideoFrame(video.id);
+            //setOpenMenuVideoId(video.id);
+          }}
         >
           <EllipsisVertical className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>

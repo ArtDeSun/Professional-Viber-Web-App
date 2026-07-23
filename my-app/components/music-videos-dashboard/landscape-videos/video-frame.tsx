@@ -1,16 +1,25 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import type { LandscapeVideo } from "./landscape-video-types";
 
 type VideoFrameProps = {
   video: LandscapeVideo;
   featured?: boolean;
+  resetSignal?: number;
 };
 
-export function VideoFrame({ video, featured = false }: VideoFrameProps) {
+export function VideoFrame({
+  video,
+  featured = false,
+  resetSignal = 0,
+}: VideoFrameProps) {
   const [showPlayer, setShowPlayer] = useState(false);
+
+  useEffect(() => {
+    setShowPlayer(false);
+  }, [video.id, resetSignal]);
 
   const youtubeThumbnail =
     video.sourceType === "youtube"
