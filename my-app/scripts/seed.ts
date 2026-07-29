@@ -79,7 +79,7 @@ async function seed() {
     if (!board) {
       console.log("⚠️  Board not found. Creating board...");
       const { initializeUserBoard } = await import("../lib/init-user-board");
-      board = await initializeUserBoard(USER_ID, USER);
+      board = await initializeUserBoard(USER_ID);
       console.log("✅ Board created");
     } else {
       console.log("✅ Board found");
