@@ -9,17 +9,20 @@ import {
 import { Edit3, EllipsisVertical, Trash2, Upload } from "lucide-react";
 import { ElementType, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import type {
-  LandscapeVideo,
-  LandscapeVideoSectionData,
-} from "./landscape-video-types";
+import type { LandscapeVideo } from "./landscape-video-types";
 import { VideoFrame } from "./video-frame";
 
+import type { LandscapeVideoSection } from "@/lib/models/models.types";
+
 type LandscapeVideoSectionProps = {
-  section: LandscapeVideoSectionData;
+  section: LandscapeVideoSection;
+  icon: ElementType;
 };
 
-export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
+export function DashboardLandscapeVideoSection({
+  section,
+  icon,
+}: LandscapeVideoSectionProps) {
   const [videoResetSignals, setVideoResetSignals] = useState<
     Record<string, number>
   >({});
@@ -46,29 +49,29 @@ export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
 
   return (
     <section
-      id={section.id}
+      id={section._id}
       className="
         min-w-0
-        scroll-mt-28 space-y-4
+        scroll-mt-36 space-y-4
         rounded-2xl
         border border-gray-300/15
         bg-neutral-900/50
         p-3
 
-        sm:scroll-mt-32
+        sm:scroll-mt-40
         sm:space-y-5
         sm:rounded-3xl
         sm:p-5
       "
     >
       <LandscapeSectionHeader
-        icon={section.icon}
+        icon={icon}
         title={section.label}
-        section={section}
-        resetSectionVideoFrames={resetSectionVideoFrames}
+        //section={section}
+        //resetSectionVideoFrames={resetSectionVideoFrames}
       />
 
-      {section.videos.length === 0 ? (
+      {/* {section.videos.length === 0 ? (
         <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
           <CardContent
             className="
@@ -99,7 +102,19 @@ export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
             />
           ))}
         </div>
-      )}
+      )} */}
+
+      <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
+        <CardContent
+          className="
+              p-5 text-center
+              text-sm leading-6 text-gray-400
+              sm:p-8 sm:text-base
+            "
+        >
+          No videos in this section yet.
+        </CardContent>
+      </Card>
     </section>
   );
 }
@@ -107,13 +122,13 @@ export function LandscapeVideoSection({ section }: LandscapeVideoSectionProps) {
 function LandscapeSectionHeader({
   icon: Icon,
   title,
-  section,
-  resetSectionVideoFrames,
+  //section,
+  //resetSectionVideoFrames,
 }: {
   icon: ElementType;
   title: string;
-  section: LandscapeVideoSectionData;
-  resetSectionVideoFrames: (videos: LandscapeVideo[]) => void;
+  //section: LandscapeVideoSectionData;
+  //resetSectionVideoFrames: (videos: LandscapeVideo[]) => void;
 }) {
   return (
     <header
@@ -183,7 +198,7 @@ function LandscapeSectionHeader({
           lg:text-lg
         "
         onClick={() => {
-          resetSectionVideoFrames(section.videos);
+          //resetSectionVideoFrames(section.videos);
         }}
       >
         <Upload
@@ -244,7 +259,7 @@ function LandscapeVideoCard({
         <VideoFrame video={video} resetSignal={resetSignal} />
 
         <div
-          className="
+          className=" 
             relative min-w-0
             min-h-28 p-3
 
@@ -396,8 +411,8 @@ function LandscapeVideoMenu({
             px-3 py-2.5
             text-sm font-medium
             transition-colors duration-200
-            focus:bg-amber-400/80
-            focus:text-black
+            focus:bg-amber-400/80 active:bg-amber-400/80
+            focus:text-black active:text-black
 
             sm:rounded-2xl
             sm:py-3
@@ -430,8 +445,8 @@ function LandscapeVideoMenu({
             text-sm font-medium
             text-red-300
             transition-colors duration-200
-            focus:bg-red-600/80
-            focus:text-white
+            focus:bg-red-600/80 active:bg-red-600/80
+            focus:text-white active:text-white
 
             sm:rounded-2xl
             sm:py-3

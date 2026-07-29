@@ -21,8 +21,8 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
     <section
       id="featured"
       className="
-        min-w-0 scroll-mt-28 space-y-4
-        sm:scroll-mt-32 sm:space-y-5
+        min-w-0 scroll-mt-36 space-y-4
+        sm:scroll-mt-40 sm:space-y-5
       "
     >
       <FeaturedHeader resetFeaturedVideoFrame={resetFeaturedVideoFrame} />

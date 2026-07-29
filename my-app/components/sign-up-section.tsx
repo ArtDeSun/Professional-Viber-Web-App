@@ -81,7 +81,7 @@ export default function SignUpSection() {
   return (
     <section
       id="signup"
-      className="border-t border-white/15 bg-neutral-950 px-4 py-12 sm:px-6 sm:py-16"
+      className="border-t border-white/15 bg-neutral-950 px-4 py-28 sm:px-6 sm:py-32"
     >
       <div className="container mx-auto flex justify-center px-0 sm:px-4 lg:px-16">
         <Card className="w-full max-w-lg border-gray-200 bg-neutral-950 shadow-lg">

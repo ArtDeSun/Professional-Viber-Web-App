@@ -81,7 +81,7 @@ export default function SocialsCopyright() {
           </a>
 
           <a
-            href="https://tiktok.com"
+            href="https://tiktok.com/en"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Steven Sun on TikTok"

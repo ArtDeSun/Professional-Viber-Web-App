@@ -1,5 +1,10 @@
 import connectDB from "./db";
-import { Board, Column } from "./models";
+import {
+  Board,
+  Column,
+  LandscapeVideoBoard,
+  LandscapeVideoSection,
+} from "./models";
 
 const DEFAULT_COLUMNS = [
   {
@@ -12,12 +17,7 @@ const DEFAULT_COLUMNS = [
   { name: "Rejected", order: 4 },
 ];
 
-type UserInfo = {
-  name: string;
-  email: string;
-};
-
-export async function initializeUserBoard(userId: string, user: UserInfo) {
+export async function initializeUserBoard(userId: string) {
   try {
     await connectDB();
 
@@ -51,5 +51,76 @@ export async function initializeUserBoard(userId: string, user: UserInfo) {
     return board;
   } catch (err) {
     throw err;
+  }
+}
+
+// ---------------------------------------------------------------------------
+
+const DEFAULT_LANDSCAPE_VIDEO_SECTIONS = [
+  {
+    label: "Latest Videos",
+    order: 0,
+  },
+  {
+    label: "Covers",
+    order: 1,
+  },
+  {
+    label: "Solo Piano",
+    order: 2,
+  },
+  {
+    label: "Tutorials",
+    order: 3,
+  },
+  {
+    label: "Live Sessions",
+    order: 4,
+  },
+];
+
+export async function initializeUserLandscapeVideoBoard(userId: string) {
+  try {
+    await connectDB();
+
+    // Check if landscape video board already exists
+    const existingLandscapeVideoBoard = await LandscapeVideoBoard.findOne({
+      userId,
+      name: "Landscape Video Dashboard",
+    });
+
+    if (existingLandscapeVideoBoard) {
+      return existingLandscapeVideoBoard;
+    }
+
+    // Create the landscape video board
+    const landscapeVideoBoard = await LandscapeVideoBoard.create({
+      name: "Landscape Video Dashboard",
+      userId,
+      landscapeVideoSections: [],
+    });
+
+    // Create default landscape video sections
+    const landscapeVideoSections = await Promise.all(
+      DEFAULT_LANDSCAPE_VIDEO_SECTIONS.map((sec) =>
+        LandscapeVideoSection.create({
+          landscapeVideoBoardId: landscapeVideoBoard._id,
+          landscapeVideos: [],
+          userId: userId,
+          order: sec.order,
+          label: sec.label,
+        }),
+      ),
+    );
+
+    // Update the landscape video board with the new landscape video section IDs
+    landscapeVideoBoard.landscapeVideoSections = landscapeVideoSections.map(
+      (sec) => sec._id,
+    );
+    await landscapeVideoBoard.save();
+
+    return landscapeVideoBoard;
+  } catch (err) {
+    return err;
   }
 }
