@@ -24,7 +24,7 @@ import {
   Star,
   Trash2,
 } from "lucide-react";
-import { useState, type ElementType } from "react";
+import { useEffect, useState, type ElementType } from "react";
 import CreateLandscapeVideoSectionDialog from "./create-landscape-video-section-dialog";
 import { type LandscapeSectionIconKey } from "./landscape-video-section-ui-config";
 
@@ -278,7 +278,7 @@ export function LandscapeVideoSidebar({
                 <div
                   className="
                     min-h-0 min-w-0 flex-1
-                    space-y-1.5 overflow-x-hidden overflow-y-auto
+                    space-y-1.5 overflow-x-hidden overflow-y-auto pb-4
                     pr-1 sm:space-y-2
                   "
                 >
@@ -566,9 +566,10 @@ function SidebarButton({
     <div
       className={`group/section
                     flex w-full min-w-0
+                    overflow-hidden
                     items-center
                     rounded-xl
-                    transition-all duration-300
+                    transition-colors duration-300
                     sm:rounded-2xl
                     ${
                       isActive
@@ -591,10 +592,10 @@ function SidebarButton({
         onClick={() => onClick(id)}
         className="flex min-w-0 flex-1
                          cursor-pointer items-center
-                         gap-2 rounded-l-xl
+                         gap-2
                          px-2.5 py-2.5
                          text-left text-sm
-                         sm:gap-3 sm:rounded-l-2xl
+                         sm:gap-3
                          sm:px-3 sm:py-3 sm:text-base
                          lg:text-lg"
       >
@@ -637,7 +638,23 @@ function SidebarSectionMenu({
   allowDelete?: boolean;
   onDeleted: (sectionId: string) => void;
 }) {
+  const [open, setOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const closeMenu = () => {
+      setOpen(false);
+    };
+
+    // Capture phase detects scrolling from window and nested scroll containers.
+    window.addEventListener("scroll", closeMenu, true);
+
+    return () => {
+      window.removeEventListener("scroll", closeMenu, true);
+    };
+  }, [open]);
 
   async function handleDelete() {
     if (deleting) return;
@@ -648,6 +665,7 @@ function SidebarSectionMenu({
       const result = await deleteLandscapeVideoSection(sectionId);
 
       if (!result.error) {
+        setOpen(false);
         onDeleted(sectionId);
         return;
       }
@@ -661,7 +679,7 @@ function SidebarSectionMenu({
   }
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"

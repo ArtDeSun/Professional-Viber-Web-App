@@ -127,7 +127,7 @@ export default function CreateLandscapeVideoSectionDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange} modal={false}>
       <DialogTrigger asChild>
         <Button
           type="button"
