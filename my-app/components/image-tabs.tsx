@@ -9,26 +9,31 @@ const tabs = [
     id: "AI_Basement_Music_Studio_1",
     label: "Vibes",
     imgName: "AI_Generated_Basement_Studio",
+    isSquare: false,
   },
   {
     id: "Steven_Sun_Logo_2",
     label: "More Vibes",
     imgName: "icon",
+    isSquare: true,
   },
   {
     id: "AI_Basement_Music_Studio_3",
     label: "Vibes",
     imgName: "AI_Generated_Basement_Studio",
+    isSquare: false,
   },
   {
     id: "Steven_Sun_Logo_4",
     label: "More Vibes",
     imgName: "icon",
+    isSquare: true,
   },
   {
     id: "AI_Basement_Music_Studio_5",
     label: "Vibes",
     imgName: "AI_Generated_Basement_Studio",
+    isSquare: false,
   },
 ];
 
@@ -58,8 +63,6 @@ export default function ImageTabs() {
   const [displayedHeroImage, setDisplayedHeroImage] = useState<
     (typeof tabs)[number] | null
   >(null);
-
-  const [isDisplayedImageSquare, setIsDisplayedImageSquare] = useState(false);
 
   const [animationState, setAnimationState] = useState<
     "entering" | "visible" | "exiting"
@@ -187,7 +190,7 @@ export default function ImageTabs() {
                 className={`
                             overflow-hidden rounded-[50%]
                             ${
-                              isDisplayedImageSquare
+                              displayedHeroImage?.isSquare
                                 ? `
                                   h-[270px] w-[270px]
                                   sm:h-[340px] sm:w-[340px]
@@ -210,17 +213,10 @@ export default function ImageTabs() {
                     alt={displayedHeroImage.imgName}
                     width={1200}
                     height={800}
-                    onLoad={(event) => {
-                      const image = event.currentTarget;
-
-                      setIsDisplayedImageSquare(
-                        image.naturalWidth === image.naturalHeight,
-                      );
-                    }}
                     className={`
                                 h-full w-full
                                 ${
-                                  isDisplayedImageSquare
+                                  displayedHeroImage.isSquare
                                     ? "object-contain"
                                     : "object-cover"
                                 }

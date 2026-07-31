@@ -6,9 +6,9 @@ import {
   LandscapeVideoBoard,
   LandscapeVideoSection,
 } from "@/lib/models/models.types";
-import { Smartphone } from "lucide-react";
+import { ChevronRight, PanelLeft, Smartphone } from "lucide-react";
 import Link from "next/link";
-import { ElementType, useEffect, useState } from "react";
+import { ElementType, useEffect, useRef, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { FeaturedLandscapeVideo } from "./featured-landscape-video";
 import { featuredLandscapeVideo } from "./landscape-video-data";
@@ -18,38 +18,15 @@ import {
   LANDSCAPE_SECTION_ICON_CONFIG,
   type LandscapeSectionIconKey,
 } from "./landscape-video-section-ui-config";
-import { LandscapeVideoSidebar } from "./landscape-video-sidebar";
+import {
+  LandscapeVideoSidebar,
+  LeftColumnLoadingBox,
+} from "./landscape-video-sidebar";
 
 interface DashboardLandscapeVideosProps {
   landscapeVideoBoard: LandscapeVideoBoard;
   userId: string;
 }
-
-/* const LANDSCAPE_SECTION_ICON_CONFIG = {
-  calendar: Calendar,
-  check: CheckCircle2,
-  mic: Mic,
-  award: Award,
-  x: XCircle,
-  music: Music,
-  briefcase: Briefcase,
-  star: Star,
-  clock: Clock,
-  flame: Flame,
-} satisfies Record<string, ElementType>;
-
-type LandscapeSectionIconKey = keyof typeof LANDSCAPE_SECTION_ICON_CONFIG;
-
-const DEFAULT_LANDSCAPE_SECTION_ICON_KEYS: Record<
-  string,
-  LandscapeSectionIconKey
-> = {
-  "Latest Videos": "clock",
-  Covers: "mic",
-  "Solo Piano": "music",
-  Tutorials: "award",
-  "Live Sessions": "star",
-}; */
 
 export default function DashboardLandscapeVideos({
   landscapeVideoBoard: initialLandscapeVideoBoard,
@@ -59,19 +36,17 @@ export default function DashboardLandscapeVideos({
 
   const [activeSection, setActiveSection] = useState("featured");
 
-  /* const [videoSections, setVideoSections] = useState(
-    initialLandscapeVideoSections,
-  ); */
+  const scrollingToCreatedSectionRef = useRef<string | null>(null);
+
   const {
     landscapeVideoBoard,
     landscapeVideoSections,
-    //error,
     addLandscapeVideoSection,
     modifyLandscapeVideoSection,
     removeLandscapeVideoSection,
   } = useLandscapeVideoBoard(initialLandscapeVideoBoard);
 
-  const landscapeBoardId = landscapeVideoBoard?._id;
+  const landscapeBoardId = landscapeVideoBoard._id;
   const SECTION_UI_STORAGE_KEY = `landscape-video-section-ui-config-${landscapeBoardId}`;
   const [sectionUiConfig, setSectionUiConfig] = useState<
     Record<string, { iconKey: LandscapeSectionIconKey }>
@@ -104,18 +79,6 @@ export default function DashboardLandscapeVideos({
     );
   }, [SECTION_UI_STORAGE_KEY, sectionUiConfig, sectionUiConfigLoaded]);
 
-  /* if (error) {
-    return <p className="text-center text-red-300">{error}</p>;
-  } */
-
-  if (!landscapeVideoBoard) {
-    return (
-      <p className="text-center text-gray-300">
-        Loading landscape video board UI...
-      </p>
-    );
-  }
-
   function getLandscapeSectionIcon(
     section: LandscapeVideoSection,
   ): ElementType {
@@ -138,6 +101,8 @@ export default function DashboardLandscapeVideos({
     landscapeVideoSection: LandscapeVideoSection;
     iconKey: LandscapeSectionIconKey;
   }) {
+    scrollingToCreatedSectionRef.current = landscapeVideoSection._id;
+
     addLandscapeVideoSection(landscapeVideoSection);
 
     setSectionUiConfig((current) => ({
@@ -146,6 +111,13 @@ export default function DashboardLandscapeVideos({
         iconKey,
       },
     }));
+
+    requestAnimationFrame(() => {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "smooth",
+      });
+    });
   }
 
   function handleLandscapeVideoSectionUpdated(
@@ -204,9 +176,6 @@ export default function DashboardLandscapeVideos({
     }
   }
 
-  //const leftColumnLoading = videoSections.length === 0;
-  const leftColumnLoading = false;
-
   //Derive the featured landscape video separately
   //use the react hook's landscapeVideoBoard and/or landscapeVideoSections to derive landscapeVideos
   /* const featuredLandscapeVideo = landscapeVideos.find((video) => video.isFeatured); */
@@ -246,6 +215,8 @@ export default function DashboardLandscapeVideos({
         const lastSection = sectionElements.at(-1);
 
         if (lastSection) {
+          scrollingToCreatedSectionRef.current = null;
+
           setActiveSection((current) =>
             current === lastSection.id ? current : lastSection.id,
           );
@@ -271,8 +242,29 @@ export default function DashboardLandscapeVideos({
         }
       }
 
-      setActiveSection((current) =>
-        current === nextActiveSectionId ? current : nextActiveSectionId,
+      setActiveSection(
+        (current) => {
+          const createdSectionId = scrollingToCreatedSectionRef.current;
+
+          if (createdSectionId) {
+            const currentIndex = sectionIds.indexOf(current);
+            const nextIndex = sectionIds.indexOf(nextActiveSectionId);
+
+            // Prevent a temporary backward jump, such as B → A.
+            if (nextIndex < currentIndex) {
+              return current;
+            }
+          }
+
+          if (nextActiveSectionId === createdSectionId) {
+            scrollingToCreatedSectionRef.current = null;
+          }
+
+          return current === nextActiveSectionId
+            ? current
+            : nextActiveSectionId;
+        },
+        //current === nextActiveSectionId ? current : nextActiveSectionId,
       );
     };
 
@@ -287,7 +279,7 @@ export default function DashboardLandscapeVideos({
       });
     };
 
-    scheduleActiveSectionUpdate();
+    //scheduleActiveSectionUpdate();
 
     window.addEventListener("scroll", scheduleActiveSectionUpdate, {
       passive: true,
@@ -392,7 +384,6 @@ export default function DashboardLandscapeVideos({
           landscapeVideoBoard={landscapeVideoBoard}
           landscapeVideoSections={landscapeVideoSections}
           activeSection={activeSection}
-          loading={leftColumnLoading}
           open={sidebarOpen}
           onOpenChange={setSidebarOpen}
           onScrollToTop={scrollToTop}
@@ -426,6 +417,95 @@ export default function DashboardLandscapeVideos({
         </section>
       </div>
     </ /* main */>
+  );
+}
+
+export function DashboardLandscapeVideosFallback() {
+  return (
+    <div
+      className="
+        relative mx-auto w-full max-w-8xl
+        px-4 pl-4
+        sm:px-6 sm:pl-24
+        lg:pl-[17rem]
+      "
+    >
+      <aside
+        className="
+          pointer-events-none
+          fixed left-2 top-24 z-40
+          sm:left-4 sm:top-28
+          lg:left-6 lg:top-32
+        "
+      >
+        {/* Expanded mobile/tablet toggle */}
+        <div
+          className="
+            relative mb-3 h-11
+            w-[calc(100vw-4rem)] max-w-72
+            sm:h-12
+            lg:hidden
+          "
+        >
+          <div
+            aria-hidden="true"
+            className="
+              absolute inset-0 w-full
+              rounded-xl
+              border border-amber-400/20
+              bg-black/70
+              shadow-[0_0_18px_rgba(245,158,11,0.25)]
+              backdrop-blur-md
+              sm:rounded-2xl sm:px-4
+            "
+          />
+
+          <div
+            className="
+              relative z-10
+              flex h-11 w-full
+              items-center justify-between
+              px-3 text-gray-100
+              sm:h-12 sm:px-4
+            "
+          >
+            <PanelLeft className="h-5 w-5 shrink-0" />
+
+            <span
+              className="
+                ml-3 w-24 min-w-0
+                overflow-hidden whitespace-nowrap
+                font-marcellus text-base
+                sm:text-lg
+              "
+            >
+              Sections
+            </span>
+
+            <ChevronRight className="h-5 w-5 shrink-0 rotate-180" />
+          </div>
+        </div>
+
+        <div
+          id="landscape-video-sidebar-fallback-content"
+          className="
+            pointer-events-auto
+            left-0
+            w-[calc(100vw-4rem)] max-w-72
+            bg-black/70
+            opacity-100
+
+            sm:top-15 sm:w-72
+
+            lg:static
+            lg:w-60
+            lg:max-w-none
+          "
+        >
+          <LeftColumnLoadingBox sectionCount={5} />
+        </div>
+      </aside>
+    </div>
   );
 }
 

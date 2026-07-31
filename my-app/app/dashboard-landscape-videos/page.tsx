@@ -1,14 +1,19 @@
 //import DashboardLandscapeVideos from "@/components/music-videos-dashboard/landscape-videos/dashboard-landscape-videos";
+import { DashboardLandscapeVideosFallback } from "@/components/music-videos-dashboard/landscape-videos/dashboard-landscape-videos";
 import DashboardLandscapeVideosClient from "@/components/music-videos-dashboard/landscape-videos/dashboard-landscape-videos-client";
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "@/lib/db";
 import { initializeUserLandscapeVideoBoard } from "@/lib/init-user-board";
 import { LandscapeVideoBoard } from "@/lib/models";
+import { cacheTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 async function getLandscapeVideoBoard(userId: string) {
   "use cache";
+
+  cacheTag(`landscape-video-board-${userId}`);
+
   await connectDB();
 
   let landscapeVideoBoardDoc = await LandscapeVideoBoard.findOne({
@@ -70,13 +75,7 @@ export default function getDashboardLandscapeVideos() {
       lg:py-46
     "
     >
-      <Suspense
-        fallback={
-          <h1 className="text-center break-words leading-none text-4xl sm:text-5xl lg:text-6xl">
-            LOADING DASHBOARD LANDSCAPE VIDEOS...
-          </h1>
-        }
-      >
+      <Suspense fallback={<DashboardLandscapeVideosFallback />}>
         <DashboardLandscapeVideos />
       </Suspense>
     </main>

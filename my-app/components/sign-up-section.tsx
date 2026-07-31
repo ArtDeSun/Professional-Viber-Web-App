@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { signIn, signUp } from "@/lib/auth/auth-client";
 import Link from "next/link";
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -22,20 +22,34 @@ export default function SignUpSection() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialsLoading, setSocialsLoading] = useState(false);
+  const signUpPending = loading || socialsLoading;
 
-  //const router = useRouter();
+  const [navigationLocked, setNavigationLocked] = useState(false);
 
-  /* React.useEffect(() => {
-    console.log("SignUp mounted");
+  useEffect(() => {
+    if (!navigationLocked) return;
+
+    const lockCurrentPage = () => {
+      window.history.pushState(
+        { signUpNavigationLock: true },
+        "",
+        window.location.href,
+      );
+    };
+
+    lockCurrentPage();
+
+    window.addEventListener("popstate", lockCurrentPage);
 
     return () => {
-      console.log("SignUp unmounted");
+      window.removeEventListener("popstate", lockCurrentPage);
     };
-  }, []); */
+  }, [navigationLocked]);
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
+    setNavigationLocked(true);
     setError("");
     setLoading(true);
 
@@ -45,7 +59,7 @@ export default function SignUpSection() {
         setError(result.error.message ?? "Failed to sign up");
       } else {
         //router.push("/dashboard");
-        window.location.href = "/";
+        window.location.replace("/");
       }
     } catch (err) {
       setError("An unexpected error occurred");
@@ -54,6 +68,7 @@ export default function SignUpSection() {
   }
 
   async function handleSocialSignUp(provider: "google" | "facebook") {
+    setNavigationLocked(true);
     setError("");
     setSocialsLoading(true);
 
@@ -75,6 +90,7 @@ export default function SignUpSection() {
 
   const handleSignInFromSignUp = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    if (navigationLocked) return;
     window.location.href = "/sign-in";
   };
 
@@ -112,6 +128,7 @@ export default function SignUpSection() {
                 <div className="grid gap-2">
                   <Input
                     id="name"
+                    disabled={signUpPending}
                     type="text"
                     placeholder="First Name"
                     value={name}
@@ -131,6 +148,7 @@ export default function SignUpSection() {
                 <div className="grid gap-2">
                   <Input
                     id="email"
+                    disabled={signUpPending}
                     type="email"
                     placeholder="Email Address"
                     value={email}
@@ -150,6 +168,7 @@ export default function SignUpSection() {
                 <div className="grid gap-2">
                   <Input
                     id="password"
+                    disabled={signUpPending}
                     type="password"
                     placeholder="Password Minimum 8 Characters"
                     value={password}
@@ -171,7 +190,7 @@ export default function SignUpSection() {
               <CardFooter className="flex flex-col space-y-4 border-none bg-neutral-900 px-4 pb-6 sm:px-6">
                 <Button
                   type="submit"
-                  disabled={loading}
+                  disabled={signUpPending}
                   className="
                     h-10 w-full bg-amber-500 text-base text-neutral-950
                     hover:cursor-pointer hover:bg-amber-500/70
@@ -192,7 +211,7 @@ export default function SignUpSection() {
                 <div className="flex flex-col items-center w-full gap-2">
                   <Button
                     type="button"
-                    disabled={socialsLoading}
+                    disabled={signUpPending}
                     onClick={() => handleSocialSignUp("google")}
                     className="
                       h-10 w-9/10 rounded-3xl border-neutral-50/50
@@ -202,7 +221,7 @@ export default function SignUpSection() {
                       sm:h-11 sm:text-lg
                     "
                   >
-                    {socialsLoading ? "Loading..." : "Sign up with Google"}
+                    {socialsLoading ? "Loading..." : "Sign in with Google"}
                   </Button>
                   {/*                   <Button
                     type="button"
@@ -225,7 +244,11 @@ export default function SignUpSection() {
                   <Link
                     href="/sign-in"
                     onClick={handleSignInFromSignUp}
-                    className="font-medium text-amber-500 hover:underline"
+                    className={
+                      navigationLocked
+                        ? "pointer-events-none font-medium text-amber-500 opacity-50"
+                        : "font-medium text-amber-500 hover:underline"
+                    }
                   >
                     Sign In
                   </Link>

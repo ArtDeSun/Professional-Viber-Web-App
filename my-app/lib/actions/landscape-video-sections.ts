@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { updateTag } from "next/cache";
 import { getSession } from "../auth/auth";
 import connectDB from "../db";
 import {
@@ -58,6 +58,7 @@ export async function createLandscapeVideoSection(
   });
 
   //revalidatePath("/dashboard-landscape-videos");
+  updateTag(`landscape-video-board-${session.user.id}`);
 
   return { data: JSON.parse(JSON.stringify(landscapeVideoSection)) };
 }
@@ -100,7 +101,8 @@ export async function updateLandscapeVideoSection(
     };
   }
 
-  revalidatePath("/dashboard-landscape-videos");
+  //revalidatePath("/dashboard-landscape-videos");
+  updateTag(`landscape-video-board-${session.user.id}`);
 
   return { data: JSON.parse(JSON.stringify(updated)) };
 }
@@ -205,6 +207,8 @@ export async function deleteLandscapeVideoSection(id: string) {
     });
 
     //revalidatePath("/dashboard-landscape-videos");
+    updateTag(`landscape-video-board-${session.user.id}`);
+
     return { success: true, deletedSectionId: id, deletedOrder };
   } catch (error) {
     console.error("Failed to delete landscape video section:", error);
@@ -232,32 +236,4 @@ export async function deleteLandscapeVideoSection(id: string) {
   } finally {
     await mongoSession.endSession();
   }
-
-  /* await LandscapeVideoBoard.findByIdAndUpdate(landscapeVideoBoardId, {
-    $pull: { landscapeVideoSections: landscapeVideoSection._id },
-  }); */
-
-  /* await LandscapeVideo.deleteMany({
-    landscapeVideoSectionId: landscapeVideoSection._id,
-    landscapeVideoBoardId,
-    userId: session.user.id,
-  }); */
-
-  /* await LandscapeVideoSection.deleteOne({
-    _id: landscapeVideoSection._id,
-    userId: session.user.id,
-  }); */
-
-  /* await LandscapeVideoSection.updateMany(
-    {
-      landscapeVideoBoardId,
-      userId: session.user.id,
-      order: { $gt: deletedOrder },
-    },
-    {
-      $inc: {
-        order: -1,
-      },
-    },
-  ); */
 }

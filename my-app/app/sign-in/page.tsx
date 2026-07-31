@@ -48,12 +48,36 @@ export default function SignIn() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialsLoading, setSocialsLoading] = useState(false);
+  const signInPending = loading || socialsLoading;
+
+  const [navigationLocked, setNavigationLocked] = useState(false);
 
   /* const router = useRouter(); */
+
+  useEffect(() => {
+    if (!navigationLocked) return;
+
+    const lockCurrentPage = () => {
+      window.history.pushState(
+        { signInNavigationLock: true },
+        "",
+        window.location.href,
+      );
+    };
+
+    lockCurrentPage();
+
+    window.addEventListener("popstate", lockCurrentPage);
+
+    return () => {
+      window.removeEventListener("popstate", lockCurrentPage);
+    };
+  }, [navigationLocked]);
 
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
 
+    setNavigationLocked(true);
     setError("");
     setLoading(true);
 
@@ -73,6 +97,7 @@ export default function SignIn() {
   }
 
   async function handleSocialSignUp(provider: "google" | "facebook") {
+    setNavigationLocked(true);
     setError("");
     setSocialsLoading(true);
 
@@ -94,6 +119,7 @@ export default function SignIn() {
 
   const handleSignUpFromSignIn = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
+    if (navigationLocked) return;
     window.location.href = "/?destination=signup";
   };
 
@@ -192,7 +218,7 @@ export default function SignIn() {
                   <CardFooter className="flex w-full min-w-0 flex-col space-y-4 border-none bg-neutral-900 px-4 pb-6 sm:px-6">
                     <Button
                       type="submit"
-                      disabled={loading}
+                      disabled={signInPending}
                       className="
                         h-10 w-full min-w-0 bg-amber-500 text-base text-neutral-950
                         hover:cursor-pointer hover:bg-amber-500/70
@@ -212,7 +238,7 @@ export default function SignIn() {
 
                     <Button
                       type="button"
-                      disabled={socialsLoading}
+                      disabled={signInPending}
                       onClick={() => handleSocialSignUp("google")}
                       className="
                                           h-10 w-9/10 rounded-3xl border-neutral-50/50
@@ -230,7 +256,11 @@ export default function SignIn() {
                       <Link
                         href="/?destination=signup"
                         onClick={handleSignUpFromSignIn}
-                        className="font-medium text-amber-500 hover:underline"
+                        className={
+                          navigationLocked
+                            ? "pointer-events-none font-medium text-amber-500 opacity-50"
+                            : "font-medium text-amber-500 hover:underline"
+                        }
                       >
                         Sign Up
                       </Link>
