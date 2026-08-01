@@ -223,7 +223,10 @@ export default function getAbout() {
                     </h1>
                     <p className="mt-4 text-base leading-7 text-neutral-400 sm:text-lg sm:leading-8 lg:text-xl">
                       As an{" "}
-                      <span className="underline transition-colors duration-300 hover:text-amber-500">
+                      <span
+                        className="underline transition-colors duration-300 hover:text-amber-500
+                                   active:transition-none active:text-amber-500"
+                      >
                         <a
                           href="https://www.rcmusic.com/"
                           target="_blank"
@@ -233,7 +236,10 @@ export default function getAbout() {
                         </a>
                       </span>{" "}
                       pianist and a{" "}
-                      <span className="underline transition-colors duration-300 hover:text-amber-500">
+                      <span
+                        className="underline transition-colors duration-300 hover:text-amber-500
+                                   active:transition-none active:text-amber-500"
+                      >
                         <a
                           href="https://catalogue.uottawa.ca/en/undergrad/joint-honours-bsc-computer-science-mathematics/"
                           target="_blank"
@@ -474,7 +480,10 @@ export default function getAbout() {
                     He teaches{" "}
                     <span className="font-black text-gray-900">
                       all courses and grades from the{" "}
-                      <span className="underline transition-color duration-300 hover:text-amber-500">
+                      <span
+                        className="underline transition-color duration-300 hover:text-amber-500
+                                   active:transition-none active:text-amber-500"
+                      >
                         <a
                           href="https://rcmusic-kentico-cdn.s3.amazonaws.com/rcm/media/main/about%20us/rcm%20publishing/piano-syllabus-2022-edition.pdf"
                           target="_blank"
@@ -484,7 +493,10 @@ export default function getAbout() {
                       </span>
                     </span>
                     , including{" "}
-                    <span className="underline transition-color duration-300 hover:text-amber-500">
+                    <span
+                      className="underline transition-color duration-300 hover:text-amber-500
+                                 active:transition-none active:text-amber-500"
+                    >
                       <a
                         href="https://rcmusic-production-strapi-media.s3.ca-central-1.amazonaws.com/s44_theorysyl_2016_online_rcm_v2_f_649983999a.pdf"
                         target="_blank"

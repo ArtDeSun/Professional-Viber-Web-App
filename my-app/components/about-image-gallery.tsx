@@ -102,6 +102,7 @@ export default function AboutImageGallery() {
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
                    hover:scale-115 hover:bg-black/55 hover:border-white/60
+                   active:transition-none active:scale-115 active:bg-black/55 active:border-white/60
                    cursor-pointer"
       >
         &lt;
@@ -114,6 +115,7 @@ export default function AboutImageGallery() {
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
                    hover:scale-115 hover:bg-black/55 hover:border-white/60
+                   active:transition-none active:scale-115 active:bg-black/55 active:border-white/60
                    cursor-pointer"
       >
         &gt;
@@ -129,7 +131,7 @@ export default function AboutImageGallery() {
                           ${
                             index === currentIndex
                               ? "bg-white shadow-sm"
-                              : "bg-white/30 hover:bg-white/60"
+                              : "bg-white/30 hover:bg-white/60 active:transition-none active:bg-white/60"
                           } cursor-pointer`}
             />
           ))}
