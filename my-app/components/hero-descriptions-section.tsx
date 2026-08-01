@@ -148,7 +148,9 @@ export default function HeroDescriptionsSection() {
                     md:p-3
                     lg:p-5
                     lg:hover:-translate-y-2
+                    active::-trnslate-y-2
                     lg:hover:shadow-[0_0_36px_rgba(245,158,11,0.95)]
+                    lg:active:shadow-[0_0_36px_rgba(245,158,11,0.95)]
                     xl:p-6
                   "
             >
@@ -249,7 +251,9 @@ export default function HeroDescriptionsSection() {
                     md:p-3
                     lg:p-5
                     lg:hover:-translate-y-2
+                    lg:active:-translate-y-2
                     lg:hover:shadow-[0_0_36px_rgba(139,92,246,0.95)]
+                    lg:active:shadow-[0_0_36px_rgba(139,92,246,0.95)]
                     xl:p-6
                   "
             >
@@ -349,7 +353,9 @@ export default function HeroDescriptionsSection() {
                     md:p-3
                     lg:p-5
                     lg:hover:-translate-y-2
+                    lg:active:-translate-y-2
                     lg:hover:shadow-[0_0_36px_rgba(244,63,94,0.95)]
+                    lg:active:shadow-[0_0_36px_rgba(244,63,94,0.95)]
                     xl:p-6
                   "
             >

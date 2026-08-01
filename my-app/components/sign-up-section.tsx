@@ -193,7 +193,7 @@ export default function SignUpSection() {
                   disabled={signUpPending}
                   className="
                     h-10 w-full bg-amber-500 text-base text-neutral-950
-                    hover:cursor-pointer hover:bg-amber-500/70
+                    hover:cursor-pointer hover:bg-amber-500/70 active:bg-amber-500/70
                     sm:h-11 sm:text-lg
                   "
                 >
@@ -217,7 +217,9 @@ export default function SignUpSection() {
                       h-10 w-9/10 rounded-3xl border-neutral-50/50
                       text-base text-neutral-50 
                       hover:text-amber-400 hover:cursor-pointer 
+                      active:text-amber-400
                       hover:border-neutral-50 hover:scale-102
+                      active:border-neutral-50 active:scale-102
                       sm:h-11 sm:text-lg
                     "
                   >
@@ -247,7 +249,7 @@ export default function SignUpSection() {
                     className={
                       navigationLocked
                         ? "pointer-events-none font-medium text-amber-500 opacity-50"
-                        : "font-medium text-amber-500 hover:underline"
+                        : "font-medium text-amber-500 hover:underline active:underline"
                     }
                   >
                     Sign In

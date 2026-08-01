@@ -305,7 +305,8 @@ export default function Home() {
                 >
                   <span
                     className="bg-gradient-to-t from-gray-200 to-amber-300 bg-clip-text text-transparent 
-                                  transition-color duration-300 hover:text-amber-300"
+                                  transition-color duration-300 hover:text-amber-300
+                                  active:transition-none active:text-amber-300"
                   >
                     Piano
                   </span>
@@ -328,7 +329,8 @@ export default function Home() {
                 >
                   <span
                     className="bg-gradient-to-t from-gray-200 to-violet-300 bg-clip-text text-transparent
-                                  transition-color duration-300 hover:text-violet-300"
+                                  transition-color duration-300 hover:text-violet-300
+                                  active:transition-none active:text-violet-300"
                   >
                     Professional Vibemaster
                   </span>
@@ -351,7 +353,8 @@ export default function Home() {
                 >
                   <span
                     className="bg-gradient-to-t from-gray-200 to-rose-300 bg-clip-text text-transparent
-                                  transition-color duration-300 hover:text-rose-300"
+                                  transition-color duration-300 hover:text-rose-300
+                                  active:transition-none active:text-rose-300"
                   >
                     Creative Voice
                   </span>
@@ -459,6 +462,7 @@ export default function Home() {
                       text-base font-bold text-gray-300
                       cursor-pointer
                       hover:text-black
+                      active:text-black
                       sm:h-12 sm:px-8 sm:text-xl
                     "
                   >
@@ -481,6 +485,7 @@ export default function Home() {
                           text-sm text-gray-300
                           cursor-pointer
                           hover:border-amber-400 hover:text-amber-400
+                          active:border-amber-400 active:text-amber-400
                           sm:h-9 sm:px-6 sm:text-base
                         "
                       >
@@ -509,6 +514,7 @@ export default function Home() {
                       text-sm text-gray-300
                       cursor-pointer
                       hover:border-amber-400 hover:text-amber-400
+                      active:border-amber-400 active:text-amber-400
                       sm:h-9 sm:px-6 sm:text-base
                     "
                   >
@@ -542,8 +548,11 @@ export default function Home() {
                             cursor-pointer
                             transition-all duration-300
                             hover:bg-white
+                            active:transition-none
+                            active:bg-white
                             sm:h-9 sm:px-6 sm:text-lg
                             sm:hover:px-7 sm:hover:h-10 sm:hover:text-xl
+                            sm:active:px-7 sm:active:h-10 sm:active:text-xl
                           "
                         >
                           Lessons

@@ -372,7 +372,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/", "stevensun")}
             className={`group flex min-w-0 items-center gap-1.5 text-lg font-semibold
                   transition-all duration-300 sm:text-lg md:text-xl lg:w-60 lg:gap-2 lg:text-2xl
-                          hover:text-amber-300 active:text-amber-300 group
+                          hover:text-amber-300 active:transition-none active:text-amber-300 group
                           ${
                             activeId === "stevensun"
                               ? "text-white"
@@ -382,7 +382,7 @@ export default function Navbar() {
             <img
               src="/hero-images/icon.png"
               alt="Steven Sun Logo"
-              className="h-9 w-9 shrink-0 transition duration-300 group-hover:scale-105 group-active:scale-105 lg:h-12 lg:w-12"
+              className="h-9 w-9 shrink-0 transition duration-300 group-hover:scale-105 group-active:transition-none group-active:scale-105 lg:h-12 lg:w-12"
             />
             <span className="whitespace-nowrap max-[319px]:text-base">
               Steven Sun
@@ -402,7 +402,7 @@ export default function Navbar() {
                       flex h-9 w-9 shrink-0 cursor-pointer
                       items-center justify-center justify-self-center
                       rounded-xl text-gray-200
-                      transition-colors hover:bg-white/10 active:bg-white/10 hover:text-white active:text-white
+                      transition-colors hover:bg-white/10 active:transition-none active:bg-white/10 hover:text-white active:text-white
                       lg:hidden
                     "
         >
@@ -425,7 +425,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/about", "about")}
           >
             <Button
-              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold active:font-bold hover:text-white active:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold active:transition-none active:font-bold hover:text-white active:text-white ${
                 activeId === "about" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -438,7 +438,7 @@ export default function Navbar() {
           >
             <Button
               className="h-10 w-24 xl:w-28 bg-destructive text-gray-300 text-xl rounded-xl 
-                         hover:text-black active:text-black cursor-pointer"
+                         hover:text-black active:transition-none active:text-black cursor-pointer"
             >
               Youtube
             </Button>
@@ -453,7 +453,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/music", "music")}
           >
             <Button
-              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold active:font-bold hover:text-white active:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold active:transition-none active:font-bold hover:text-white active:text-white ${
                 activeId === "music" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -495,7 +495,7 @@ export default function Navbar() {
             }}
           >
             <Button
-              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white active:font-bold active:text-white ${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white active:transition-none active:font-bold active:text-white ${
                 activeId === "contact" ? "text-white" : "text-gray-300"
               }`}
             >
@@ -546,7 +546,7 @@ export default function Navbar() {
               >
                 <Button
                   className={`h-8 w-40 justify-center px-4 text-md
-                          hover:font-bold hover:text-white active:font-bold active:text-white
+                          hover:font-bold hover:text-white active:transition-none active:font-bold active:text-white
                           cursor-pointer
                           ${activeId === "about" ? "text-white" : "text-gray-300"}`}
                 >
@@ -563,7 +563,7 @@ export default function Navbar() {
                 <Button
                   className="
                           h-8 w-40 justify-center rounded-xl bg-destructive
-                          px-4 text-md text-gray-300 hover:text-black active:text-black
+                          px-4 text-md text-gray-300 hover:text-black active:transition-none active:text-black
                           cursor-pointer
                         "
                 >
@@ -580,7 +580,7 @@ export default function Navbar() {
               >
                 <Button
                   className={`h-8 w-40 justify-center px-4 text-md
-                          hover:font-bold hover:text-white active:font-bold active:text-white
+                          hover:font-bold hover:text-white active:transition-none active:font-bold active:text-white
                           cursor-pointer
                           ${activeId === "music" ? "text-white" : "text-gray-300"}`}
                 >
@@ -597,7 +597,7 @@ export default function Navbar() {
               >
                 <Button
                   className={`h-8 w-40 justify-center px-4 text-md
-                          hover:font-bold hover:text-white active:font-bold active:text-white
+                          hover:font-bold hover:text-white active:transition-none active:font-bold active:text-white
                           cursor-pointer
                           ${activeId === "updates" ? "text-white" : "text-gray-300"}`}
                 >
@@ -622,7 +622,7 @@ export default function Navbar() {
               >
                 <Button
                   className={`h-8 w-40 justify-center px-4 text-md
-                          hover:font-bold hover:text-white active:font-bold active:text-white
+                          hover:font-bold hover:text-white active:transition-none active:font-bold active:text-white
                           cursor-pointer
                           ${activeId === "contact" ? "text-white" : "text-gray-300"}`}
                 >

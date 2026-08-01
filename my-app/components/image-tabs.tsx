@@ -174,7 +174,7 @@ export default function ImageTabs() {
 
             <div
               key={displayedHeroImage?.id}
-              className={`relative z-10 hover:scale-102
+              className={`relative z-10 hover:scale-102 active:scale-102
                           [filter:drop-shadow(0_0_30px_rgba(225,29,72,0.5))]
                             transition-all duration-800 ease-[cubic-bezier(0.25,0.5,0.4,1)]
                               ${

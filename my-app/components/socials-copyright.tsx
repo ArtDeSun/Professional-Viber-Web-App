@@ -21,6 +21,7 @@ export default function SocialsCopyright() {
             className="
               break-all text-amber-400 transition-colors duration-300
               hover:text-amber-300 hover:underline
+              active:transition-none active:text-amber-300 active:underline
               sm:break-normal
             "
           >
@@ -40,7 +41,9 @@ export default function SocialsCopyright() {
               className="
                 h-7 w-7 transition-all duration-300
                 hover:-translate-y-1 hover:text-amber-400
+                active:transition-none active:-translate-y-1 active:text-amber-400
                 hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
+                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
                 sm:h-8 sm:w-8
               "
             />
@@ -57,7 +60,9 @@ export default function SocialsCopyright() {
               className="
                 h-7 w-7 transition-all duration-300
                 hover:-translate-y-1 hover:text-amber-400
+                active:transition-none active:-translate-y-1 active:text-amber-400
                 hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
+                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
                 sm:h-8 sm:w-8
               "
             />
@@ -74,7 +79,9 @@ export default function SocialsCopyright() {
               className="
                 h-7 w-7 transition-all duration-300
                 hover:-translate-y-1 hover:text-amber-400
+                active:transition-none active:-translate-y-1 active:text-amber-400
                 hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
+                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
                 sm:h-8 sm:w-8
               "
             />
@@ -91,7 +98,9 @@ export default function SocialsCopyright() {
               className="
                 h-7 w-7 transition-all duration-300
                 hover:-translate-y-1 hover:text-amber-400
+                active:transition-none active:-translate-y-1 active:text-amber-400
                 hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
+                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
                 sm:h-8 sm:w-8
               "
             />

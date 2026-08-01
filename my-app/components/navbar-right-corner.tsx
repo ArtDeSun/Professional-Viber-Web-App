@@ -101,7 +101,7 @@ export default function NavbarRightCorner() {
           >
             <span
               className="
-                        absolute inset-0 bg-amber-600 active:bg-amber-400
+                        absolute inset-0 bg-amber-600 active:transition-none active:bg-amber-400
                         origin-top
                         scale-y-100
                         transition-transform duration-500
