@@ -94,14 +94,14 @@ export default function NavbarRightCorner() {
         <Link href="/sign-in" onClick={handleSignInNav}>
           <Button
             className="group relative h-9 w-20 overflow-hidden rounded-lg
-                        bg-amber-400 px-2 text-base text-black
+                        bg-amber-400 active:bg-amber-400 px-2 text-base text-black
                         cursor-pointer
                         sm:w-24 sm:text-lg
                         lg:h-10 lg:w-28 lg:rounded-xl lg:px-4 lg:text-xl"
           >
             <span
               className="
-                        absolute inset-0 bg-amber-600 active:transition-none active:bg-amber-400
+                        absolute inset-0 bg-amber-600 active:transition-none
                         origin-top
                         scale-y-100
                         transition-transform duration-500
