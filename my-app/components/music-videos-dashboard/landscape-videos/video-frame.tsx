@@ -8,12 +8,14 @@ type VideoFrameProps = {
   video: LandscapeVideo;
   featured?: boolean;
   resetSignal?: number;
+  eager?: boolean;
 };
 
 export function VideoFrame({
   video,
   featured = false,
   resetSignal = 0,
+  eager = false,
 }: VideoFrameProps) {
   const [showPlayer, setShowPlayer] = useState(false);
 
@@ -69,6 +71,8 @@ export function VideoFrame({
             src={previewImage}
             alt={video.title}
             fill
+            loading={eager ? "eager" : "lazy"}
+            fetchPriority={eager ? "high" : "auto"}
             className="
               object-cover
               transition-transform duration-500
@@ -106,6 +110,11 @@ export function VideoFrame({
             src={previewImage}
             alt={video.title}
             fill
+            //either this:
+            loading={eager ? "eager" : "lazy"}
+            fetchPriority={eager ? "high" : "auto"}
+            //or this:
+            //preload={eager}
             className="object-cover"
             sizes="
               (max-width: 639px) calc(100vw - 6rem),

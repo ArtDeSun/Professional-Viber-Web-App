@@ -11,10 +11,6 @@ import {
   updateLandscapeVideoSection,
 } from "@/lib/actions/landscape-video-sections";
 import {
-  LandscapeVideoBoard,
-  LandscapeVideoSection,
-} from "@/lib/models/models.types";
-import {
   ArrowUp,
   ChevronRight,
   Edit3,
@@ -25,49 +21,25 @@ import {
   Trash2,
 } from "lucide-react";
 import { useEffect, useState, type ElementType } from "react";
-import CreateLandscapeVideoSectionDialog from "./create-landscape-video-section-dialog";
-import { type LandscapeSectionIconKey } from "./landscape-video-section-ui-config";
 
-type LandscapeVideoSidebarProps = {
-  landscapeVideoBoard: LandscapeVideoBoard;
-  landscapeVideoSections: LandscapeVideoSection[];
-  activeSection: string;
+type LandscapeVideoSidebarShellProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onScrollToTop: () => void;
-  onScrollToSection: (id: string) => void;
-  onLandscapeVideoSectionCreated: (data: {
-    landscapeVideoSection: LandscapeVideoSection;
-    iconKey: LandscapeSectionIconKey;
-  }) => void;
-  getLandscapeSectionIcon: (section: LandscapeVideoSection) => ElementType;
-  onLandscapeVideoSectionUpdated?: (sectionId: string, label: string) => void;
-  onLandscapeVideoSectionDeleted: (sectionId: string) => void;
+  children: React.ReactNode;
+  footer?: React.ReactNode;
 };
 
-export function LandscapeVideoSidebar({
-  landscapeVideoBoard,
-  landscapeVideoSections,
-  activeSection,
+export function LandscapeVideoSidebarShell({
   open,
   onOpenChange,
   onScrollToTop,
-  onScrollToSection,
-  onLandscapeVideoSectionCreated,
-  getLandscapeSectionIcon,
-  onLandscapeVideoSectionUpdated,
-  onLandscapeVideoSectionDeleted,
-}: LandscapeVideoSidebarProps) {
-  const [createSectionDialogOpen, setCreateSectionDialogOpen] = useState(false);
-
+  children,
+  footer,
+}: LandscapeVideoSidebarShellProps) {
   const handleScrollToTop = () => {
     onOpenChange(false);
     onScrollToTop();
-  };
-
-  const handleScrollToSection = (id: string) => {
-    onOpenChange(false);
-    onScrollToSection(id);
   };
 
   return (
@@ -203,8 +175,8 @@ export function LandscapeVideoSidebar({
           }
 
           lg:static
-          lg:w-full
-          lg:max-w-none
+          lg:w-68
+          lg:max-w-68
           lg:pointer-events-auto
           lg:opacity-100
         `}
@@ -269,43 +241,17 @@ export function LandscapeVideoSidebar({
                 Sections
               </p>
 
-              {/* Only this area scrolls */}
               <div
                 className="
                     min-h-0 min-w-0 flex-1
-                    space-y-1.5 overflow-x-hidden overflow-y-auto pb-4
-                    pr-1 sm:space-y-2
+                    overflow-x-hidden overflow-y-auto pb-4
+                    pr-1 
                   "
               >
-                <FeaturedSidebarButton
-                  activeSection={activeSection}
-                  onClick={handleScrollToSection}
-                />
-
-                {landscapeVideoSections.map((section) => (
-                  <SidebarButton
-                    key={section._id}
-                    id={section._id}
-                    label={section.label}
-                    icon={getLandscapeSectionIcon(section)}
-                    activeSection={activeSection}
-                    onClick={handleScrollToSection}
-                    onUpdated={onLandscapeVideoSectionUpdated}
-                    onDeleted={onLandscapeVideoSectionDeleted}
-                  />
-                ))}
+                {children}
               </div>
 
-              <div className="shrink-0">
-                <CreateLandscapeVideoSectionDialog
-                  landscapeVideoBoard={landscapeVideoBoard}
-                  open={createSectionDialogOpen}
-                  onOpenChange={setCreateSectionDialogOpen}
-                  onLandscapeVideoSectionCreated={
-                    onLandscapeVideoSectionCreated
-                  }
-                />
-              </div>
+              {footer && <div className="shrink-0">{footer}</div>}
             </nav>
           </CardContent>
         </Card>
@@ -314,7 +260,7 @@ export function LandscapeVideoSidebar({
   );
 }
 
-function FeaturedSidebarButton({
+export function FeaturedSidebarButton({
   activeSection,
   onClick,
 }: {
@@ -380,7 +326,7 @@ function FeaturedSidebarButton({
   );
 }
 
-function SidebarButton({
+export function SidebarButton({
   id,
   label,
   icon: Icon,
@@ -836,207 +782,126 @@ function SidebarSectionMenu({
   );
 }
 
-export function LeftColumnLoadingBox({
-  sectionCount,
+export function SidebarButtonsFallback({
+  sectionCount = 5,
 }: {
-  sectionCount: number;
+  sectionCount?: number;
 }) {
   return (
-    <Card
-      className="
-        relative
-        max-h-[calc(100dvh-18rem)]
-        overflow-hidden
-        rounded-2xl
-        border-amber-400/20 bg-black/85
-        shadow-[0_0_18px_rgba(245,158,11,0.5)]
-        backdrop-blur-md
-        sm:rounded-3xl
-        lg:bg-black/45
-      "
+    <div
+      aria-hidden="true"
+      className="relative w-full min-w-0 space-y-1.5 sm:space-y-2"
     >
+      {/* Match the initially active FeaturedSidebarButton exactly */}
       <div
-        aria-hidden="true"
         className="
-          pointer-events-none absolute inset-0
-          -translate-x-full
-          animate-[sidebar-shimmer_2s_infinite]
+          flex w-full min-w-0
+          items-center gap-2
+          rounded-xl
           bg-gradient-to-r
-          from-transparent via-white/10 to-transparent
-        "
-      />
+          from-amber-300 via-amber-400 to-orange-500
+          px-2.5 py-2.5
+          text-left text-sm text-black
+          shadow-[0_0_16px_rgba(245,158,11,0.45)]
 
-      <CardContent
-        className="
-          relative flex min-h-0 flex-col
-          gap-6 p-3
-          sm:gap-8 sm:p-4
+          sm:gap-3
+          sm:rounded-2xl
+          sm:px-3 sm:py-3
+          sm:text-base
+
+          lg:text-lg
         "
       >
-        {/* Same dimensions and text as Back to Top */}
-        <div className="flex shrink-0 justify-center">
-          <div
-            className="
-              relative flex h-9 w-full
-              items-center justify-center gap-2
-              overflow-hidden rounded-xl
-              bg-amber-600 px-2
-              text-xs text-black
-              shadow-[0_0_14px_rgba(245,158,11,0.35)]
-              sm:h-10 sm:w-3/4 sm:text-sm
-            "
-          >
-            <ArrowUp className="h-4 w-4 shrink-0" />
-
-            <span className="truncate">Back to Top</span>
-          </div>
-        </div>
-
-        <nav
+        <Star
           className="
-            flex min-h-0 min-w-0 flex-1
-            flex-col gap-4
-            sm:gap-6
+            h-4 w-4 shrink-0 text-black
+            sm:h-5 sm:w-5
+          "
+        />
+
+        <span
+          className="
+            min-w-0 flex-1
+            font-marcellus leading-tight
           "
         >
-          {/* Keep real non-dynamic heading visible */}
-          <p
-            className="
-              shrink-0 break-words text-center
-              font-marcellus text-2xl
-              tracking-wide text-gray-100
-              sm:text-3xl
-              lg:text-4xl
-            "
-          >
-            Sections
-          </p>
+          Featured
+        </span>
+      </div>
 
-          {/* Same layout as the real non-editing section buttons */}
+      {Array.from({ length: sectionCount }).map((_, index) => (
+        <div
+          key={index}
+          className="
+              flex w-full min-w-0
+              items-center overflow-hidden
+              rounded-xl text-gray-300
+              sm:rounded-2xl
+            "
+        >
+          {/* Exact footprint of the real section button */}
           <div
             className="
-              min-h-0 min-w-0 flex-1
-              space-y-1.5
-              overflow-x-hidden overflow-y-auto
-              pb-4 pr-1
-              sm:space-y-2
-            "
-          >
-            {/* Static Featured row */}
-            <div
-              className="
-                flex w-full min-w-0
+                flex min-w-0 flex-1
                 items-center gap-2
-                rounded-xl
                 px-2.5 py-2.5
-                text-left text-sm text-gray-300
+                text-left text-sm
+
                 sm:gap-3
-                sm:rounded-2xl
                 sm:px-3 sm:py-3
                 sm:text-base
+
                 lg:text-lg
               "
-            >
-              <Star
-                className="
-                  h-4 w-4 shrink-0 text-amber-300
-                  sm:h-5 sm:w-5
-                "
-              />
-
-              <span
-                className="
-                  min-w-0 flex-1
-                  break-words font-marcellus leading-tight
-                "
-              >
-                Featured
-              </span>
-            </div>
-
-            {Array.from({ length: sectionCount }).map((_, index) => (
-              <div
-                key={index}
-                className="
-                  flex w-full min-w-0
-                  items-center
-                  overflow-hidden rounded-xl
-                  bg-neutral-800/80
-                  sm:rounded-2xl
-                "
-              >
-                {/* Matches the real non-editing button */}
-                <div
-                  className="
-                    flex min-w-0 flex-1
-                    items-center gap-2
-                    px-2.5 py-2.5
-                    text-left text-sm
-                    sm:gap-3
-                    sm:px-3 sm:py-3
-                    sm:text-base
-                    lg:text-lg
-                  "
-                >
-                  <div
-                    className="
-                      h-4 w-4 shrink-0
-                      animate-pulse rounded-md
-                      bg-neutral-600/80
-                      sm:h-5 sm:w-5
-                    "
-                  />
-
-                  <div
-                    className="
-                      h-[1.25em] min-w-0 flex-1
-                      animate-pulse rounded-md
-                      bg-neutral-600/80
-                    "
-                  />
-                </div>
-
-                {/* Matches the real menu button footprint */}
-                <div
-                  className="
-                    mr-1 flex h-8 w-8 shrink-0
-                    items-center justify-center
-                    rounded-full
-                    sm:mr-1.5
-                    sm:h-9 sm:w-9
-                  "
-                >
-                  <EllipsisVertical
-                    className="
-                      h-4 w-4 text-gray-500
-                      sm:h-5 sm:w-5
-                    "
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Keep bottom text readable */}
-          <div className="shrink-0">
+          >
+            {/* Exact icon dimensions */}
             <div
               className="
-                flex h-9 w-full min-w-0
-                items-center justify-center gap-2
-                rounded-xl
-                border border-gray-300/10
-                bg-neutral-800/80 px-2
-                text-sm text-gray-400
-                sm:h-10 sm:text-lg
-              "
-            >
-              <Loader2 className="h-4 w-4 shrink-0 animate-spin text-amber-300" />
+                  h-4 w-4 shrink-0
+                  animate-pulse rounded
+                  bg-neutral-600/80
 
-              <span className="min-w-0 truncate">Loading sections</span>
+                  sm:h-5 sm:w-5
+                "
+            />
+
+            {/* Uses the same font sizing and line height as the real label */}
+            <div
+              className="
+                  min-w-0 flex-1
+                  font-marcellus leading-tight
+                "
+            >
+              <div
+                className={`
+                    h-[1.25em] animate-pulse
+                    rounded bg-neutral-600/80
+                    w-3/4
+                  `}
+              />
             </div>
           </div>
-        </nav>
-      </CardContent>
-    </Card>
+
+          {/* Exact SidebarSectionMenu footprint */}
+          <div
+            className="
+                mr-1 flex h-8 w-8 shrink-0
+                items-center justify-center
+                rounded-full
+
+                sm:mr-1.5
+                sm:h-9 sm:w-9
+              "
+          >
+            <EllipsisVertical
+              className="
+                  h-4 w-4 text-gray-600
+                  sm:h-5 sm:w-5
+                "
+            />
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

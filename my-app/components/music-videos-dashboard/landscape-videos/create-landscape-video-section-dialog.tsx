@@ -22,6 +22,7 @@ import {
   CheckCircle2,
   Clock,
   Flame,
+  Loader2,
   Mic,
   Music,
   Plus,
@@ -471,5 +472,35 @@ export default function CreateLandscapeVideoSectionDialog({
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+export function SidebarFooterFallback() {
+  return (
+    <div
+      aria-hidden="true"
+      className="
+        flex h-9 w-full min-w-0
+        items-center justify-center gap-2
+        rounded-xl
+        border border-gray-300/10
+        px-2
+        text-sm text-gray-400
+
+        sm:h-10
+        sm:text-lg
+      "
+    >
+      <Loader2
+        className="
+          h-4 w-4 shrink-0
+          animate-spin text-amber-300
+
+          sm:h-5 sm:w-5
+        "
+      />
+
+      <span className="min-w-0 truncate">Loading sections</span>
+    </div>
   );
 }

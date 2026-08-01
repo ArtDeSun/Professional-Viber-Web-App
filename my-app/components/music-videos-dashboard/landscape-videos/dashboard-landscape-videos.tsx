@@ -6,10 +6,22 @@ import {
   LandscapeVideoBoard,
   LandscapeVideoSection,
 } from "@/lib/models/models.types";
-import { ChevronRight, PanelLeft, Smartphone } from "lucide-react";
+import { Smartphone } from "lucide-react";
 import Link from "next/link";
-import { ElementType, useEffect, useRef, useState } from "react";
+import {
+  ElementType,
+  Suspense,
+  use,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import { FaYoutube } from "react-icons/fa";
+import CreateLandscapeVideoSectionDialog, {
+  SidebarFooterFallback,
+} from "./create-landscape-video-section-dialog";
 import { FeaturedLandscapeVideo } from "./featured-landscape-video";
 import { featuredLandscapeVideo } from "./landscape-video-data";
 import { DashboardLandscapeVideoSection } from "./landscape-video-section";
@@ -19,20 +31,103 @@ import {
   type LandscapeSectionIconKey,
 } from "./landscape-video-section-ui-config";
 import {
-  LandscapeVideoSidebar,
-  LeftColumnLoadingBox,
+  FeaturedSidebarButton,
+  LandscapeVideoSidebarShell,
+  SidebarButton,
+  SidebarButtonsFallback,
 } from "./landscape-video-sidebar";
 
 interface DashboardLandscapeVideosProps {
-  landscapeVideoBoard: LandscapeVideoBoard;
+  landscapeVideoBoardPromise: Promise<LandscapeVideoBoard>;
   userId: string;
 }
 
+interface DashboardLandscapeVideosWithDataProps extends DashboardLandscapeVideosProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+  onSidebarContentReady: () => void;
+}
+
 export default function DashboardLandscapeVideos({
-  landscapeVideoBoard: initialLandscapeVideoBoard,
+  landscapeVideoBoardPromise,
   userId,
 }: DashboardLandscapeVideosProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarContentReady, setSidebarContentReady] = useState(false);
+  const handleSidebarContentReady = useCallback(() => {
+    setSidebarContentReady(true);
+  }, []);
+  const scrollToTop = () => {
+    //setActiveSection("featured");
+    window.history.replaceState(null, "", window.location.pathname);
+
+    window.dispatchEvent(new Event("navbar-route-change"));
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute inset-0 
+                   bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_38%),radial-gradient(circle_at_bottom,rgba(245,158,11,0.14),transparent_38%)]"
+      />
+
+      <LandscapeVideoSidebarShell
+        open={sidebarOpen}
+        onOpenChange={setSidebarOpen}
+        onScrollToTop={scrollToTop}
+        footer={
+          <div id="landscape-sidebar-footer-root">
+            {!sidebarContentReady && <SidebarFooterFallback />}
+          </div>
+        }
+      >
+        <div className="min-w-0">
+          {!sidebarContentReady && <SidebarButtonsFallback sectionCount={5} />}
+          <div id="landscape-sidebar-buttons-root" className="w-full min-w-0" />
+        </div>
+      </LandscapeVideoSidebarShell>
+
+      <div
+        className="
+                    relative mx-auto w-full max-w-8xl
+                    px-4 pl-4
+                    sm:px-6 sm:pl-24
+                    lg:pl-[19rem]
+                  "
+      >
+        <Suspense fallback={<DashboardContentFallback />}>
+          <DashboardLandscapeVideosWithData
+            landscapeVideoBoardPromise={landscapeVideoBoardPromise}
+            userId={userId}
+            sidebarOpen={sidebarOpen}
+            setSidebarOpen={setSidebarOpen}
+            onSidebarContentReady={handleSidebarContentReady}
+          />
+        </Suspense>
+      </div>
+    </>
+  );
+}
+
+function DashboardLandscapeVideosWithData({
+  landscapeVideoBoardPromise,
+  userId,
+  setSidebarOpen,
+  onSidebarContentReady,
+}: DashboardLandscapeVideosWithDataProps) {
+  const initialLandscapeVideoBoard = use(landscapeVideoBoardPromise);
+  const [sidebarButtonsRoot, setSidebarButtonsRoot] =
+    useState<HTMLElement | null>(null);
+
+  const [sidebarFooterRoot, setSidebarFooterRoot] =
+    useState<HTMLElement | null>(null);
+
+  const [createSectionDialogOpen, setCreateSectionDialogOpen] = useState(false);
 
   const [activeSection, setActiveSection] = useState("featured");
 
@@ -52,6 +147,21 @@ export default function DashboardLandscapeVideos({
     Record<string, { iconKey: LandscapeSectionIconKey }>
   >({});
   const [sectionUiConfigLoaded, setSectionUiConfigLoaded] = useState(false);
+
+  useEffect(() => {
+    const buttonsRoot = document.getElementById(
+      "landscape-sidebar-buttons-root",
+    );
+
+    const footerRoot = document.getElementById("landscape-sidebar-footer-root");
+
+    setSidebarButtonsRoot(buttonsRoot);
+    setSidebarFooterRoot(footerRoot);
+
+    if (buttonsRoot && footerRoot) {
+      onSidebarContentReady();
+    }
+  }, [onSidebarContentReady]);
 
   useEffect(() => {
     try {
@@ -180,12 +290,8 @@ export default function DashboardLandscapeVideos({
   //use the react hook's landscapeVideoBoard and/or landscapeVideoSections to derive landscapeVideos
   /* const featuredLandscapeVideo = landscapeVideos.find((video) => video.isFeatured); */
 
-  /* const hasVideos =
-    Boolean(featuredLandscapeVideo) ||
-    videoSections.some((section) => section.videos.length > 0); */
   const hasVideos = Boolean(featuredLandscapeVideo);
 
-  //const videoSectionIds = videoSections.map((section) => section.id).join("|");
   const videoSectionIds = landscapeVideoSections
     .map((section) => section._id)
     .join("|");
@@ -297,18 +403,6 @@ export default function DashboardLandscapeVideos({
     };
   }, [videoSectionIds]);
 
-  const scrollToTop = () => {
-    //setActiveSection("featured");
-    window.history.replaceState(null, "", window.location.pathname);
-
-    window.dispatchEvent(new Event("navbar-route-change"));
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
-
   const scrollToSection = (id: string) => {
     //setActiveSection(id);
     document.getElementById(id)?.scrollIntoView({
@@ -363,149 +457,108 @@ export default function DashboardLandscapeVideos({
   }, []);
 
   return (
-    </*       main
-      className="
-      relative min-h-screen
-      py-38 font-redHatDisplay text-white
-      sm:py-42
-      lg:py-46
-    " */>
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_38%),radial-gradient(circle_at_bottom,rgba(245,158,11,0.14),transparent_38%)]" />
+    <>
+      {sidebarButtonsRoot &&
+        createPortal(
+          <SidebarButtons
+            landscapeVideoSections={landscapeVideoSections}
+            activeSection={activeSection}
+            onOpenChange={setSidebarOpen}
+            onScrollToSection={scrollToSection}
+            onUpdated={handleLandscapeVideoSectionUpdated}
+            onDeleted={handleLandscapeVideoSectionDeleted}
+            getLandscapeSectionIcon={getLandscapeSectionIcon}
+          />,
+          sidebarButtonsRoot,
+        )}
 
-      <div
-        className="
-                    relative mx-auto w-full max-w-8xl
-                    px-4 pl-4
-                    sm:px-6 sm:pl-24
-                    lg:pl-[17rem]
-                  "
-      >
-        <LandscapeVideoSidebar
-          landscapeVideoBoard={landscapeVideoBoard}
-          landscapeVideoSections={landscapeVideoSections}
-          activeSection={activeSection}
-          open={sidebarOpen}
-          onOpenChange={setSidebarOpen}
-          onScrollToTop={scrollToTop}
-          onScrollToSection={scrollToSection}
-          onLandscapeVideoSectionCreated={handleLandscapeVideoSectionCreated}
-          onLandscapeVideoSectionUpdated={handleLandscapeVideoSectionUpdated}
-          onLandscapeVideoSectionDeleted={handleLandscapeVideoSectionDeleted}
-          getLandscapeSectionIcon={getLandscapeSectionIcon}
-        />
+      {sidebarFooterRoot &&
+        createPortal(
+          <CreateLandscapeVideoSectionDialog
+            landscapeVideoBoard={landscapeVideoBoard}
+            open={createSectionDialogOpen}
+            onOpenChange={setCreateSectionDialogOpen}
+            onLandscapeVideoSectionCreated={handleLandscapeVideoSectionCreated}
+          />,
+          sidebarFooterRoot,
+        )}
 
-        <section className="lg:ml-10 min-w-0 space-y-10 lg:space-y-12">
-          <DashboardLandscapeHeader />
+      <section className="lg:ml-10 min-w-0 space-y-10 lg:space-y-12">
+        <DashboardLandscapeHeader />
 
-          {!hasVideos && <EmptyLandscapeState />}
+        {!hasVideos && <EmptyLandscapeState />}
 
-          {/*<FeaturedLandscapeVideo video={featuredLandScapeVideo ?? null} />*/}
-          <FeaturedLandscapeVideo video={featuredLandscapeVideo} />
+        <FeaturedLandscapeVideo video={featuredLandscapeVideo} />
 
-          <div className="space-y-12 lg:space-y-14">
-            {/* {videoSections.map((section) => (
-              <LandscapeVideoSection key={section.id} section={section} />
-            ))} */}
-            {landscapeVideoSections.map((section) => (
-              <DashboardLandscapeVideoSection
-                key={section._id}
-                section={section}
-                icon={getLandscapeSectionIcon(section)}
-              />
-            ))}
-          </div>
-        </section>
-      </div>
-    </ /* main */>
+        <div className="space-y-12 lg:space-y-14">
+          {landscapeVideoSections.map((section) => (
+            <DashboardLandscapeVideoSection
+              key={section._id}
+              section={section}
+              icon={getLandscapeSectionIcon(section)}
+            />
+          ))}
+        </div>
+      </section>
+    </>
   );
 }
 
-export function DashboardLandscapeVideosFallback() {
+function SidebarButtons({
+  landscapeVideoSections,
+  activeSection,
+  onOpenChange,
+  onScrollToSection,
+  onUpdated,
+  onDeleted,
+  getLandscapeSectionIcon,
+}: {
+  landscapeVideoSections: LandscapeVideoSection[];
+  activeSection: string;
+  onOpenChange: (open: boolean) => void;
+  onScrollToSection: (id: string) => void;
+  onUpdated: (sectionId: string, label: string) => void;
+  onDeleted: (sectionId: string) => void;
+  getLandscapeSectionIcon: (section: LandscapeVideoSection) => ElementType;
+}) {
+  const handleScrollToSection = (id: string) => {
+    onOpenChange(false);
+    onScrollToSection(id);
+  };
+
+  return (
+    <div className="w-full min-w-0 space-y-1.5 sm:space-y-2">
+      <FeaturedSidebarButton
+        activeSection={activeSection}
+        onClick={handleScrollToSection}
+      />
+
+      {landscapeVideoSections.map((section) => (
+        <SidebarButton
+          key={section._id}
+          id={section._id}
+          label={section.label}
+          icon={getLandscapeSectionIcon(section)}
+          activeSection={activeSection}
+          onClick={handleScrollToSection}
+          onUpdated={onUpdated}
+          onDeleted={onDeleted}
+        />
+      ))}
+    </div>
+  );
+}
+
+function DashboardContentFallback() {
   return (
     <div
+      aria-hidden="true"
       className="
-        relative mx-auto w-full max-w-8xl
-        px-4 pl-4
-        sm:px-6 sm:pl-24
-        lg:pl-[17rem]
+        min-h-[60vh] animate-pulse
+        rounded-2xl bg-white/5
+        sm:rounded-3xl
       "
-    >
-      <aside
-        className="
-          pointer-events-none
-          fixed left-2 top-24 z-40
-          sm:left-4 sm:top-28
-          lg:left-6 lg:top-32
-        "
-      >
-        {/* Expanded mobile/tablet toggle */}
-        <div
-          className="
-            relative mb-3 h-11
-            w-[calc(100vw-4rem)] max-w-72
-            sm:h-12
-            lg:hidden
-          "
-        >
-          <div
-            aria-hidden="true"
-            className="
-              absolute inset-0 w-full
-              rounded-xl
-              border border-amber-400/20
-              bg-black/70
-              shadow-[0_0_18px_rgba(245,158,11,0.25)]
-              backdrop-blur-md
-              sm:rounded-2xl sm:px-4
-            "
-          />
-
-          <div
-            className="
-              relative z-10
-              flex h-11 w-full
-              items-center justify-between
-              px-3 text-gray-100
-              sm:h-12 sm:px-4
-            "
-          >
-            <PanelLeft className="h-5 w-5 shrink-0" />
-
-            <span
-              className="
-                ml-3 w-24 min-w-0
-                overflow-hidden whitespace-nowrap
-                font-marcellus text-base
-                sm:text-lg
-              "
-            >
-              Sections
-            </span>
-
-            <ChevronRight className="h-5 w-5 shrink-0 rotate-180" />
-          </div>
-        </div>
-
-        <div
-          id="landscape-video-sidebar-fallback-content"
-          className="
-            pointer-events-auto
-            left-0
-            w-[calc(100vw-4rem)] max-w-72
-            bg-black/70
-            opacity-100
-
-            sm:top-15 sm:w-72
-
-            lg:static
-            lg:w-60
-            lg:max-w-none
-          "
-        >
-          <LeftColumnLoadingBox sectionCount={5} />
-        </div>
-      </aside>
-    </div>
+    />
   );
 }
 

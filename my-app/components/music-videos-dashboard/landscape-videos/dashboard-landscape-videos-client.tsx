@@ -1,6 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
+/*import dynamic from "next/dynamic";
 
 const DashboardLandscapeVideosClient = dynamic(
   () =>
@@ -10,4 +10,6 @@ const DashboardLandscapeVideosClient = dynamic(
   },
 );
 
-export default DashboardLandscapeVideosClient;
+export default DashboardLandscapeVideosClient; */
+
+export { default } from "./dashboard-landscape-videos";

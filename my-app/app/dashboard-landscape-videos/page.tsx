@@ -1,5 +1,4 @@
 //import DashboardLandscapeVideos from "@/components/music-videos-dashboard/landscape-videos/dashboard-landscape-videos";
-import { DashboardLandscapeVideosFallback } from "@/components/music-videos-dashboard/landscape-videos/dashboard-landscape-videos";
 import DashboardLandscapeVideosClient from "@/components/music-videos-dashboard/landscape-videos/dashboard-landscape-videos-client";
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "@/lib/db";
@@ -54,18 +53,16 @@ async function DashboardLandscapeVideos() {
   if (!session?.user) {
     redirect("/");
   }
-  const landscapeVideoBoard = await getLandscapeVideoBoard(
-    session?.user.id ?? "",
-  );
+  const landscapeVideoBoardPromise = getLandscapeVideoBoard(session.user.id);
   return (
     <DashboardLandscapeVideosClient
-      landscapeVideoBoard={landscapeVideoBoard}
+      landscapeVideoBoardPromise={landscapeVideoBoardPromise}
       userId={session.user.id}
     />
   );
 }
 
-export default function getDashboardLandscapeVideos() {
+export default function GetDashboardLandscapeVideos() {
   return (
     <main
       className="
@@ -75,9 +72,32 @@ export default function getDashboardLandscapeVideos() {
       lg:py-46
     "
     >
-      <Suspense fallback={<DashboardLandscapeVideosFallback />}>
+      <Suspense fallback={<DashboardAuthenticationFallback />}>
         <DashboardLandscapeVideos />
       </Suspense>
     </main>
+  );
+}
+
+function DashboardAuthenticationFallback() {
+  return (
+    <div
+    /* aria-hidden="true"
+      className="
+        relative mx-auto min-h-[100vh]
+        w-full max-w-8xl
+        px-4 pl-4
+        sm:px-6 sm:pl-24
+        lg:pl-[19rem]
+      " */
+    >
+      <div
+      /* className="
+          min-h-[100vh] animate-pulse
+          rounded-2xl bg-white/5
+          sm:rounded-3xl
+        " */
+      />
+    </div>
   );
 }

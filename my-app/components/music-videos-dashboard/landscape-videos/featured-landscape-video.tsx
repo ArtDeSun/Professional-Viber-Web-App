@@ -71,6 +71,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
               <VideoFrame
                 video={video}
                 featured
+                eager
                 resetSignal={featuredVideoResetSignal}
               />
             </div>
