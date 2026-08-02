@@ -6,6 +6,38 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 
+const socials = [
+  {
+    href: "https://www.youtube.com/@StevenVibemasterSun",
+    label: "YouTube",
+    Icon: FaYoutube,
+  },
+  {
+    href: "https://spotify.com",
+    label: "Spotify",
+    Icon: FaSpotify,
+  },
+  {
+    href: "https://instagram.com",
+    label: "Instagram",
+    Icon: FaInstagram,
+  },
+  {
+    href: "https://tiktok.com/en",
+    label: "TikTok",
+    Icon: FaTiktok,
+  },
+];
+
+const iconClassName = `
+  h-7 w-7 transition-all duration-300
+  hover:-translate-y-1 hover:text-amber-400
+  active:transition-none active:-translate-y-1 active:text-amber-400
+  hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
+  active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
+  sm:h-8 sm:w-8
+`;
+
 export default function SocialsCopyright() {
   return (
     <section
@@ -30,81 +62,18 @@ export default function SocialsCopyright() {
         </p>
 
         <div className="flex min-h-18 flex-wrap items-center justify-center gap-4 py-4 sm:gap-5">
-          <a
-            href="https://www.youtube.com/@StevenVibemasterSun"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Steven Sun on YouTube"
-            className="flex h-11 w-11 items-center justify-center text-gray-300"
-          >
-            <FaYoutube
-              className="
-                h-7 w-7 transition-all duration-300
-                hover:-translate-y-1 hover:text-amber-400
-                active:transition-none active:-translate-y-1 active:text-amber-400
-                hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                sm:h-8 sm:w-8
-              "
-            />
-          </a>
-
-          <a
-            href="https://spotify.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Steven Sun on Spotify"
-            className="flex h-11 w-11 items-center justify-center text-gray-300"
-          >
-            <FaSpotify
-              className="
-                h-7 w-7 transition-all duration-300
-                hover:-translate-y-1 hover:text-amber-400
-                active:transition-none active:-translate-y-1 active:text-amber-400
-                hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                sm:h-8 sm:w-8
-              "
-            />
-          </a>
-
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Steven Sun on Instagram"
-            className="flex h-11 w-11 items-center justify-center text-gray-300"
-          >
-            <FaInstagram
-              className="
-                h-7 w-7 transition-all duration-300
-                hover:-translate-y-1 hover:text-amber-400
-                active:transition-none active:-translate-y-1 active:text-amber-400
-                hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                sm:h-8 sm:w-8
-              "
-            />
-          </a>
-
-          <a
-            href="https://tiktok.com/en"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Steven Sun on TikTok"
-            className="flex h-11 w-11 items-center justify-center text-gray-300"
-          >
-            <FaTiktok
-              className="
-                h-7 w-7 transition-all duration-300
-                hover:-translate-y-1 hover:text-amber-400
-                active:transition-none active:-translate-y-1 active:text-amber-400
-                hover:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                active:[filter:drop-shadow(0_0_6px_gold)_drop-shadow(0_0_16px_gold)]
-                sm:h-8 sm:w-8
-              "
-            />
-          </a>
+          {socials.map(({ href, label, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Steven Sun on ${label}`}
+              className="flex h-11 w-11 items-center justify-center text-gray-300"
+            >
+              <Icon className={iconClassName} />
+            </a>
+          ))}
         </div>
 
         <div className="flex max-w-full items-start justify-center gap-2 text-sm text-gray-300 sm:items-center sm:text-base">

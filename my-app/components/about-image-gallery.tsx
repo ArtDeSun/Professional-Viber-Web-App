@@ -97,7 +97,7 @@ export default function AboutImageGallery() {
 
       <Button
         onClick={goPrevious}
-        className="absolute left-6 top-1/3 z-20 -translate-y-1/6 
+        className="absolute left-6 top-1/3 z-20 -translate-y-1/10 
                    h-10 w-10 rounded-full border border-white/30 
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
@@ -110,7 +110,7 @@ export default function AboutImageGallery() {
 
       <Button
         onClick={goNext}
-        className="absolute right-6 top-1/3 z-20 -translate-y-1/6 
+        className="absolute right-6 top-1/3 z-20 -translate-y-1/10
                    h-10 w-10 rounded-full border border-white/30 
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all

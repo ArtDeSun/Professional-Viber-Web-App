@@ -17,11 +17,12 @@ export function VideoFrame({
   resetSignal = 0,
   eager = false,
 }: VideoFrameProps) {
+  type ThumbnailPhase = "hydrating" | "loading" | "loaded";
+  const [phase, setPhase] = useState<ThumbnailPhase>("hydrating");
+  const progressLabel =
+    phase === "hydrating" ? "Initializing" : "Loading thumbnail";
   const [showPlayer, setShowPlayer] = useState(false);
-
-  useEffect(() => {
-    setShowPlayer(false);
-  }, [video.id, resetSignal]);
+  const [thumbnailProgress, setThumbnailProgress] = useState(10);
 
   const youtubeThumbnail =
     video.sourceType === "youtube"
@@ -32,6 +33,22 @@ export function VideoFrame({
     video.sourceType === "youtube"
       ? (youtubeThumbnail ?? video.thumbnailUrl)
       : video.thumbnailUrl;
+
+  useEffect(() => {
+    setPhase("loading");
+    setShowPlayer(false);
+    setThumbnailProgress(25);
+
+    const interval = setInterval(() => {
+      //setThumbnailProgress((current) => Math.min(current + 5, 85));
+      setThumbnailProgress((current) => {
+        if (current >= 85) return current;
+        return current + Math.max(1, (85 - current) * 0.08);
+      });
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [video.id, resetSignal, previewImage]);
 
   return (
     <div
@@ -71,38 +88,63 @@ export function VideoFrame({
             src={previewImage}
             alt={video.title}
             fill
+            //either this:
             loading={eager ? "eager" : "lazy"}
             fetchPriority={eager ? "high" : "auto"}
-            className="
+            //or this:
+            //preload={eager}
+            onLoad={() => {
+              setThumbnailProgress(90);
+              requestAnimationFrame(() => {
+                setThumbnailProgress(100);
+                setPhase("loaded");
+              });
+            }}
+            className={`
               object-cover
               transition-transform duration-500
               group-hover:scale-[1.02]
+              ${thumbnailProgress === 100 ? "opacity-100" : "opacity-0"}
             "
             sizes="
               (max-width: 639px) calc(100vw - 6rem),
               (max-width: 1023px) calc(100vw - 8rem),
               50vw
-            "
+            "`}
           />
 
           <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />
 
-          <span
-            className="
-              absolute left-1/2 top-1/2
-              flex h-11 w-16
-              -translate-x-1/2 -translate-y-1/2
-              items-center justify-center
-              rounded-2xl bg-red-600/90
-              shadow-[0_0_18px_rgba(239,68,68,0.45)]
-              transition-all duration-300
-              group-hover:scale-105
-              group-hover:bg-red-500
-              sm:h-12 sm:w-18
-            "
-          >
-            <FaYoutube className="h-6 w-6 text-white sm:h-7 sm:w-7" />
-          </span>
+          {phase !== "loaded" ? (
+            <span className="absolute left-1/2 top-1/2 w-32 -translate-x-1/2 -translate-y-1/2">
+              <span className="mb-1 block text-xs text-white">
+                {progressLabel}... {Math.round(thumbnailProgress)}%
+              </span>
+              <span className="block h-1.5 overflow-hidden rounded-full bg-white/30">
+                <span
+                  className="block h-full bg-white transition-[width] duration-200"
+                  style={{
+                    width: `${thumbnailProgress}%`,
+                  }}
+                />
+              </span>
+            </span>
+          ) : (
+            <span
+              className="absolute left-1/2 top-1/2
+                  flex h-11 w-16
+                  -translate-x-1/2 -translate-y-1/2
+                  items-center justify-center
+                  rounded-2xl bg-red-600/90
+                  shadow-[0_0_18px_rgba(239,68,68,0.45)]
+                  transition-[scale,background-color] duration-300
+                  group-hover:scale-105
+                  group-hover:bg-red-500
+                  sm:h-12 sm:w-18"
+            >
+              <FaYoutube className="h-6 w-6 text-white sm:h-7 sm:w-7" />
+            </span>
+          )}
         </Button>
       ) : previewImage ? (
         <div className="relative h-full w-full min-w-0 overflow-hidden">

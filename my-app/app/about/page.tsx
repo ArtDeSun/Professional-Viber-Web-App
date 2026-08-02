@@ -245,7 +245,7 @@ export default function getAbout() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          degreed software engineer
+                          degreed software developer
                         </a>
                       </span>
                       , Steven excels at performing, digitalizing, and coaching

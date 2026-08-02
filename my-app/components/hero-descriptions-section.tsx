@@ -404,7 +404,7 @@ export default function HeroDescriptionsSection() {
                       xl:text-lg
                     "
               >
-                Internalizing jazz, R&amp;B, rock, East-Asian pop, and classical
+                Internalizing classical, jazz, R&amp;B, rock, and East-Asian pop
                 into a distinctively creative voice.
               </p>
             </div>
