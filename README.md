@@ -1,6 +1,6 @@
 ## NextJS-Powered Web Application
 
-This web application features a digital marketing platform for an independent musician surviving in the social media age.
+This web application features a personalized digital marketing platform for an independent musician surviving in the social media age.
 
 The core product is powered by [Next.js](https://nextjs.org) bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
