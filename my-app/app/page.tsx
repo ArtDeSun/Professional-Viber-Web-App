@@ -462,6 +462,7 @@ export default function Home() {
                       text-base font-bold text-gray-300
                       cursor-pointer
                       hover:text-black
+                      active:transition-none
                       active:text-black
                       sm:h-12 sm:px-8 sm:text-xl
                     "
@@ -485,6 +486,7 @@ export default function Home() {
                           text-sm text-gray-300
                           cursor-pointer
                           hover:border-amber-400 hover:text-amber-400
+                          active:transition-none
                           active:border-amber-400 active:text-amber-400
                           sm:h-9 sm:px-6 sm:text-base
                         "
@@ -514,6 +516,7 @@ export default function Home() {
                       text-sm text-gray-300
                       cursor-pointer
                       hover:border-amber-400 hover:text-amber-400
+                      active:transition-none
                       active:border-amber-400 active:text-amber-400
                       sm:h-9 sm:px-6 sm:text-base
                     "

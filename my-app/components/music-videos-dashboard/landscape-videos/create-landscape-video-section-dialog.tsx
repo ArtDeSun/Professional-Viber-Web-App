@@ -161,7 +161,7 @@ export default function CreateLandscapeVideoSectionDialog({
 
       <DialogContent
         className="
-          w-[calc(100vw-1.5rem)]
+          w-[calc(100vw-4rem)]
           max-w-xl
           overflow-hidden
           rounded-2xl

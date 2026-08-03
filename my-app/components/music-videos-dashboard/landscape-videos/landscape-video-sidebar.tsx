@@ -183,7 +183,7 @@ export function LandscapeVideoSidebarShell({
       >
         <Card
           className="
-              max-h-[calc(100dvh-18rem)]
+              max-h-[calc(100svh-18rem)]
               overflow-hidden
               border-amber-400/20 bg-black/85
               shadow-[0_0_18px_rgba(245,158,11,0.5)]
@@ -244,7 +244,7 @@ export function LandscapeVideoSidebarShell({
               <div
                 className="
                     min-h-0 min-w-0 flex-1
-                    overflow-x-hidden overflow-y-auto pb-4
+                    overflow-x-hidden overflow-y-auto py-4
                     pr-1 
                   "
               >
