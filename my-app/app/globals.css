@@ -31,6 +31,16 @@ body {
   }
 }
 
+@keyframes heroFade {
+  from {
+    opacity: 0.1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 @custom-variant dark (&:is(.dark *));
 
 /* :root {

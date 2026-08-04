@@ -1,50 +1,10 @@
-import { AudioLines, Ear, Video } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+// components/landing/hero-descriptions-section.tsx
+// SERVER COMPONENT
 
-const featureBackgroundImages = [
-  { src: "/hero-images/AI_Generated_Basement_Studio.png", title: "Studio" },
-  { src: "/hero-images/icon.png", title: "Steven Sun Logo" },
-];
+import { AudioLines, Ear, Video } from "lucide-react";
+import DescriptionBackgroundSlider from "./description-background-slider";
 
 export default function HeroDescriptionsSection() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [sliding, setSliding] = useState(false);
-  const [canAnimate, setCanAnimate] = useState(true);
-
-  //Image Animation
-  const SLIDE_MS = 1200;
-  const HOLD_MS = 4000;
-
-  useEffect(() => {
-    const holdTimer = setTimeout(() => {
-      //setCanAnimate(true);
-      setSliding(true);
-
-      const finishTimer = setTimeout(() => {
-        setCanAnimate(false);
-
-        const newCurrentIndex = nextIndex;
-        const newNextIndex = (nextIndex + 1) % featureBackgroundImages.length;
-
-        setCurrentIndex(newCurrentIndex);
-        setNextIndex(newNextIndex);
-        setSliding(false);
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            setCanAnimate(true);
-          });
-        });
-      }, SLIDE_MS);
-
-      return () => clearTimeout(finishTimer);
-    }, HOLD_MS);
-
-    return () => clearTimeout(holdTimer);
-  }, [currentIndex, nextIndex]);
-
   return (
     <section
       id="description-cards"
@@ -57,39 +17,7 @@ export default function HeroDescriptionsSection() {
             md:py-36
           "
     >
-      {/* Background slideshow */}
-      <Image
-        src={featureBackgroundImages[currentIndex].src}
-        alt=""
-        fill
-        priority={currentIndex === 0}
-        sizes="100vw"
-        className={`
-              object-cover object-center brightness-[0.85] opacity-85
-              ${
-                canAnimate
-                  ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  : "transition-none"
-              }
-              ${sliding ? "-translate-x-full" : "translate-x-0"}
-            `}
-      />
-
-      <Image
-        src={featureBackgroundImages[nextIndex].src}
-        alt=""
-        fill
-        sizes="100vw"
-        className={`
-              object-cover object-center brightness-[0.85] opacity-85
-              ${
-                canAnimate
-                  ? "transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  : "transition-none"
-              }
-              ${sliding ? "translate-x-0" : "translate-x-full"}
-            `}
-      />
+      <DescriptionBackgroundSlider />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-3 sm:px-5 md:px-6">

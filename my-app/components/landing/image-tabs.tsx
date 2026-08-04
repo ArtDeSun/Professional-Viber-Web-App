@@ -1,95 +1,67 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Button } from "./ui/button";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "../ui/button";
 
 const tabs = [
   {
     id: "AI_Basement_Music_Studio_1",
     label: "Vibes",
-    imgName: "AI_Generated_Basement_Studio",
+    src: "/hero-images/AI_Generated_Basement_Studio.webp",
     isSquare: false,
   },
   {
     id: "Steven_Sun_Logo_2",
     label: "More Vibes",
-    imgName: "icon",
+    src: "/hero-images/icon.webp",
     isSquare: true,
   },
-  {
-    id: "AI_Basement_Music_Studio_3",
-    label: "Vibes",
-    imgName: "AI_Generated_Basement_Studio",
-    isSquare: false,
-  },
-  {
-    id: "Steven_Sun_Logo_4",
-    label: "More Vibes",
-    imgName: "icon",
-    isSquare: true,
-  },
-  {
-    id: "AI_Basement_Music_Studio_5",
-    label: "Vibes",
-    imgName: "AI_Generated_Basement_Studio",
-    isSquare: false,
-  },
-];
+] as const;
+type Tab = (typeof tabs)[number];
+type TabId = Tab["id"];
+
+const DEFAULT_TAB = tabs[0];
+const STORAGE_KEY = "activeTab";
 
 export default function ImageTabs() {
-  //Tabs
-  const [activeTab, setActiveTab] = useState<string | null>(null);
-
-  useEffect(() => {
-    const savedTab = localStorage.getItem("activeTab");
-
-    const validTab = tabs.some((tab) => tab.id === savedTab)
-      ? savedTab
-      : "AI_Basement_Music_Studio_1";
-
-    setActiveTab(validTab);
-  }, []);
-
-  useEffect(() => {
-    if (activeTab !== null) {
-      localStorage.setItem("activeTab", activeTab);
-    }
-  }, [activeTab]);
-
-  //Images
-  const activeImage = tabs.find((tab) => tab.id === activeTab);
-
-  const [displayedHeroImage, setDisplayedHeroImage] = useState<
-    (typeof tabs)[number] | null
-  >(null);
-
+  const [activeTab, setActiveTab] = useState<TabId>(DEFAULT_TAB.id);
+  const [displayedHeroImage, setDisplayedHeroImage] =
+    useState<Tab>(DEFAULT_TAB);
   const [animationState, setAnimationState] = useState<
     "entering" | "visible" | "exiting"
   >("entering");
+  const storageInitialized = useRef(false);
+  const activeImage = tabs.find((tab) => tab.id === activeTab) ?? DEFAULT_TAB;
 
   useEffect(() => {
-    if (!activeImage) return;
-
-    // First load
-    if (!displayedHeroImage) {
-      setDisplayedHeroImage(activeImage);
-      setAnimationState("entering");
-
-      requestAnimationFrame(() => {
-        setAnimationState("visible");
-      });
-
-      return;
+    const savedTabId = localStorage.getItem(STORAGE_KEY);
+    const savedTab = tabs.find((tab) => tab.id === savedTabId);
+    if (savedTab) {
+      setActiveTab(savedTab.id);
     }
+    storageInitialized.current = true;
+  }, []);
 
-    // Same tab, do nothing
+  useEffect(() => {
+    if (!storageInitialized.current) return;
+    localStorage.setItem(STORAGE_KEY, activeTab);
+  }, [activeTab]);
+
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      setAnimationState("visible");
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
     if (displayedHeroImage.id === activeImage.id) return;
 
-    // Exit old image first
     setAnimationState("exiting");
 
-    const exitTimer = setTimeout(() => {
+    const exitTimer = window.setTimeout(() => {
       setDisplayedHeroImage(activeImage);
       setAnimationState("entering");
 
@@ -100,8 +72,8 @@ export default function ImageTabs() {
       });
     }, 300);
 
-    return () => clearTimeout(exitTimer);
-  }, [activeImage, displayedHeroImage]);
+    return () => window.clearTimeout(exitTimer);
+  }, [activeImage, displayedHeroImage.id]);
 
   return (
     <section className="bg-black px-4 py-12 min-h-[850px]">
@@ -173,7 +145,7 @@ export default function ImageTabs() {
             />
 
             <div
-              key={displayedHeroImage?.id}
+              key={displayedHeroImage.id}
               className={`relative z-10 hover:scale-102 active:scale-105
                           [filter:drop-shadow(0_0_30px_rgba(225,29,72,0.5))]
                             transition-all duration-800 ease-[cubic-bezier(0.25,0.5,0.4,1)]
@@ -188,9 +160,9 @@ export default function ImageTabs() {
             >
               <div
                 className={`
-                            overflow-hidden rounded-[50%]
+                            relative overflow-hidden rounded-[50%]
                             ${
-                              displayedHeroImage?.isSquare
+                              displayedHeroImage.isSquare
                                 ? `
                                   h-[270px] w-[270px]
                                   sm:h-[340px] sm:w-[340px]
@@ -209,12 +181,27 @@ export default function ImageTabs() {
               >
                 {displayedHeroImage && (
                   <Image
-                    src={`/hero-images/${displayedHeroImage.imgName}.png`}
-                    alt={displayedHeroImage.imgName}
-                    width={1200}
-                    height={800}
+                    src={displayedHeroImage.src}
+                    alt={displayedHeroImage.label}
+                    fill
+                    quality={70}
+                    sizes={
+                      displayedHeroImage.isSquare
+                        ? `
+                        (max-width: 639px) 270px,
+                        (max-width: 767px) 340px,
+                        (max-width: 1023px) 440px,
+                        520px
+                      `
+                        : `
+                        (max-width: 639px) 270px,
+                        (max-width: 767px) 460px,
+                        (max-width: 1023px) 480px,
+                        (max-width: 1279px) 720px,
+                        860px
+                      `
+                    }
                     className={`
-                                h-full w-full
                                 ${
                                   displayedHeroImage.isSquare
                                     ? "object-contain"

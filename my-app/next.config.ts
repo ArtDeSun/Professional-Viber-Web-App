@@ -8,8 +8,15 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "i.ytimg.com",
+        pathname: "/vi/**",
       },
     ],
+
+    deviceSizes: [360, 640, 768, 1024, 1280, 1536, 1920],
+    imageSizes: [48, 64, 96, 128, 256, 384],
+    qualities: [55, 70, 80],
+    formats: ["image/webp"],
+    minimumCacheTTL: 60 * 60 * 24,
   },
 };
 
