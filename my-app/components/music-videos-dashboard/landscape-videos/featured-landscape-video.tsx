@@ -3,9 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { LandscapeVideo } from "@/lib/models/models.types";
-import { Edit3, ExternalLink, Star } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { VideoFrame } from "./video-frame";
 
@@ -22,13 +21,7 @@ type FeaturedLandscapeVideoProps = {
 };
 
 export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
-  const [featuredVideoResetSignal, setFeaturedVideoResetSignal] = useState(0);
-
   const featuredVideo = video?.isFeatured === true ? video : null;
-
-  function resetFeaturedVideoFrame() {
-    setFeaturedVideoResetSignal((current) => current + 1);
-  }
 
   return (
     <section
@@ -38,7 +31,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
         sm:scroll-mt-40 sm:space-y-5
       "
     >
-      <FeaturedHeader resetFeaturedVideoFrame={resetFeaturedVideoFrame} />
+      <FeaturedHeader />
 
       {!featuredVideo ? (
         <Card
@@ -81,12 +74,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
             "
           >
             <div className="min-w-0">
-              <VideoFrame
-                video={featuredVideo}
-                featured
-                eager
-                resetSignal={featuredVideoResetSignal}
-              />
+              <VideoFrame video={featuredVideo} featured eager />
             </div>
 
             <div
@@ -155,9 +143,6 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     sm:px-5 sm:text-base
                     lg:text-lg
                   "
-                    onClick={() => {
-                      resetFeaturedVideoFrame();
-                    }}
                   >
                     <Link
                       href={featuredVideo.youtubeUrl}
@@ -187,42 +172,6 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     </Link>
                   </Button>
                 )}
-
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="
-                    group h-10 w-full min-w-0
-                    cursor-pointer rounded-xl
-                    border-amber-400/35
-                    bg-black/40 px-3
-                    text-sm font-bold text-amber-200
-                    transition-all duration-300
-                    hover:-translate-y-0.5
-                    hover:border-amber-300/60
-                    hover:bg-amber-400/15 active:transition-none active:bg-amber-400/15
-                    hover:text-white active:text-white
-                    hover:shadow-[0_0_18px_rgba(245,158,11,0.35)]
-                    sm:h-12 sm:w-fit sm:rounded-2xl
-                    sm:px-5 sm:text-base
-                    lg:text-lg
-                  "
-                  onClick={() => {
-                    resetFeaturedVideoFrame();
-                  }}
-                >
-                  <Edit3
-                    className="
-                      mr-2 h-4 w-4 shrink-0
-                      transition-transform duration-300
-                      group-hover:rotate-6
-                      group-hover:scale-110
-                      sm:h-5 sm:w-5
-                    "
-                  />
-                  {/* onClick={handleEditFeatured} */}
-                  <span className="truncate">Edit Featured</span>
-                </Button>
               </div>
             </div>
           </CardContent>
@@ -232,79 +181,31 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
   );
 }
 
-function FeaturedHeader({
-  resetFeaturedVideoFrame,
-}: {
-  resetFeaturedVideoFrame: () => void;
-}) {
+function FeaturedHeader() {
   return (
-    <header
-      className="
-        flex min-w-0 flex-col gap-3
-        sm:flex-row sm:items-center
-        sm:justify-between sm:gap-4
-      "
-    >
-      <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
-        <div
-          className="
-            shrink-0 rounded-xl
-            border border-white/10
-            bg-white/10 p-2.5
-            shadow-[0_0_12px_rgba(245,158,11,0.16)]
-            sm:rounded-2xl sm:p-3
-          "
-        >
-          <Star className="h-5 w-5 text-amber-300 sm:h-6 sm:w-6" />
-        </div>
-
-        <h2
-          className="
-            min-w-0 break-words
-            font-marcellus text-2xl
-            leading-tight text-white
-            sm:text-3xl
-            lg:text-4xl
-          "
-        >
-          Featured Video
-        </h2>
+    <header className="flex min-w-0 items-center gap-3">
+      <div
+        className="
+          shrink-0 rounded-xl
+          border border-white/10
+          bg-white/10 p-2.5
+          shadow-[0_0_12px_rgba(245,158,11,0.16)]
+          sm:rounded-2xl sm:p-3
+        "
+      >
+        <Star className="h-5 w-5 text-amber-300 sm:h-6 sm:w-6" />
       </div>
 
-      <Button
-        type="button"
-        variant="outline"
+      <h2
         className="
-          group h-10 w-full min-w-0
-          cursor-pointer rounded-xl
-          border-amber-300/40
-          bg-amber-400/10 px-3
-          text-sm font-bold text-amber-100
-          transition-all duration-300
-          hover:-translate-y-0.5
-          hover:bg-amber-400/80 active:transition-none active:bg-amber-400/80
-          hover:text-black active:text-black
-          hover:shadow-[0_0_22px_rgba(245,158,11,0.48)]
-          sm:h-11 sm:w-fit sm:rounded-2xl
-          sm:px-4 sm:text-base
-          lg:h-12 lg:px-5 lg:text-lg
+          min-w-0 break-words
+          font-marcellus text-2xl
+          leading-tight text-white
+          sm:text-3xl lg:text-4xl
         "
-        onClick={() => {
-          resetFeaturedVideoFrame();
-        }}
       >
-        <Star
-          className="
-            mr-2 h-4 w-4 shrink-0
-            transition-transform duration-300
-            group-hover:rotate-12
-            group-hover:scale-125
-            sm:h-5 sm:w-5
-          "
-        />
-
-        <span className="truncate">Set Featured</span>
-      </Button>
+        Featured Video
+      </h2>
     </header>
   );
 }

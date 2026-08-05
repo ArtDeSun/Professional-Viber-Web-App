@@ -7,14 +7,12 @@ import { FaYoutube } from "react-icons/fa";
 type VideoFrameProps = {
   video: LandscapeVideo;
   featured?: boolean;
-  resetSignal?: number;
   eager?: boolean;
 };
 
 export function VideoFrame({
   video,
   featured = false,
-  resetSignal = 0,
   eager = false,
 }: VideoFrameProps) {
   type ThumbnailPhase = "hydrating" | "loading" | "loaded";
@@ -30,24 +28,27 @@ export function VideoFrame({
     ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
     : null;
 
-  const previewImage = video.fromYoutube
-    ? (youtubeThumbnail ?? video.thumbnailUrl)
-    : video.thumbnailUrl;
+  const previewImage =
+    video.thumbnailUrl ??
+    (video.fromYoutube
+      ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
+      : null);
 
   useEffect(() => {
     setPhase("loading");
     setShowPlayer(false);
     setThumbnailProgress(25);
 
-    const interval = setInterval(() => {
+    const interval = window.setInterval(() => {
       setThumbnailProgress((current) => {
         if (current >= 85) return current;
-        return current + Math.max(1, (85 - current) * 0.08);
+
+        return Math.min(85, current + Math.max(1, (85 - current) * 0.08));
       });
     }, 200);
 
-    return () => clearInterval(interval);
-  }, [video._id, resetSignal, previewImage]);
+    return () => window.clearInterval(interval);
+  }, [video._id, previewImage]);
 
   return (
     <div
@@ -91,11 +92,12 @@ export function VideoFrame({
             //or this:
             //preload={eager}
             onLoad={() => {
-              setThumbnailProgress(90);
-              requestAnimationFrame(() => {
-                setThumbnailProgress(100);
-                setPhase("loaded");
-              });
+              setThumbnailProgress(100);
+              setPhase("loaded");
+            }}
+            onError={() => {
+              setThumbnailProgress(100);
+              setPhase("loaded");
             }}
             className={`
               object-cover

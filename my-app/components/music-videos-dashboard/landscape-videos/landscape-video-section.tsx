@@ -6,15 +6,26 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit3, EllipsisVertical, Trash2, Upload } from "lucide-react";
+import {
+  Edit3,
+  EllipsisVertical,
+  Loader2,
+  Star,
+  Trash2,
+  Upload,
+} from "lucide-react";
 import { ElementType, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { VideoFrame } from "./video-frame";
 
+import { setFeaturedLandscapeVideo } from "@/lib/actions/landscape-videos";
 import type {
   LandscapeVideo,
+  LandscapeVideoBoard,
   LandscapeVideoSection,
 } from "@/lib/models/models.types";
+import DeleteLandscapeVideoDialog from "./delete-landscape-video-dialog";
+import LandscapeVideoDialog from "./landscape-video-dialog";
 
 function formatUploadedAt(createdAt: Date): string {
   return new Intl.DateTimeFormat("en-CA", {
@@ -26,40 +37,32 @@ function formatUploadedAt(createdAt: Date): string {
 
 type LandscapeVideoSectionProps = {
   section: LandscapeVideoSection;
+  landscapeVideoBoard: LandscapeVideoBoard;
   icon: ElementType;
+  onLandscapeVideoAdded: (sectionId: string, video: LandscapeVideo) => void;
+  onLandscapeVideoUpdated: (videoId: string, video: LandscapeVideo) => void;
+  onLandscapeVideoDeleted: (videoId: string) => void;
+  onLandscapeVideoFeatured: (videoId: string, video: LandscapeVideo) => void;
 };
 
 export function DashboardLandscapeVideoSection({
   section,
+  landscapeVideoBoard,
   icon,
+  onLandscapeVideoAdded,
+  onLandscapeVideoUpdated,
+  onLandscapeVideoDeleted,
+  onLandscapeVideoFeatured,
 }: LandscapeVideoSectionProps) {
-  const [videoResetSignals, setVideoResetSignals] = useState<
-    Record<string, number>
-  >({});
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<LandscapeVideo | null>(null);
+  const [deletingVideo, setDeletingVideo] = useState<LandscapeVideo | null>(
+    null,
+  );
 
   const videos = [...(section.landscapeVideos ?? [])].sort(
     (a, b) => a.order - b.order,
   );
-
-  function resetVideoFrame(videoId: string) {
-    setVideoResetSignals((current) => ({
-      ...current,
-      [videoId]: (current[videoId] ?? 0) + 1,
-    }));
-  }
-
-  //Upon clicking Add Video in LandscapeSectionHeader
-  function resetSectionVideoFrames(): void {
-    setVideoResetSignals((current) => {
-      const next = { ...current };
-
-      for (const video of videos) {
-        next[video._id] = (next[video._id] ?? 0) + 1;
-      }
-
-      return next;
-    });
-  }
 
   return (
     <section
@@ -81,7 +84,7 @@ export function DashboardLandscapeVideoSection({
       <LandscapeSectionHeader
         icon={icon}
         title={section.label}
-        resetSectionVideoFrames={resetSectionVideoFrames}
+        onAddVideo={() => setAddDialogOpen(true)}
       />
 
       {videos.length === 0 ? (
@@ -110,24 +113,46 @@ export function DashboardLandscapeVideoSection({
             <LandscapeVideoCard
               key={video._id}
               video={video}
-              resetSignal={videoResetSignals[video._id] ?? 0}
-              resetVideoFrame={resetVideoFrame}
+              onEdit={() => setEditingVideo(video)}
+              onDelete={() => setDeletingVideo(video)}
+              onFeatured={onLandscapeVideoFeatured}
             />
           ))}
         </div>
       )}
+      <LandscapeVideoDialog
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        landscapeVideoBoard={landscapeVideoBoard}
+        section={section}
+        onSaved={onLandscapeVideoAdded}
+      />
 
-      <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
-        <CardContent
-          className="
-              p-5 text-center
-              text-sm leading-6 text-gray-400
-              sm:p-8 sm:text-base
-            "
-        >
-          No videos in this section yet.
-        </CardContent>
-      </Card>
+      <LandscapeVideoDialog
+        open={Boolean(editingVideo)}
+        onOpenChange={(open) => {
+          if (!open) setEditingVideo(null);
+        }}
+        landscapeVideoBoard={landscapeVideoBoard}
+        section={section}
+        video={editingVideo}
+        onSaved={(_, updatedVideo) => {
+          onLandscapeVideoUpdated(updatedVideo._id, updatedVideo);
+          setEditingVideo(null);
+        }}
+      />
+
+      <DeleteLandscapeVideoDialog
+        open={Boolean(deletingVideo)}
+        onOpenChange={(open) => {
+          if (!open) setDeletingVideo(null);
+        }}
+        video={deletingVideo}
+        onDeleted={(videoId) => {
+          onLandscapeVideoDeleted(videoId);
+          setDeletingVideo(null);
+        }}
+      />
     </section>
   );
 }
@@ -135,11 +160,11 @@ export function DashboardLandscapeVideoSection({
 function LandscapeSectionHeader({
   icon: Icon,
   title,
-  resetSectionVideoFrames,
+  onAddVideo,
 }: {
   icon: ElementType;
   title: string;
-  resetSectionVideoFrames: () => void;
+  onAddVideo: () => void;
 }) {
   return (
     <header
@@ -208,9 +233,6 @@ function LandscapeSectionHeader({
           lg:px-5
           lg:text-lg
         "
-        onClick={() => {
-          resetSectionVideoFrames;
-        }}
       >
         <Upload
           className="
@@ -232,12 +254,14 @@ function LandscapeSectionHeader({
 
 function LandscapeVideoCard({
   video,
-  resetSignal,
-  resetVideoFrame,
+  onEdit,
+  onDelete,
+  onFeatured,
 }: {
   video: LandscapeVideo;
-  resetSignal: number;
-  resetVideoFrame: (videoId: string) => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onFeatured: (videoId: string, video: LandscapeVideo) => void;
 }) {
   return (
     <Card
@@ -267,7 +291,7 @@ function LandscapeVideoCard({
           sm:rounded-[1.35rem]
         "
       >
-        <VideoFrame video={video} resetSignal={resetSignal} />
+        <VideoFrame video={video} />
 
         <div
           className=" 
@@ -345,7 +369,9 @@ function LandscapeVideoCard({
 
             <LandscapeVideoMenu
               video={video}
-              resetVideoFrame={resetVideoFrame}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              onFeatured={onFeatured}
             />
           </div>
         </div>
@@ -356,11 +382,35 @@ function LandscapeVideoCard({
 
 function LandscapeVideoMenu({
   video,
-  resetVideoFrame,
+  onEdit,
+  onDelete,
+  onFeatured,
 }: {
   video: LandscapeVideo;
-  resetVideoFrame: (videoId: string) => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onFeatured: (videoId: string, video: LandscapeVideo) => void;
 }) {
+  const [featuring, setFeaturing] = useState(false);
+
+  async function handleSetFeatured() {
+    if (video.isFeatured || featuring) return;
+
+    setFeaturing(true);
+
+    try {
+      const result = await setFeaturedLandscapeVideo(video._id);
+
+      if (result.error || !result.data) {
+        console.error(result.error ?? "Failed to feature video");
+        return;
+      }
+
+      onFeatured(video._id, result.data);
+    } finally {
+      setFeaturing(false);
+    }
+  }
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -386,10 +436,6 @@ function LandscapeVideoMenu({
 
             sm:h-10 sm:w-10
           "
-          onClick={() => {
-            resetVideoFrame(video._id);
-            //setOpenMenuVideoId(video.id);
-          }}
         >
           <EllipsisVertical className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
@@ -416,6 +462,39 @@ function LandscapeVideoMenu({
         "
       >
         <DropdownMenuItem
+          disabled={video.isFeatured || featuring}
+          onSelect={handleSetFeatured}
+          className="
+            group cursor-pointer rounded-xl
+            px-3 py-2.5 text-sm font-medium
+            focus:bg-amber-400/80
+            focus:text-black
+            disabled:cursor-default
+            sm:rounded-2xl sm:py-3 sm:text-base
+          "
+        >
+          {featuring ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin sm:mr-3 sm:h-5 sm:w-5" />
+          ) : (
+            <Star
+              className={`
+                mr-2 h-4 w-4 sm:mr-3 sm:h-5 sm:w-5
+                ${
+                  video.isFeatured
+                    ? "fill-amber-300 text-amber-300"
+                    : "text-amber-300"
+                }
+              `}
+            />
+          )}
+
+          <span className="truncate">
+            {video.isFeatured ? "Featured Video" : "Set as Featured"}
+          </span>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          onSelect={onEdit}
           className="
             group cursor-pointer
             rounded-xl
@@ -449,6 +528,7 @@ function LandscapeVideoMenu({
         <div className="my-1 h-px bg-white/10" />
 
         <DropdownMenuItem
+          onSelect={onDelete}
           className="
             group cursor-pointer
             rounded-xl

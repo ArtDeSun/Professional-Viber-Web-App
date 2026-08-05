@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useLandscapeVideoBoard } from "@/lib/hooks/useLandscapeVideoBoard";
 import {
+  LandscapeVideo,
   LandscapeVideoBoard,
   LandscapeVideoSection,
 } from "@/lib/models/models.types";
@@ -290,6 +291,28 @@ function DashboardLandscapeVideosWithData({
     }
   }
 
+  function handleLandscapeVideoAdded(sectionId: string, video: LandscapeVideo) {
+    addLandscapeVideo(sectionId, video);
+  }
+
+  function handleLandscapeVideoUpdated(videoId: string, video: LandscapeVideo) {
+    modifyLandscapeVideo(videoId, video);
+  }
+
+  function handleLandscapeVideoDeleted(videoId: string) {
+    removeLandscapeVideo(videoId);
+  }
+
+  function handleLandscapeVideoFeatured(
+    videoId: string,
+    video: LandscapeVideo,
+  ) {
+    modifyLandscapeVideo(videoId, {
+      ...video,
+      isFeatured: true,
+    });
+  }
+
   //Derive the featured landscape video separately
   //use the react hook's landscapeVideoBoard and/or landscapeVideoSections to derive landscapeVideos
   /* const featuredLandscapeVideo = landscapeVideos.find((video) => video.isFeatured); */
@@ -499,7 +522,12 @@ function DashboardLandscapeVideosWithData({
             <DashboardLandscapeVideoSection
               key={section._id}
               section={section}
+              landscapeVideoBoard={landscapeVideoBoard}
               icon={getLandscapeSectionIcon(section)}
+              onLandscapeVideoAdded={handleLandscapeVideoAdded}
+              onLandscapeVideoUpdated={handleLandscapeVideoUpdated}
+              onLandscapeVideoDeleted={handleLandscapeVideoDeleted}
+              onLandscapeVideoFeatured={handleLandscapeVideoFeatured}
             />
           ))}
         </div>
