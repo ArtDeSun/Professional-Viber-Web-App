@@ -2,12 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import type { LandscapeVideo } from "@/lib/models/models.types";
 import { Edit3, ExternalLink, Star } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import type { LandscapeVideo } from "./landscape-video-types";
 import { VideoFrame } from "./video-frame";
+
+function formatUploadedAt(createdAt: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(createdAt));
+}
 
 type FeaturedLandscapeVideoProps = {
   video: LandscapeVideo | null;
@@ -15,6 +23,9 @@ type FeaturedLandscapeVideoProps = {
 
 export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
   const [featuredVideoResetSignal, setFeaturedVideoResetSignal] = useState(0);
+
+  const featuredVideo = video?.isFeatured === true ? video : null;
+
   function resetFeaturedVideoFrame() {
     setFeaturedVideoResetSignal((current) => current + 1);
   }
@@ -29,7 +40,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
     >
       <FeaturedHeader resetFeaturedVideoFrame={resetFeaturedVideoFrame} />
 
-      {!video ? (
+      {!featuredVideo ? (
         <Card
           className="
             min-w-0 rounded-2xl
@@ -71,7 +82,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
           >
             <div className="min-w-0">
               <VideoFrame
-                video={video}
+                video={featuredVideo}
                 featured
                 eager
                 resetSignal={featuredVideoResetSignal}
@@ -95,7 +106,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                 >
                   <FaYoutube className="h-4 w-4 shrink-0 text-red-500 sm:h-5 sm:w-5" />
 
-                  <span className="truncate">Featured upload</span>
+                  <span className="truncate">Highlights</span>
                 </p>
 
                 <h3
@@ -106,20 +117,19 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     lg:text-3xl
                   "
                 >
-                  {video.title}
+                  {featuredVideo.title}
                 </h3>
 
-                {video.duration && video.uploadedAt && (
-                  <p
-                    className="
+                <p
+                  className="
                       mt-3 break-words
                       text-xs leading-5 text-gray-400
                       sm:mt-4 sm:text-sm
                     "
-                  >
-                    {video.duration} • Uploaded {video.uploadedAt}
-                  </p>
-                )}
+                >
+                  {featuredVideo.duration} • Uploaded{" "}
+                  {formatUploadedAt(featuredVideo.createdAt)}
+                </p>
               </div>
 
               <div
@@ -128,9 +138,10 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                   sm:flex-row sm:flex-wrap sm:items-center sm:gap-4
                 "
               >
-                <Button
-                  asChild
-                  className="
+                {featuredVideo.fromYoutube && featuredVideo.youtubeUrl && (
+                  <Button
+                    asChild
+                    className="
                     group h-10 w-full min-w-0
                     cursor-pointer rounded-xl
                     bg-red-600/80 px-3
@@ -144,48 +155,38 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     sm:px-5 sm:text-base
                     lg:text-lg
                   "
-                  onClick={() => {
-                    resetFeaturedVideoFrame();
-                  }}
-                >
-                  <Link
-                    href={video.youtubeUrl ?? "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="min-w-0"
+                    onClick={() => {
+                      resetFeaturedVideoFrame();
+                    }}
                   >
-                    <FaYoutube
-                      className="
+                    <Link
+                      href={featuredVideo.youtubeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      //className="min-w-0"
+                    >
+                      <FaYoutube
+                        className="
                         mr-2 h-4 w-4 shrink-0
                         transition-transform duration-300
                         group-hover:scale-125
                         sm:h-5 sm:w-5
                       "
-                    />
+                      />
+                      <span className="truncate">Open YouTube</span>
 
-                    {/* function handleOpenYouTube() {
-                      resetFeaturedVideoFrame();
-
-                      window.open(
-                        featuredVideo.youtubeUrl,
-                        "_blank",
-                        "noopener,noreferrer",
-                      );
-                    } */}
-                    {/* onClick={handleOpenYouTube} */}
-                    <span className="truncate">Open YouTube</span>
-
-                    <ExternalLink
-                      className="
+                      <ExternalLink
+                        className="
                         ml-2 h-3.5 w-3.5 shrink-0
                         transition-transform duration-300
                         group-hover:translate-x-0.5
                         group-hover:-translate-y-0.5
                         sm:h-4 sm:w-4
                       "
-                    />
-                  </Link>
-                </Button>
+                      />
+                    </Link>
+                  </Button>
+                )}
 
                 <Button
                   type="button"
@@ -219,11 +220,6 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                       sm:h-5 sm:w-5
                     "
                   />
-
-                  {/* function handleEditFeatured() {
-                    resetFeaturedVideoFrame();
-                    setFeaturedEditorOpen(true);
-                  } */}
                   {/* onClick={handleEditFeatured} */}
                   <span className="truncate">Edit Featured</span>
                 </Button>

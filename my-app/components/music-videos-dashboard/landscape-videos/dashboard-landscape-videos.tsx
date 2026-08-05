@@ -23,7 +23,6 @@ import CreateLandscapeVideoSectionDialog, {
   SidebarFooterFallback,
 } from "./create-landscape-video-section-dialog";
 import { FeaturedLandscapeVideo } from "./featured-landscape-video";
-import { featuredLandscapeVideo } from "./landscape-video-data";
 import { DashboardLandscapeVideoSection } from "./landscape-video-section";
 import {
   DEFAULT_LANDSCAPE_SECTION_ICON_KEYS,
@@ -136,9 +135,14 @@ function DashboardLandscapeVideosWithData({
   const {
     landscapeVideoBoard,
     landscapeVideoSections,
+    landscapeVideos,
+    featuredLandscapeVideo,
     addLandscapeVideoSection,
     modifyLandscapeVideoSection,
     removeLandscapeVideoSection,
+    addLandscapeVideo,
+    modifyLandscapeVideo,
+    removeLandscapeVideo,
   } = useLandscapeVideoBoard(initialLandscapeVideoBoard);
 
   const landscapeBoardId = landscapeVideoBoard._id;
@@ -290,7 +294,7 @@ function DashboardLandscapeVideosWithData({
   //use the react hook's landscapeVideoBoard and/or landscapeVideoSections to derive landscapeVideos
   /* const featuredLandscapeVideo = landscapeVideos.find((video) => video.isFeatured); */
 
-  const hasVideos = Boolean(featuredLandscapeVideo);
+  const hasVideos = landscapeVideos.length > 0;
 
   const videoSectionIds = landscapeVideoSections
     .map((section) => section._id)

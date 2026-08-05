@@ -9,10 +9,20 @@ import {
 import { Edit3, EllipsisVertical, Trash2, Upload } from "lucide-react";
 import { ElementType, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import type { LandscapeVideo } from "./landscape-video-types";
 import { VideoFrame } from "./video-frame";
 
-import type { LandscapeVideoSection } from "@/lib/models/models.types";
+import type {
+  LandscapeVideo,
+  LandscapeVideoSection,
+} from "@/lib/models/models.types";
+
+function formatUploadedAt(createdAt: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(createdAt));
+}
 
 type LandscapeVideoSectionProps = {
   section: LandscapeVideoSection;
@@ -27,6 +37,10 @@ export function DashboardLandscapeVideoSection({
     Record<string, number>
   >({});
 
+  const videos = [...(section.landscapeVideos ?? [])].sort(
+    (a, b) => a.order - b.order,
+  );
+
   function resetVideoFrame(videoId: string) {
     setVideoResetSignals((current) => ({
       ...current,
@@ -35,12 +49,12 @@ export function DashboardLandscapeVideoSection({
   }
 
   //Upon clicking Add Video in LandscapeSectionHeader
-  function resetSectionVideoFrames(videos: LandscapeVideo[]) {
+  function resetSectionVideoFrames(): void {
     setVideoResetSignals((current) => {
       const next = { ...current };
 
       for (const video of videos) {
-        next[video.id] = (next[video.id] ?? 0) + 1;
+        next[video._id] = (next[video._id] ?? 0) + 1;
       }
 
       return next;
@@ -67,11 +81,10 @@ export function DashboardLandscapeVideoSection({
       <LandscapeSectionHeader
         icon={icon}
         title={section.label}
-        //section={section}
-        //resetSectionVideoFrames={resetSectionVideoFrames}
+        resetSectionVideoFrames={resetSectionVideoFrames}
       />
 
-      {/* {section.videos.length === 0 ? (
+      {videos.length === 0 ? (
         <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
           <CardContent
             className="
@@ -93,16 +106,16 @@ export function DashboardLandscapeVideoSection({
             xl:gap-5
           "
         >
-          {section.videos.map((video) => (
+          {videos.map((video) => (
             <LandscapeVideoCard
-              key={video.id}
+              key={video._id}
               video={video}
-              resetSignal={videoResetSignals[video.id] ?? 0}
+              resetSignal={videoResetSignals[video._id] ?? 0}
               resetVideoFrame={resetVideoFrame}
             />
           ))}
         </div>
-      )} */}
+      )}
 
       <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
         <CardContent
@@ -122,13 +135,11 @@ export function DashboardLandscapeVideoSection({
 function LandscapeSectionHeader({
   icon: Icon,
   title,
-  //section,
-  //resetSectionVideoFrames,
+  resetSectionVideoFrames,
 }: {
   icon: ElementType;
   title: string;
-  //section: LandscapeVideoSectionData;
-  //resetSectionVideoFrames: (videos: LandscapeVideo[]) => void;
+  resetSectionVideoFrames: () => void;
 }) {
   return (
     <header
@@ -198,7 +209,7 @@ function LandscapeSectionHeader({
           lg:text-lg
         "
         onClick={() => {
-          //resetSectionVideoFrames(section.videos);
+          resetSectionVideoFrames;
         }}
       >
         <Upload
@@ -267,8 +278,9 @@ function LandscapeVideoCard({
             sm:p-4
           "
         >
-          <div
-            className="
+          {video.fromYoutube && (
+            <div
+              className="
               absolute
               -top-4 left-3
               rounded-lg
@@ -285,9 +297,10 @@ function LandscapeVideoCard({
 
               lg:left-24
             "
-          >
-            <FaYoutube className="h-4 w-4 text-red-500 sm:h-5 sm:w-5" />
-          </div>
+            >
+              <FaYoutube className="h-4 w-4 text-red-500 sm:h-5 sm:w-5" />
+            </div>
+          )}
 
           <div
             className="
@@ -315,9 +328,8 @@ function LandscapeVideoCard({
                 {video.title}
               </h3>
 
-              {video.duration && video.uploadedAt && (
-                <p
-                  className="
+              <p
+                className="
                     mt-2 line-clamp-2
                     break-words
                     text-xs leading-5 text-gray-400
@@ -326,10 +338,9 @@ function LandscapeVideoCard({
                     sm:line-clamp-1
                     sm:text-sm
                   "
-                >
-                  {video.duration} • Uploaded {video.uploadedAt}
-                </p>
-              )}
+              >
+                {video.duration} • Uploaded {formatUploadedAt(video.createdAt)}
+              </p>
             </div>
 
             <LandscapeVideoMenu
@@ -376,7 +387,7 @@ function LandscapeVideoMenu({
             sm:h-10 sm:w-10
           "
           onClick={() => {
-            resetVideoFrame(video.id);
+            resetVideoFrame(video._id);
             //setOpenMenuVideoId(video.id);
           }}
         >

@@ -399,8 +399,8 @@ export default function getAbout() {
                 Independent Artist Vision
               </h2>
               <p className="text-base leading-7 text-neutral-300 sm:text-lg sm:leading-8">
-                Striving to reinvent the independent artist in the streaming
-                era, Steven draws from his unique background to craft a rich
+                Striving to reinvent the independent artist in the AI era,
+                Steven draws from his unique background to craft an authentic
                 sound informed by popular culture and music legends of the past.
               </p>
             </div>

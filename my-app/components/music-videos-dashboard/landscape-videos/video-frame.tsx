@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
+import type { LandscapeVideo } from "@/lib/models/models.types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import type { LandscapeVideo } from "./landscape-video-types";
 
 type VideoFrameProps = {
   video: LandscapeVideo;
@@ -18,21 +18,21 @@ export function VideoFrame({
   eager = false,
 }: VideoFrameProps) {
   type ThumbnailPhase = "hydrating" | "loading" | "loaded";
+
   const [phase, setPhase] = useState<ThumbnailPhase>("hydrating");
-  const progressLabel =
-    phase === "hydrating" ? "Initializing" : "Loading thumbnail";
   const [showPlayer, setShowPlayer] = useState(false);
   const [thumbnailProgress, setThumbnailProgress] = useState(10);
 
-  const youtubeThumbnail =
-    video.sourceType === "youtube"
-      ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
-      : null;
+  const progressLabel =
+    phase === "hydrating" ? "Initializing" : "Loading thumbnail";
 
-  const previewImage =
-    video.sourceType === "youtube"
-      ? (youtubeThumbnail ?? video.thumbnailUrl)
-      : video.thumbnailUrl;
+  const youtubeThumbnail = video.fromYoutube
+    ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
+    : null;
+
+  const previewImage = video.fromYoutube
+    ? (youtubeThumbnail ?? video.thumbnailUrl)
+    : video.thumbnailUrl;
 
   useEffect(() => {
     setPhase("loading");
@@ -40,7 +40,6 @@ export function VideoFrame({
     setThumbnailProgress(25);
 
     const interval = setInterval(() => {
-      //setThumbnailProgress((current) => Math.min(current + 5, 85));
       setThumbnailProgress((current) => {
         if (current >= 85) return current;
         return current + Math.max(1, (85 - current) * 0.08);
@@ -48,7 +47,7 @@ export function VideoFrame({
     }, 200);
 
     return () => clearInterval(interval);
-  }, [video.id, resetSignal, previewImage]);
+  }, [video._id, resetSignal, previewImage]);
 
   return (
     <div
@@ -63,7 +62,7 @@ export function VideoFrame({
         }
       `}
     >
-      {video.sourceType === "youtube" && video.youtubeEmbedUrl && showPlayer ? (
+      {video.fromYoutube && video.youtubeEmbedUrl && showPlayer ? (
         <iframe
           src={getPrivacyEnhancedEmbedUrl(video.youtubeEmbedUrl)}
           title={video.title}
@@ -71,9 +70,7 @@ export function VideoFrame({
           allowFullScreen
           className="absolute inset-0 block h-full w-full border-0"
         />
-      ) : previewImage &&
-        video.sourceType === "youtube" &&
-        video.youtubeEmbedUrl ? (
+      ) : previewImage && video.fromYoutube && video.youtubeEmbedUrl ? (
         <Button
           type="button"
           aria-label={`Play ${video.title}`}
