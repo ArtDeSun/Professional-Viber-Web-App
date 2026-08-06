@@ -311,6 +311,13 @@ function DashboardLandscapeVideosWithData({
       ...video,
       isFeatured: true,
     });
+
+    requestAnimationFrame(() => {
+      document.getElementById("featured")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
   }
 
   //Derive the featured landscape video separately
@@ -628,8 +635,8 @@ function DashboardLandscapeHeader() {
             lg:text-lg lg:leading-8
           "
         >
-          Manage long-form videos, covers, performances, tutorials, and featured
-          uploads.
+          Manage Youtube videos, covers, performances, tutorials, and
+          Highlights.
         </p>
       </div>
 
@@ -712,7 +719,8 @@ function EmptyLandscapeState() {
             sm:text-base sm:leading-7
           "
         >
-          Upload your first long-form video or add a YouTube embed.
+          {/* Upload your first long-form video or add a YouTube embed. */}
+          Upload your first Youtube Video.
         </p>
       </div>
     </section>

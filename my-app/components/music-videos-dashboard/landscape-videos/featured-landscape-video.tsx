@@ -137,7 +137,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     shadow-[0_0_16px_rgba(239,68,68,0.35)]
                     transition-all duration-300
                     hover:-translate-y-0.5
-                    hover:bg-red-500/80 active:transition-none active:bg-red-500/80
+                    active:transition-none active:bg-red-500/80
                     hover:shadow-[0_0_24px_rgba(239,68,68,0.6)]
                     sm:h-12 sm:w-fit sm:rounded-2xl
                     sm:px-5 sm:text-base

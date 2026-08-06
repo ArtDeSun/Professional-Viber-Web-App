@@ -104,12 +104,12 @@ export function VideoFrame({
               transition-transform duration-500
               group-hover:scale-[1.02]
               ${thumbnailProgress === 100 ? "opacity-100" : "opacity-0"}
-            "
+            "`}
             sizes="
               (max-width: 639px) calc(100vw - 6rem),
               (max-width: 1023px) calc(100vw - 8rem),
               50vw
-            "`}
+            "
           />
 
           <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />

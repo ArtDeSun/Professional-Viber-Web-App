@@ -41,8 +41,8 @@ export default function LandscapeVideoDialog({
 }: LandscapeVideoDialogProps) {
   const editing = Boolean(video);
 
-  const [title, setTitle] = useState("");
-  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [title, setTitle] = useState(video?.title ?? "");
+  const [youtubeUrl, setYoutubeUrl] = useState(video?.youtubeUrl ?? "");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,6 +51,7 @@ export default function LandscapeVideoDialog({
 
     setTitle(video?.title ?? "");
     setYoutubeUrl(video?.youtubeUrl ?? "");
+    setSubmitting(false);
     setError(null);
   }, [open, video]);
 
@@ -97,17 +98,18 @@ export default function LandscapeVideoDialog({
               youtubeUrl: trimmedUrl,
             });
 
-      if (result.error || !result.data) {
+      if ("error" in result) {
         setError(result.error ?? "Failed to save the video.");
+        setSubmitting(false);
         return;
       }
 
       onSaved(section._id, result.data);
-      onOpenChange(false);
+
+      // Keep submitting=true during the closing animation.
     } catch (error) {
       console.error(error);
       setError("Something went wrong while saving the video.");
-    } finally {
       setSubmitting(false);
     }
   }
@@ -115,7 +117,20 @@ export default function LandscapeVideoDialog({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange} modal={false}>
       <DialogContent
+        onFocusOutside={(event) => {
+          event.preventDefault();
+        }}
+        onPointerDownOutside={(event) => {
+          event.preventDefault();
+
+          if (!submitting) {
+            handleOpenChange(false);
+          }
+        }}
         className="
+          data-[state=closed]:animate-none
+          data-[state=closed]:duration-0
+
           w-[calc(100vw-4rem)] max-w-xl
           overflow-hidden rounded-2xl
           border border-amber-400/20
@@ -154,7 +169,9 @@ export default function LandscapeVideoDialog({
           </DialogTitle>
 
           <p className="text-sm leading-6 text-gray-400 sm:text-base">
-            YouTube supplies the thumbnail and duration automatically.
+            {editing
+              ? "Update the title or replace the YouTube link."
+              : "YouTube provides the thumbnail and duration automatically."}
           </p>
         </DialogHeader>
 
@@ -181,10 +198,10 @@ export default function LandscapeVideoDialog({
               <Input
                 id={`landscape-video-title-${section._id}`}
                 value={title}
-                maxLength={100}
+                maxLength={20}
                 disabled={submitting}
                 autoComplete="off"
-                placeholder="Expressive long-form piano showcase"
+                placeholder={editing ? "Update video title" : "New video title"}
                 onChange={(event) => {
                   setTitle(event.target.value);
                   setError(null);
@@ -205,7 +222,7 @@ export default function LandscapeVideoDialog({
 
               <div className="flex justify-end">
                 <span className="text-xs text-gray-500 sm:text-sm">
-                  {title.length}/100
+                  {title.length}/20
                 </span>
               </div>
             </div>
@@ -294,7 +311,9 @@ export default function LandscapeVideoDialog({
               {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
 
               {submitting
-                ? "Checking YouTube..."
+                ? editing
+                  ? "Saving..."
+                  : "Verifying..."
                 : editing
                   ? "Save Changes"
                   : "Add Video"}

@@ -252,18 +252,20 @@ export async function createLandscapeVideo(
     let createdVideo: unknown;
 
     await mongoSession.withTransaction(async () => {
-      const [board, section] = await Promise.all([
-        LandscapeVideoBoard.findOne({
-          _id: input.landscapeVideoBoardId,
-          userId: session.user.id,
-        }).session(mongoSession),
+      const board = await LandscapeVideoBoard.findOne({
+        _id: input.landscapeVideoBoardId,
+        userId: session.user.id,
+      }).session(mongoSession);
 
-        LandscapeVideoSection.findOne({
-          _id: input.landscapeVideoSectionId,
-          landscapeVideoBoardId: input.landscapeVideoBoardId,
-          userId: session.user.id,
-        }).session(mongoSession),
-      ]);
+      const section = await LandscapeVideoSection.findOne({
+        _id: input.landscapeVideoSectionId,
+        landscapeVideoBoardId: input.landscapeVideoBoardId,
+        userId: session.user.id,
+      }).session(mongoSession);
+
+      if (!board || !section) {
+        throw new Error("LANDSCAPE_VIDEO_SECTION_NOT_FOUND");
+      }
 
       if (!board || !section) {
         throw new Error("LANDSCAPE_VIDEO_SECTION_NOT_FOUND");
@@ -411,7 +413,7 @@ export async function updateLandscapeVideo(
         },
       },
       {
-        new: true,
+        returnDocument: "after",
         runValidators: true,
       },
     );

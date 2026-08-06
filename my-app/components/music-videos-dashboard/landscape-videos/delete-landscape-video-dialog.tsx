@@ -11,7 +11,7 @@ import {
 import { deleteLandscapeVideo } from "@/lib/actions/landscape-videos";
 import type { LandscapeVideo } from "@/lib/models/models.types";
 import { Loader2, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type DeleteLandscapeVideoDialogProps = {
   video: LandscapeVideo | null;
@@ -29,8 +29,15 @@ export default function DeleteLandscapeVideoDialog({
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (open) {
+      setDeleting(false);
+      setError(null);
+    }
+  }, [open]);
+
   async function handleDelete() {
-    if (!video) return;
+    if (!video || deleting) return;
 
     setDeleting(true);
     setError(null);
@@ -39,16 +46,18 @@ export default function DeleteLandscapeVideoDialog({
       const result = await deleteLandscapeVideo(video._id);
 
       if ("error" in result) {
-        setError(result.error);
+        setError(result.error ?? "Failed to delete the video.");
+        setDeleting(false);
         return;
       }
 
       onDeleted(video._id);
-      onOpenChange(false);
+
+      // Do not set deleting back to false here.
+      // Keep "Deleting..." during the closing animation.
     } catch (error) {
       console.error(error);
       setError("Failed to delete the video.");
-    } finally {
       setDeleting(false);
     }
   }
@@ -57,14 +66,25 @@ export default function DeleteLandscapeVideoDialog({
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
-        if (deleting) return;
-        setError(null);
-        onOpenChange(nextOpen);
+        if (!deleting) onOpenChange(nextOpen);
       }}
       modal={false}
     >
       <DialogContent
+        onFocusOutside={(event) => {
+          event.preventDefault();
+        }}
+        onPointerDownOutside={(event) => {
+          event.preventDefault();
+
+          if (!deleting) {
+            onOpenChange(false);
+          }
+        }}
         className="
+          data-[state=closed]:animate-none
+          data-[state=closed]:duration-0
+
           w-[calc(100vw-4rem)] max-w-md
           rounded-2xl border border-red-400/20
           bg-neutral-950/95 p-0
@@ -114,11 +134,16 @@ export default function DeleteLandscapeVideoDialog({
             type="button"
             variant="outline"
             disabled={deleting}
-            onClick={() => onOpenChange(false)}
+            onClick={() => {
+              setError(null);
+              onOpenChange(false);
+            }}
             className="
               h-10 flex-1 rounded-xl
               border-white/15 bg-white/5
               sm:flex-none sm:rounded-2xl sm:px-5
+              hover:bg-white/10 hover:text-red-400
+              cursor-pointer
             "
           >
             Cancel
@@ -130,9 +155,10 @@ export default function DeleteLandscapeVideoDialog({
             onClick={handleDelete}
             className="
               h-10 flex-1 rounded-xl
-              bg-red-600 text-white
-              hover:bg-red-500
+              bg-red-700 text-white
+              hover:bg-red-600
               sm:flex-none sm:rounded-2xl sm:px-5
+              cursor-pointer
             "
           >
             {deleting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
