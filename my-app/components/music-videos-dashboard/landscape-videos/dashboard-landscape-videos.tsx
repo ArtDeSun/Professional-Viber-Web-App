@@ -15,7 +15,6 @@ import {
   use,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
@@ -131,7 +130,7 @@ function DashboardLandscapeVideosWithData({
 
   const [activeSection, setActiveSection] = useState("featured");
 
-  const scrollingToCreatedSectionRef = useRef<string | null>(null);
+  //const scrollingToCreatedSectionRef = useRef<string | null>(null);
 
   const {
     landscapeVideoBoard,
@@ -216,7 +215,7 @@ function DashboardLandscapeVideosWithData({
     landscapeVideoSection: LandscapeVideoSection;
     iconKey: LandscapeSectionIconKey;
   }) {
-    scrollingToCreatedSectionRef.current = landscapeVideoSection._id;
+    //scrollingToCreatedSectionRef.current = landscapeVideoSection._id;
 
     addLandscapeVideoSection(landscapeVideoSection);
 
@@ -228,9 +227,11 @@ function DashboardLandscapeVideosWithData({
     }));
 
     requestAnimationFrame(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
       });
     });
   }
@@ -351,7 +352,7 @@ function DashboardLandscapeVideosWithData({
         window.scrollY + window.innerHeight >=
         document.documentElement.scrollHeight - 2;
 
-      if (isAtBottom) {
+      /* if (isAtBottom) {
         const lastSection = sectionElements.at(-1);
 
         if (lastSection) {
@@ -362,6 +363,11 @@ function DashboardLandscapeVideosWithData({
           );
         }
 
+        return;
+      } */
+
+      if (isAtBottom) {
+        setActiveSection(sectionElements.at(-1)!.id);
         return;
       }
 
@@ -382,7 +388,7 @@ function DashboardLandscapeVideosWithData({
         }
       }
 
-      setActiveSection(
+      /* setActiveSection(
         (current) => {
           const createdSectionId = scrollingToCreatedSectionRef.current;
 
@@ -404,7 +410,9 @@ function DashboardLandscapeVideosWithData({
             ? current
             : nextActiveSectionId;
         },
-        //current === nextActiveSectionId ? current : nextActiveSectionId,
+      ); */
+      setActiveSection((current) =>
+        current === nextActiveSectionId ? current : nextActiveSectionId,
       );
     };
 
@@ -419,7 +427,7 @@ function DashboardLandscapeVideosWithData({
       });
     };
 
-    //scheduleActiveSectionUpdate();
+    scheduleActiveSectionUpdate();
 
     window.addEventListener("scroll", scheduleActiveSectionUpdate, {
       passive: true,
@@ -593,8 +601,9 @@ function DashboardContentFallback() {
     <div
       aria-hidden="true"
       className="
+        lg:ml-10
         min-h-[60vh] animate-pulse
-        rounded-2xl bg-white/5
+        rounded-2xl bg-white/10
         sm:rounded-3xl
       "
     />
@@ -615,7 +624,7 @@ function DashboardLandscapeHeader() {
         lg:flex-row lg:items-end lg:p-8
       "
     >
-      <div className="min-w-0 max-w-4xl space-y-3 sm:space-y-4">
+      <div className="flex flex-col min-w-0 max-w-4xl space-y-3 sm:space-y-4 items-center text-center sm:items-start sm:text-start">
         <h1
           className="
             break-words font-marcellus
@@ -645,7 +654,7 @@ function DashboardLandscapeHeader() {
         className="
           group relative h-10 w-full
           cursor-pointer overflow-hidden
-          rounded-xl bg-amber-400
+          rounded-2xl bg-amber-400
           px-3 text-sm font-bold text-black
           shadow-[0_0_14px_rgba(245,158,11,0.35)]
           transition-shadow duration-300

@@ -20,7 +20,7 @@ import {
   Star,
   Trash2,
 } from "lucide-react";
-import { useEffect, useState, type ElementType } from "react";
+import { useEffect, useRef, useState, type ElementType } from "react";
 
 type LandscapeVideoSidebarShellProps = {
   open: boolean;
@@ -42,15 +42,44 @@ export function LandscapeVideoSidebarShell({
     onScrollToTop();
   };
 
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    function handlePointerDown(event: PointerEvent) {
+      const target = event.target;
+
+      if (!(target instanceof HTMLElement)) return;
+
+      const insideSidebar = sidebarRef.current?.contains(target);
+
+      const fromSidebarPortal = target.closest(
+        "[data-landscape-sidebar-origin]",
+      );
+
+      if (!insideSidebar && !fromSidebarPortal) {
+        onOpenChange(false);
+      }
+    }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+    };
+  }, [open, onOpenChange]);
+
   return (
     <aside
+      ref={sidebarRef}
       className="pointer-events-none
                   fixed left-2 top-24 z-40
                   sm:left-4 sm:top-28
                   lg:left-6 lg:top-32
                 "
     >
-      <div className="relative mb-3 h-11 w-[calc(100vw-4rem)] max-w-72 sm:h-12 lg:hidden">
+      <div className="relative mb-3 h-11 w-[calc(100vw-8rem)] max-w-72 sm:h-12 lg:hidden">
         <div
           aria-hidden="true"
           className={`
@@ -152,7 +181,7 @@ export function LandscapeVideoSidebarShell({
         id="landscape-video-sidebar-content"
         className={`
           left-0
-          w-[calc(100vw-4rem)]
+          w-[calc(100vw-8rem)]
           bg-black/70
           rounded-2xl
           sm:rounded-3xl
@@ -672,22 +701,22 @@ function SidebarSectionMenu({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
+        data-landscape-sidebar-origin
         align="end"
         sideOffset={8}
         collisionPadding={12}
         className="
-            w-[calc(100vw-2rem)]
-            max-w-60
-            rounded-2xl
+            w-auto min-w-44 max-w-48
+            rounded-xl
             border border-amber-300/20
             bg-neutral-950/95
-            p-1.5
+            p-1
             font-redHatDisplay
             text-gray-100
             shadow-[0_0_24px_rgba(245,158,11,0.28)]
             backdrop-blur-xl
 
-            sm:rounded-3xl
+            sm:rounded-2xl
             sm:p-2
           "
       >
@@ -697,21 +726,20 @@ function SidebarSectionMenu({
           className="
               group cursor-pointer
               rounded-xl
-              px-3 py-2.5
-              text-sm font-medium
+              px-2.5 py-2
+              text-xs font-medium
               transition-colors duration-200
 
               focus:bg-amber-400/80 active:transition-none active:bg-amber-400/80
               focus:text-black active:text-black
 
               sm:rounded-2xl
-              sm:py-3
-              sm:text-base
+              sm:px-3 sm:py-2.5 sm:text-sm
             "
         >
           <Edit3
             className="
-                mr-2 h-4 w-4 shrink-0
+                mr-2 h-3.5 w-3.5 shrink-0
                 text-amber-300
                 transition-transform duration-300
 
@@ -719,7 +747,7 @@ function SidebarSectionMenu({
                 group-focus:text-black
 
                 sm:mr-3
-                sm:h-5 sm:w-5
+                sm:h-4 sm:w-4
               "
           />
 
@@ -736,8 +764,8 @@ function SidebarSectionMenu({
           className="
               group cursor-pointer
               rounded-xl
-              px-3 py-2.5
-              text-sm font-medium
+              px-2.5 py-2
+              text-xs font-medium
               text-red-300
               transition-colors duration-200
 
@@ -748,27 +776,26 @@ function SidebarSectionMenu({
               disabled:opacity-60
 
               sm:rounded-2xl
-              sm:py-3
-              sm:text-base
+              sm:px-3 sm:py-2.5 sm:text-sm
             "
         >
           {deleting ? (
             <Loader2
               className="
-                mr-2 h-4 w-4 shrink-0 animate-spin
-                sm:mr-3 sm:h-5 sm:w-5
+                mr-2 h-3.5 w-3.5 shrink-0 animate-spin
+                sm:mr-3 sm:h-4 sm:w-4
               "
             />
           ) : (
             <Trash2
               className="
-                mr-2 h-4 w-4 shrink-0
+                mr-2 h-3.5 w-3.5 shrink-0
                 transition-transform duration-300
 
                 group-hover:scale-110
 
                 sm:mr-3
-                sm:h-5 sm:w-5
+                sm:h-4 sm:w-4
               "
             />
           )}

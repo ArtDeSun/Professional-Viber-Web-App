@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 
 type DeleteLandscapeVideoDialogProps = {
   video: LandscapeVideo | null;
+  sectionLabel: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onDeleted: (videoId: string) => void;
@@ -22,6 +23,7 @@ type DeleteLandscapeVideoDialogProps = {
 
 export default function DeleteLandscapeVideoDialog({
   video,
+  sectionLabel,
   open,
   onOpenChange,
   onDeleted,
@@ -85,25 +87,25 @@ export default function DeleteLandscapeVideoDialog({
           data-[state=closed]:animate-none
           data-[state=closed]:duration-0
 
-          w-[calc(100vw-4rem)] max-w-md
+          w-[calc(100vw-8rem)] max-w-[16rem]
           rounded-2xl border border-red-400/20
           bg-neutral-950/95 p-0
           text-gray-100
           shadow-[0_0_32px_rgba(239,68,68,0.2)]
           backdrop-blur-xl
-          sm:w-full sm:rounded-3xl
+          sm:w-full sm:max-w-md sm:rounded-3xl
         "
       >
         <DialogHeader
           className="
             border-b border-white/10
-            px-4 pb-4 pt-5 text-left
+            px-3 pb-2 pt-3 text-left
             sm:px-6 sm:pb-5 sm:pt-6
           "
         >
           <DialogTitle
             className="
-              flex items-center gap-3
+              flex items-center gap-2
               font-marcellus text-2xl text-red-300
             "
           >
@@ -112,11 +114,14 @@ export default function DeleteLandscapeVideoDialog({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-3 px-4 py-5 sm:px-6">
+        <div className="space-y-3 px-3 py-3 sm:px-6">
           <p className="text-sm leading-6 text-gray-300 sm:text-base">
             Delete{" "}
-            <span className="font-semibold text-white">{video?.title}</span>?
-            This cannot be undone.
+            <span className="font-semibold text-white">{video?.title}</span>
+            {" from "}
+            <span className="font-semibold text-white">
+              {sectionLabel}
+            </span>? This cannot be undone.
           </p>
 
           <p className="min-h-5 text-sm text-red-300">{error}</p>
@@ -124,9 +129,9 @@ export default function DeleteLandscapeVideoDialog({
 
         <DialogFooter
           className="
-            mx-1 my-1 flex-row gap-4
+            mx-1 my-1 flex-row gap-2
             border-t border-white/10
-            bg-black/20 px-4 py-4
+            bg-black/20 px-3 py-2
             sm:justify-between sm:px-6 sm:py-5
           "
         >

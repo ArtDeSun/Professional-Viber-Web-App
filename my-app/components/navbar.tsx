@@ -25,6 +25,8 @@ type NavId =
 export default function Navbar() {
   const pathname = usePathname();
 
+  const isLandscapeVideosPage = pathname === "/dashboard-landscape-videos";
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [animate, setAnimate] = useState(false);
@@ -320,7 +322,7 @@ export default function Navbar() {
                     transition-none
                     lg:flex lg:h-24 lg:justify-between lg:px-4
                     ${
-                      mobileMenuOpen
+                      mobileMenuOpen || isLandscapeVideosPage
                         ? "bg-black"
                         : "bg-gradient-to-b from-black/80 via-black/80 via-20% to-transparent backdrop-blur-xs"
                     }
@@ -470,7 +472,7 @@ export default function Navbar() {
             onClick={(e) => handleTopNav(e, "/updates", "updates")}
           >
             <Button
-              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold hover:text-white active:font-bold active:text-white${
+              className={`h-10 w-24 xl:w-28 cursor-pointer text-xl hover:font-bold active:transition-none active:font-bold hover:text-white active:text-white ${
                 activeId === "updates" ? "text-white" : "text-gray-300"
               }`}
             >

@@ -19,7 +19,7 @@ import type {
   LandscapeVideoSection,
 } from "@/lib/models/models.types";
 import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ElementType, useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 
 type LandscapeVideoDialogProps = {
@@ -27,6 +27,7 @@ type LandscapeVideoDialogProps = {
   onOpenChange: (open: boolean) => void;
   landscapeVideoBoard: LandscapeVideoBoard;
   section: LandscapeVideoSection;
+  icon: ElementType;
   video?: LandscapeVideo | null;
   onSaved: (sectionId: string, video: LandscapeVideo) => void;
 };
@@ -36,6 +37,7 @@ export default function LandscapeVideoDialog({
   onOpenChange,
   landscapeVideoBoard,
   section,
+  icon: Icon,
   video = null,
   onSaved,
 }: LandscapeVideoDialogProps) {
@@ -131,14 +133,14 @@ export default function LandscapeVideoDialog({
           data-[state=closed]:animate-none
           data-[state=closed]:duration-0
 
-          w-[calc(100vw-4rem)] max-w-xl
+          w-[calc(100vw-7rem)] max-w-[18rem]
           overflow-hidden rounded-2xl
           border border-amber-400/20
           bg-neutral-950/95 p-0
           text-gray-100
           shadow-[0_0_32px_rgba(245,158,11,0.28)]
           backdrop-blur-xl
-          sm:w-full sm:rounded-3xl
+          sm:w-full sm:max-w-xl sm:rounded-3xl
         "
       >
         <div
@@ -153,7 +155,7 @@ export default function LandscapeVideoDialog({
         <DialogHeader
           className="
             relative border-b border-white/10
-            px-4 pb-4 pt-5 text-left
+            px-3 pb-2 pt-3 text-left
             sm:px-6 sm:pb-5 sm:pt-6
           "
         >
@@ -171,16 +173,25 @@ export default function LandscapeVideoDialog({
           <p className="text-sm leading-6 text-gray-400 sm:text-base">
             {editing
               ? "Update the title or replace the YouTube link."
-              : "YouTube provides the thumbnail and duration automatically."}
+              : "YouTube provides other details automatically."}
           </p>
+
+          <div className="mt-3 flex items-center justify-center gap-2 font-marcellus">
+            <Icon className="h-5 w-5 shrink-0 text-amber-300 sm:h-6 sm:w-6" />
+
+            <span className="text-xl text-gray-100 sm:text-3xl">
+              {section.label}
+            </span>
+          </div>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
           <div
             className="
-              max-h-[70dvh] space-y-6
-              overflow-y-auto px-4 py-5
-              sm:space-y-7 sm:px-6 sm:py-6
+              max-h-[60dvh] space-y-3
+              overflow-y-auto px-3 py-3
+              sm:max-h-[70dvh] sm:space-y-7 
+              sm:px-6 sm:py-6
             "
           >
             <div className="space-y-2">
@@ -207,7 +218,7 @@ export default function LandscapeVideoDialog({
                   setError(null);
                 }}
                 className="
-                  h-11 rounded-xl
+                  h-9 rounded-xl
                   border-amber-300/20 bg-black/40
                   px-3 font-redHatDisplay
                   text-sm text-gray-100
@@ -252,7 +263,7 @@ export default function LandscapeVideoDialog({
                   setError(null);
                 }}
                 className="
-                  h-11 rounded-xl
+                  h-9 rounded-xl
                   border-amber-300/20 bg-black/40
                   px-3 font-redHatDisplay
                   text-sm text-gray-100
@@ -271,9 +282,9 @@ export default function LandscapeVideoDialog({
 
           <DialogFooter
             className="
-              mx-1 my-1 flex-row gap-4
+              mx-1 my-1 flex-row gap-2
               border-t border-white/10
-              bg-black/20 px-4 py-4
+              bg-black/20 px-3 py-2
               sm:justify-between sm:gap-6
               sm:px-6 sm:py-5
             "

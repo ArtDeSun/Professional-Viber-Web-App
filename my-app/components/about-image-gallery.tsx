@@ -97,12 +97,12 @@ export default function AboutImageGallery() {
 
       <Button
         onClick={goPrevious}
-        className="absolute left-6 top-1/3 z-20 -translate-y-1/10 
+        className="absolute left-6 top-1/3 z-20 -translate-y-1/20 
                    h-10 w-10 rounded-full border border-white/30 
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
-                   hover:scale-115 hover:bg-black/55 hover:border-white/60
-                   active:transition-none active:scale-115 active:bg-black/55 active:border-white/60
+                   hover:scale-105 hover:bg-black/55 hover:border-white/60
+                   active:transition-none active:scale-105 active:bg-black/55 active:border-white/60
                    cursor-pointer"
       >
         &lt;
@@ -110,12 +110,12 @@ export default function AboutImageGallery() {
 
       <Button
         onClick={goNext}
-        className="absolute right-6 top-1/3 z-20 -translate-y-1/10
+        className="absolute right-6 top-1/3 z-20 -translate-y-1/20
                    h-10 w-10 rounded-full border border-white/30 
                    bg-black/35 backdrop-blur-sm 
                    text-white text-2xl shadow-lg transition-all
-                   hover:scale-115 hover:bg-black/55 hover:border-white/60
-                   active:transition-none active:scale-115 active:bg-black/55 active:border-white/60
+                   hover:scale-105 hover:bg-black/55 hover:border-white/60
+                   active:transition-none active:scale-105 active:bg-black/55 active:border-white/60
                    cursor-pointer"
       >
         &gt;

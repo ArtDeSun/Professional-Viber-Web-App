@@ -24,15 +24,19 @@ export function VideoFrame({
   const progressLabel =
     phase === "hydrating" ? "Initializing" : "Loading thumbnail";
 
-  const youtubeThumbnail = video.fromYoutube
-    ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
-    : null;
-
   const previewImage =
     video.thumbnailUrl ??
     (video.fromYoutube
       ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
       : null);
+
+  const imageSizes = featured
+    ? "(max-width: 639px) calc(100vw - 2rem), 50vw"
+    : `
+      (max-width: 767px) calc(100vw - 2rem),
+      (max-width: 1279px) calc(50vw - 3rem),
+      calc(33vw - 3rem)
+    `;
 
   useEffect(() => {
     setPhase("loading");
@@ -88,9 +92,10 @@ export function VideoFrame({
             fill
             //either this:
             loading={eager ? "eager" : "lazy"}
-            fetchPriority={eager ? "high" : "auto"}
+            //fetchPriority={eager ? "high" : "auto"}
             //or this:
             //preload={eager}
+            quality={65}
             onLoad={() => {
               setThumbnailProgress(100);
               setPhase("loaded");
@@ -101,15 +106,10 @@ export function VideoFrame({
             }}
             className={`
               object-cover
-              transition-transform duration-500
-              group-hover:scale-[1.02]
+              transition-[opacity] duration-500
               ${thumbnailProgress === 100 ? "opacity-100" : "opacity-0"}
-            "`}
-            sizes="
-              (max-width: 639px) calc(100vw - 6rem),
-              (max-width: 1023px) calc(100vw - 8rem),
-              50vw
-            "
+            `}
+            sizes={imageSizes}
           />
 
           <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />
@@ -153,15 +153,12 @@ export function VideoFrame({
             fill
             //either this:
             loading={eager ? "eager" : "lazy"}
-            fetchPriority={eager ? "high" : "auto"}
+            //fetchPriority={eager ? "high" : "auto"}
             //or this:
             //preload={eager}
+            quality={65}
             className="object-cover"
-            sizes="
-              (max-width: 639px) calc(100vw - 6rem),
-              (max-width: 1023px) calc(100vw - 8rem),
-              50vw
-            "
+            sizes={imageSizes}
           />
         </div>
       ) : (

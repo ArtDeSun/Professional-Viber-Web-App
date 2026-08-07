@@ -94,7 +94,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                 >
                   <FaYoutube className="h-4 w-4 shrink-0 text-red-500 sm:h-5 sm:w-5" />
 
-                  <span className="truncate">Highlights</span>
+                  <span className="truncate">Favourite</span>
                 </p>
 
                 <h3
@@ -110,13 +110,19 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
 
                 <p
                   className="
-                      mt-3 break-words
-                      text-xs leading-5 text-gray-400
-                      sm:mt-4 sm:text-sm
-                    "
+                              mt-3 break-words
+                              leading-6
+                              text-gray-400
+                              sm:mt-4
+                            "
                 >
-                  {featuredVideo.duration} • Uploaded{" "}
-                  {formatUploadedAt(featuredVideo.createdAt)}
+                  <span className="font-semibold text-base text-gray-100 sm:text-lg">
+                    {featuredVideo.duration}
+                  </span>
+                  <span className="mx-2 text-gray-500">•</span>
+                  <span className="font-semibold text-base text-gray-200 sm:text-lg">
+                    {formatUploadedAt(featuredVideo.createdAt)}
+                  </span>
                 </p>
               </div>
 
@@ -158,14 +164,12 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                         sm:h-5 sm:w-5
                       "
                       />
-                      <span className="truncate">Open YouTube</span>
+                      <span className="truncate">Watch on YouTube</span>
 
                       <ExternalLink
                         className="
                         ml-2 h-3.5 w-3.5 shrink-0
                         transition-transform duration-300
-                        group-hover:translate-x-0.5
-                        group-hover:-translate-y-0.5
                         sm:h-4 sm:w-4
                       "
                       />
@@ -183,7 +187,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
 
 function FeaturedHeader() {
   return (
-    <header className="flex min-w-0 items-center gap-3">
+    <header className="flex min-w-0 items-center gap-3 justify-end sm:justify-start px-6 sm:px-9">
       <div
         className="
           shrink-0 rounded-xl
@@ -204,7 +208,7 @@ function FeaturedHeader() {
           sm:text-3xl lg:text-4xl
         "
       >
-        Featured Video
+        Featured
       </h2>
     </header>
   );

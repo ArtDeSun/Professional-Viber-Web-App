@@ -160,9 +160,10 @@ export default function CreateLandscapeVideoSectionDialog({
       </DialogTrigger>
 
       <DialogContent
+        data-landscape-sidebar-origin
         className="
-          w-[calc(100vw-4rem)]
-          max-w-xl
+          w-[calc(100vw-8rem)]
+          max-w-[18rem]
           overflow-hidden
           rounded-2xl
           border border-amber-400/20
@@ -192,7 +193,7 @@ export default function CreateLandscapeVideoSectionDialog({
           className="
             relative
             border-b border-white/10
-            px-4 pb-4 pt-5
+            px-3 pb-2 pt-3
             text-left
 
             sm:px-6
@@ -203,9 +204,9 @@ export default function CreateLandscapeVideoSectionDialog({
           <DialogTitle
             className="
               font-marcellus
-              text-2xl text-amber-200
+              text-xl text-amber-200
 
-              sm:text-3xl
+              sm:text-2xl
             "
           >
             Add a new section
@@ -226,10 +227,10 @@ export default function CreateLandscapeVideoSectionDialog({
           <div
             className="
               max-h-[70dvh]
-              space-y-6
+              space-y-3
               overflow-x-hidden
               overflow-y-auto
-              px-4 py-5
+              px-3 py-3
 
               sm:space-y-8
               sm:px-6
@@ -268,7 +269,7 @@ export default function CreateLandscapeVideoSectionDialog({
                   }
                 }}
                 className="
-                  h-11
+                  h-9
                   rounded-xl
                   border-amber-300/20
                   bg-black/40
@@ -291,7 +292,7 @@ export default function CreateLandscapeVideoSectionDialog({
                 "
               />
 
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start justify-between gap-2">
                 <p className="min-h-5 text-xs text-red-300 sm:text-sm">
                   {error}
                 </p>
@@ -390,10 +391,10 @@ export default function CreateLandscapeVideoSectionDialog({
             className="
               mx-1 my-1
               flex-row
-              gap-4
+              gap-2
               border-t border-white/10
               bg-black/20
-              px-4 py-4
+              px-3 py-2
 
               sm:justify-between
               sm:gap-6
