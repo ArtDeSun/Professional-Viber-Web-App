@@ -654,11 +654,9 @@ function DashboardLandscapeHeader() {
         className="
           group relative h-10 w-full
           cursor-pointer overflow-hidden
-          rounded-2xl bg-amber-400
+          rounded-2xl bg-amber-500
           px-3 text-sm font-bold text-black
-          shadow-[0_0_14px_rgba(245,158,11,0.35)]
           transition-shadow duration-300
-          hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]
           sm:h-11 sm:w-fit sm:px-5 sm:text-base
           lg:text-xl
         "
@@ -669,7 +667,7 @@ function DashboardLandscapeHeader() {
               absolute inset-0 origin-right bg-amber-600
               transition-transform duration-500
               ease-[cubic-bezier(0.22,1,0.36,1)]
-              group-hover:scale-x-0 active:bg-amber-400
+              group-hover:scale-x-0 active:bg-amber-500
             "
           />
 

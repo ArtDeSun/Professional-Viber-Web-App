@@ -751,7 +751,7 @@ function SidebarSectionMenu({
               "
           />
 
-          <span className="min-w-0 truncate">Edit Section Name</span>
+          <span className="min-w-0 truncate">Rename Section</span>
         </DropdownMenuItem>
 
         <div className="my-1 h-px bg-white/10" />

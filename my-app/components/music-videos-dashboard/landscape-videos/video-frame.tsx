@@ -33,6 +33,7 @@ export function VideoFrame({
   const imageSizes = featured
     ? "(max-width: 639px) calc(100vw - 2rem), 50vw"
     : `
+      (max-width: 639px) 42vw,
       (max-width: 767px) calc(100vw - 2rem),
       (max-width: 1279px) calc(50vw - 3rem),
       calc(33vw - 3rem)
@@ -57,15 +58,14 @@ export function VideoFrame({
   return (
     <div
       className={`
-        relative min-w-0 aspect-video w-full
-        overflow-hidden bg-black
+                  relative h-full min-h-0 w-full min-w-0
+                  overflow-hidden
 
-        ${
-          featured
-            ? "rounded-xl sm:rounded-2xl"
-            : "rounded-t-xl sm:rounded-t-2xl"
-        }
-      `}
+                  sm:aspect-video
+                  sm:h-auto
+
+                  sm:rounded-2xl
+                `}
     >
       {video.fromYoutube && video.youtubeEmbedUrl && showPlayer ? (
         <iframe
@@ -84,6 +84,8 @@ export function VideoFrame({
             group relative block h-full w-full
             min-w-0 cursor-pointer
             overflow-hidden rounded-none p-0
+            border-0 bg-transparent shadow-none
+            hover:bg-transparent
           "
         >
           <Image
@@ -105,14 +107,14 @@ export function VideoFrame({
               setPhase("loaded");
             }}
             className={`
-              object-cover
+              scale-[1.005] object-cover
               transition-[opacity] duration-500
               ${thumbnailProgress === 100 ? "opacity-100" : "opacity-0"}
             `}
             sizes={imageSizes}
           />
 
-          <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />
+          <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/35" />
 
           {phase !== "loaded" ? (
             <span className="absolute left-1/2 top-1/2 w-32 -translate-x-1/2 -translate-y-1/2">
@@ -130,23 +132,26 @@ export function VideoFrame({
             </span>
           ) : (
             <span
-              className="absolute left-1/2 top-1/2
-                  flex h-11 w-16
-                  -translate-x-1/2 -translate-y-1/2
-                  items-center justify-center
-                  rounded-2xl bg-red-600/90
-                  shadow-[0_0_18px_rgba(239,68,68,0.45)]
-                  transition-[scale,background-color] duration-300
-                  group-hover:scale-105
-                  group-hover:bg-red-500
-                  sm:h-12 sm:w-18"
+              className="
+                          absolute left-1/2 top-1/2
+                          flex h-7 w-10
+                          -translate-x-1/2 -translate-y-1/2
+                          items-center justify-center
+                          rounded-xl bg-red-600/50
+                          shadow-[0_0_18px_rgba(239,68,68,0.45)]
+                          transition-[scale,background-color] duration-300
+                          group-hover:bg-red-500
+
+                          sm:h-12 sm:w-18
+                          sm:rounded-2xl
+                        "
             >
-              <FaYoutube className="h-6 w-6 text-white sm:h-7 sm:w-7" />
+              <FaYoutube className="h-4 w-4 text-white sm:h-7 sm:w-7" />
             </span>
           )}
         </Button>
       ) : previewImage ? (
-        <div className="relative h-full w-full min-w-0 overflow-hidden">
+        <div className="relative h-full w-full min-w-0">
           <Image
             src={previewImage}
             alt={video.title}
@@ -157,7 +162,7 @@ export function VideoFrame({
             //or this:
             //preload={eager}
             quality={65}
-            className="object-cover"
+            className="scale-[1.005] object-cover"
             sizes={imageSizes}
           />
         </div>

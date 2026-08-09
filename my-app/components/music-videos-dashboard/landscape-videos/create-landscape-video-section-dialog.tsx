@@ -142,11 +142,9 @@ export default function CreateLandscapeVideoSectionDialog({
             transition-all duration-300
 
             hover:border-amber-300/30
-            hover:bg-white/10
             hover:text-amber-200
             hover:shadow-[0_0_12px_rgba(245,158,11,0.18)]
 
-            active:bg-white/10
             active:text-amber-200
             active:transition-none
 

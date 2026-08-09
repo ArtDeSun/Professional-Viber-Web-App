@@ -233,8 +233,8 @@ function LandscapeSectionHeader({
                   sticky top-18 z-20
                   -mx-1 flex min-w-0
                   flex-col gap-4
-                  rounded-xl border border-white/10
-                  px-3 py-2.5
+                  rounded-xl
+                  px-3 py-3
                   
                   bg-gradient-to-b
                   from-black via-black/80 via-80% to-transparent
@@ -243,14 +243,13 @@ function LandscapeSectionHeader({
                   sm:top-19 lg:top-23
                   sm:flex-row sm:items-center
                   sm:justify-between sm:gap-5
-                  sm:px-4 sm:py-3
+                  sm:px-4 sm:py-3.5
                 "
     >
       <div className="flex min-w-0 items-center gap-3 justify-end sm:justify-start">
         <div
           className="
             shrink-0 rounded-xl
-            border border-white/10
             bg-white/10 p-2.5
             shadow-[0_0_12px_rgba(245,158,11,0.16)]
 
@@ -276,9 +275,8 @@ function LandscapeSectionHeader({
           <span
             className="
                         shrink-0 rounded-md
-                        border border-white/15
-                        bg-white/5 px-2 py-0.5
-                        text-sm font-semibold text-gray-300
+                        bg-white/20 px-2 py-0.5
+                        text-sm font-semibold text-gray-200
                       "
           >
             {videoCount}
@@ -288,19 +286,16 @@ function LandscapeSectionHeader({
 
       <Button
         type="button"
-        variant="outline"
         onClick={onAddVideo}
         className="
           group h-10 w-full
           cursor-pointer rounded-xl
-          border-amber-400/25
-          bg-black/30 px-3
+          bg-neutral-800/60 px-3
           text-sm font-bold text-amber-200
           transition-all duration-300
 
-          hover:bg-amber-400/10 active:transition-none active:bg-amber-400/10
+          hover:bg-neutral-800 active:transition-none active:bg-neutral-800
           hover:text-amber-400 active:text-amber-400
-          hover:shadow-[0_0_16px_rgba(245,158,11,0.28)]
 
           sm:h-11
           sm:w-fit
@@ -349,133 +344,129 @@ function LandscapeVideoCard({
     <Card
       className="
         group min-w-0
-        rounded-2xl
-        border border-gray-300/15
-        bg-neutral-800/70
-        p-1.5
-        transition-all duration-300
-
-        hover:border-amber-300/30
-        hover:shadow-[0_0_18px_rgba(245,158,11,0.18)]
-
-        sm:rounded-3xl
-        sm:p-3
+        border-0 bg-transparent p-0
+        shadow-none
       "
     >
       <CardContent
         className="
-          relative min-w-0
+          relative flex min-w-0
           overflow-hidden
           rounded-[1rem]
-          border border-gray-300/10
           bg-neutral-900 p-0
 
+          sm:block
           sm:rounded-[1.35rem]
         "
       >
-        <VideoFrame video={video} eager={eager} />
+        <div className="w-[42%] min-w-0 shrink-0 self-stretch sm:w-full">
+          <VideoFrame video={video} eager={eager} />
+        </div>
 
         <div
-          className=" 
-            relative min-w-0
-            min-h-28 p-3
+          className="
+            relative flex min-w-0
+            flex-1 flex-col
+            justify-between
+            px-2
+            py-1
 
             sm:min-h-32
+            sm:block
             sm:p-4
           "
         >
           {video.fromYoutube && (
             <div
               className="
-              absolute
-              -top-4 left-3
-              rounded-lg
-              border border-gray-300/15
-              bg-neutral-800
-              px-2 py-1.5
-              shadow-[0_6px_18px_rgba(0,0,0,0.45)]
+                absolute hidden
+                border border-gray-300/15
+                bg-neutral-800
+                shadow-[0_6px_18px_rgba(0,0,0,0.45)]
 
-              sm:-top-5
-              sm:left-6
-              sm:rounded-xl
-              sm:px-3
-              sm:py-2
+                sm:block
+                sm:-top-5
+                sm:left-6
+                sm:rounded-xl
+                sm:px-3
+                sm:py-2
 
-              lg:left-24
-            "
+                lg:left-24
+              "
             >
-              <FaYoutube className="h-4 w-4 text-red-500 sm:h-5 sm:w-5" />
+              <FaYoutube className="h-5 w-5 text-red-500" />
             </div>
           )}
 
-          <div
-            className="
-              mt-1 flex min-w-0
-              items-start justify-between
-              gap-2
-
-              sm:gap-4
-            "
-          >
-            <div className="min-w-0 flex-1 mt-4">
+          {/* Title + menu */}
+          <div className="relative min-w-0">
+            <div className="pr-7 sm:pr-0">
               <h3
+                title={video.title}
                 className="
-                  leading-snug
-                  line-clamp-2 break-words
+                  pt-1
+                  min-w-0
+                  line-clamp-2 
                   font-marcellus
-                  text-lg leading-tight text-white
+                  text-xs leading-tight text-white
                   transition-colors duration-300
                   group-hover:text-amber-200
 
-                  sm:text-2xl
-                  lg:line-clamp-1
-                  lg:text-[1.8rem]
+                  sm:text-lg
+                  lg:text-2xl
                 "
               >
                 {video.title}
               </h3>
-
-              <div className="mt-3">
-                <span
-                  className="
-                              shrink-0 rounded-2xl
-                              border border-white/15
-                              bg-white/5 px-1.5 py-1.5
-                              text-lg font-bold text-gray-200
-                            "
-                >
-                  {video.duration}
-                </span>
-              </div>
             </div>
 
-            <div className="flex shrink-0 flex-col items-end">
+            <div className="absolute right-0 top-0">
               <LandscapeVideoMenu
                 video={video}
                 onEdit={onEdit}
                 onDelete={onDelete}
                 onFeatured={onFeatured}
               />
-              <div className="mt-2 space-y-1.5 text-right">
-                <div>
-                  <div className="text-[9px] uppercase text-gray-400">
-                    Uploaded
-                  </div>
+            </div>
+          </div>
 
-                  <div className="text-base font-semibold text-gray-200">
-                    {now ? formatTimeAgo(video.createdAt, now) : "—"}
-                  </div>
-                </div>
+          {/* Duration + timestamps */}
+          <div className="mt-auto flex items-end justify-between gap-2 pt-2 sm:pt-3">
+            <span
+              className="
+                inline-flex shrink-0 whitespace-nowrap
+                rounded-xl bg-white/10
+                px-1.5 py-1
+                text-[11px] font-bold text-gray-300
 
-                <div className="mt-2">
-                  <div className="text-[9px] uppercase text-gray-400">
-                    Updated
-                  </div>
+                sm:rounded-2xl
+                sm:px-2 sm:py-2
+                sm:text-base
+                lg:text-lg
+              "
+            >
+              {video.duration}
+            </span>
 
-                  <div className="text-base font-semibold text-gray-200">
-                    {now ? formatTimeAgo(video.updatedAt, now) : "—"}
-                  </div>
-                </div>
+            <div className="space-y-0.5 text-right sm:space-y-1">
+              <div className="flex items-center justify-end gap-1 whitespace-nowrap sm:gap-2">
+                <span className="text-[8px] text-gray-500 sm:text-[10px] lg:text-[12px]">
+                  Uploaded:
+                </span>
+
+                <span className="text-[11px] font-semibold text-gray-300 sm:text-sm lg:text-base">
+                  {now ? formatTimeAgo(video.createdAt, now) : "—"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-end gap-1 whitespace-nowrap sm:gap-2">
+                <span className="text-[8px] text-gray-500 sm:text-[10px] lg:text-[12px]">
+                  Updated:
+                </span>
+
+                <span className="text-[11px] font-semibold text-gray-300 sm:text-sm lg:text-base">
+                  {now ? formatTimeAgo(video.updatedAt, now) : "—"}
+                </span>
               </div>
             </div>
           </div>
@@ -521,8 +512,8 @@ function LandscapeVideoMenu({
     try {
       const result = await setFeaturedLandscapeVideo(video._id);
 
-      if (result.error || !result.data) {
-        console.error(result.error ?? "Failed to feature video");
+      if ("error" in result) {
+        console.error(result.error);
         return;
       }
 
@@ -531,6 +522,7 @@ function LandscapeVideoMenu({
       setFeaturing(false);
     }
   }
+
   return (
     <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen} modal={false}>
       <DropdownMenuTrigger asChild>
@@ -539,37 +531,40 @@ function LandscapeVideoMenu({
           size="icon"
           aria-label={`Open options for ${video.title}`}
           className="
-            h-9 w-9 shrink-0
+            h-5 w-5 shrink-0
             cursor-pointer rounded-full
-            border-none bg-black/40
+            border-none
             text-gray-200
             transition-all duration-300
 
-            hover:bg-amber-400/80 active:transition-none active:bg-amber-400/80
-            hover:text-black active:text-black
-            hover:shadow-[0_0_18px_rgba(245,158,11,0.45)]
+            hover:bg-amber-400/70
+            hover:text-black
+            active:bg-amber-400/70
+            active:text-black
 
-            data-[state=open]:bg-amber-400/80
+            data-[state=open]:bg-amber-400/70
             data-[state=open]:text-black
-            data-[state=open]:shadow-[0_0_18px_rgba(245,158,11,0.45)]
 
-            sm:h-10 sm:w-10
+            sm:h-8 sm:w-8
           "
         >
-          <EllipsisVertical className="h-4 w-4 sm:h-5 sm:w-5" />
+          <EllipsisVertical className="h-3 w-3 sm:h-6 sm:w-6" />
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
-        sideOffset={6}
-        collisionPadding={8}
+        sideOffset={4}
+        collisionPadding={6}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+        }}
         className="
-          w-auto min-w-44 max-w-48
-          rounded-xl
+          w-auto min-w-36 max-w-40
+          rounded-lg
           border border-amber-300/20
           bg-neutral-950/95
-          p-1
+          p-0.5
           font-redHatDisplay
           text-gray-100
           shadow-[0_0_24px_rgba(245,158,11,0.28)]
@@ -584,22 +579,37 @@ function LandscapeVideoMenu({
           disabled={video.isFeatured || featuring}
           onSelect={handleSetFeatured}
           className="
-            group cursor-pointer rounded-xl
-            px-2.5 py-2 text-xs font-bold
+            group cursor-pointer
+            rounded-lg
+            px-2 py-1.5
+            text-[10px] font-bold
+
             focus:bg-amber-400/80
             focus:text-black
             disabled:cursor-default
-            sm:rounded-2xl sm:px-3 sm:py-2.5 sm:text-sm
+
+            sm:rounded-2xl
+            sm:px-3
+            sm:py-2.5
+            sm:text-sm
           "
         >
           {featuring ? (
-            <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin sm:mr-3 sm:h-4 sm:w-4" />
+            <Loader2
+              className="
+                mr-1.5 h-3 w-3 animate-spin
+                sm:mr-3 sm:h-4 sm:w-4
+              "
+            />
           ) : (
             <Star
-              className={`
-                mr-2 h-4 w-4 sm:mr-3 sm:h-5 sm:w-5
+              className="
+                mr-1.5 h-3.5 w-3.5
                 text-amber-300
-              `}
+
+                sm:mr-3
+                sm:h-5 sm:w-5
+              "
             />
           )}
 
@@ -612,21 +622,25 @@ function LandscapeVideoMenu({
           onSelect={onEdit}
           className="
             group cursor-pointer
-            rounded-xl
-            px-2.5 py-2
-            text-xs font-bold
+            rounded-lg
+            px-2 py-1.5
+            text-[10px] font-bold
             transition-colors duration-200
-            focus:bg-amber-400/80 active:bg-amber-400/80
-            focus:text-black active:text-black
+
+            focus:bg-amber-400/80
+            focus:text-black
+            active:bg-amber-400/80
+            active:text-black
 
             sm:rounded-xl
-            sm:py-3 sm:py-2.5
+            sm:px-3
+            sm:py-2.5
             sm:text-sm
           "
         >
           <Edit3
             className="
-              mr-2 h-3.5 w-3.5 shrink-0
+              mr-1.5 h-3 w-3 shrink-0
               text-amber-300
               transition-transform duration-300
               group-hover:rotate-6
@@ -640,28 +654,32 @@ function LandscapeVideoMenu({
           <span className="min-w-0 truncate">Edit Video Details</span>
         </DropdownMenuItem>
 
-        <div className="my-1 h-px bg-white/10" />
+        <div className="my-0.5 h-px bg-white/10 sm:my-1" />
 
         <DropdownMenuItem
           onSelect={onDelete}
           className="
             group cursor-pointer
-            rounded-xl
-            px-2.5 py-2
-            text-xs font-bold
+            rounded-lg
+            px-2 py-1.5
+            text-[10px] font-bold
             text-red-300
             transition-colors duration-200
-            focus:bg-red-500/80 active:bg-red-500/80
-            focus:text-white active:text-white
+
+            focus:bg-red-500/80
+            focus:text-white
+            active:bg-red-500/80
+            active:text-white
 
             sm:rounded-xl
-            sm:py-3 sm:py-2.5
+            sm:px-3
+            sm:py-2.5
             sm:text-sm
           "
         >
           <Trash2
             className="
-              mr-2 h-3.5 w-3.5 shrink-0
+              mr-1.5 h-3 w-3 shrink-0
               transition-transform duration-300
               group-hover:scale-110
 

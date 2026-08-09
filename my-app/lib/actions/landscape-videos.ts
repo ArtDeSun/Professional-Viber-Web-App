@@ -12,215 +12,31 @@ import {
 } from "../models";
 import type { LandscapeVideo as LandscapeVideoType } from "../models/models.types";
 
-type LandscapeVideoActionResult =
-  | {
-      data: LandscapeVideoType;
-      error?: never;
-    }
-  | {
-      data?: never;
-      error: string;
-    };
+import { getYouTubeVideoMetadata } from "../integrations/youtube/get-youtube-video-metadata";
+import { prepareLandscapeVideo } from "../landscape-videos.ts/prepare-landscape-video";
 
 type CreateLandscapeVideoInput = {
   landscapeVideoBoardId: string;
   landscapeVideoSectionId: string;
-  title: string;
+  title?: string;
   youtubeUrl: string;
 };
 
 type UpdateLandscapeVideoInput = {
-  title: string;
+  title?: string;
   youtubeUrl: string;
 };
 
-type YouTubeVideoMetadata = {
-  youtubeUrl: string;
-  youtubeEmbedUrl: string;
-  thumbnailUrl: string;
-  duration: string;
-};
+type LandscapeVideoActionResult =
+  | {
+      data: LandscapeVideoType;
+    }
+  | {
+      error: string;
+    };
 
 function serializeLandscapeVideo(video: unknown): LandscapeVideoType {
   return JSON.parse(JSON.stringify(video)) as LandscapeVideoType;
-}
-
-function normalizeTitle(title: string): string {
-  return title.trim().replace(/\s+/g, " ");
-}
-
-function extractYouTubeVideoId(value: string): string | null {
-  try {
-    const url = new URL(value.trim());
-    const hostname = url.hostname.replace(/^www\./, "");
-
-    if (hostname === "youtu.be") {
-      return url.pathname.slice(1).split("/")[0] || null;
-    }
-
-    if (
-      hostname !== "youtube.com" &&
-      hostname !== "m.youtube.com" &&
-      hostname !== "music.youtube.com"
-    ) {
-      return null;
-    }
-
-    if (url.pathname.startsWith("/shorts/")) {
-      return url.pathname.split("/shorts/")[1]?.split("/")[0] || null;
-    }
-
-    if (url.pathname.startsWith("/embed/")) {
-      return url.pathname.split("/embed/")[1]?.split("/")[0] || null;
-    }
-
-    return url.searchParams.get("v");
-  } catch {
-    return null;
-  }
-}
-
-function formatYouTubeDuration(isoDuration: string): string {
-  const match = isoDuration.match(
-    /^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/,
-  );
-
-  if (!match) {
-    return isoDuration;
-  }
-
-  const days = Number(match[1] ?? 0);
-  const hours = Number(match[2] ?? 0) + days * 24;
-  const minutes = Number(match[3] ?? 0);
-  const seconds = Number(match[4] ?? 0);
-
-  if (hours > 0) {
-    return [
-      hours,
-      minutes.toString().padStart(2, "0"),
-      seconds.toString().padStart(2, "0"),
-    ].join(":");
-  }
-
-  return [minutes, seconds.toString().padStart(2, "0")].join(":");
-}
-
-async function getYouTubeMetadata(
-  youtubeUrl: string,
-): Promise<{ data: YouTubeVideoMetadata } | { error: string }> {
-  const videoId = extractYouTubeVideoId(youtubeUrl);
-
-  if (!videoId) {
-    return {
-      error: "Enter a valid YouTube video URL.",
-    };
-  }
-
-  const apiKey = process.env.YOUTUBE_API_KEY;
-
-  if (!apiKey) {
-    console.error("Missing YOUTUBE_API_KEY");
-    return {
-      error: "YouTube integration is not configured.",
-    };
-  }
-
-  const params = new URLSearchParams({
-    part: "snippet,contentDetails,status",
-    id: videoId,
-    key: apiKey,
-  });
-
-  const response = await fetch(
-    `https://www.googleapis.com/youtube/v3/videos?${params}`,
-    {
-      cache: "no-store",
-    },
-  );
-
-  if (!response.ok) {
-    console.error(
-      "YouTube API request failed:",
-      response.status,
-      await response.text(),
-    );
-
-    return {
-      error: "YouTube could not verify this video.",
-    };
-  }
-
-  const result = (await response.json()) as {
-    items?: Array<{
-      snippet?: {
-        thumbnails?: {
-          maxres?: { url?: string };
-          standard?: { url?: string };
-          high?: { url?: string };
-          medium?: { url?: string };
-          default?: { url?: string };
-        };
-      };
-      contentDetails?: {
-        duration?: string;
-      };
-      status?: {
-        embeddable?: boolean;
-      };
-    }>;
-  };
-
-  const item = result.items?.[0];
-
-  if (!item) {
-    return {
-      error: "The YouTube video was not found or is unavailable.",
-    };
-  }
-
-  if (item.status?.embeddable === false) {
-    return {
-      error: "This video does not allow embedding.",
-    };
-  }
-
-  const thumbnail =
-    item.snippet?.thumbnails?.maxres?.url ??
-    item.snippet?.thumbnails?.standard?.url ??
-    item.snippet?.thumbnails?.high?.url ??
-    item.snippet?.thumbnails?.medium?.url ??
-    item.snippet?.thumbnails?.default?.url;
-
-  const isoDuration = item.contentDetails?.duration;
-
-  if (!thumbnail || !isoDuration) {
-    return {
-      error: "YouTube returned incomplete video information.",
-    };
-  }
-
-  return {
-    data: {
-      youtubeUrl: `https://www.youtube.com/watch?v=${videoId}`,
-      youtubeEmbedUrl: `https://www.youtube.com/embed/${videoId}`,
-      thumbnailUrl: thumbnail,
-      duration: formatYouTubeDuration(isoDuration),
-    },
-  };
-}
-
-function validateTitle(title: string): string | null {
-  const normalizedTitle = normalizeTitle(title);
-
-  if (!normalizedTitle) {
-    return "Enter a video title.";
-  }
-
-  if (normalizedTitle.length > 100) {
-    return "The video title must be 100 characters or fewer.";
-  }
-
-  return null;
 }
 
 export async function createLandscapeVideo(
@@ -232,16 +48,13 @@ export async function createLandscapeVideo(
     return { error: "Unauthorized" };
   }
 
-  const titleError = validateTitle(input.title);
+  const preparedResult = await prepareLandscapeVideo(
+    input,
+    getYouTubeVideoMetadata,
+  );
 
-  if (titleError) {
-    return { error: titleError };
-  }
-
-  const metadataResult = await getYouTubeMetadata(input.youtubeUrl);
-
-  if ("error" in metadataResult) {
-    return { error: metadataResult.error };
+  if ("error" in preparedResult) {
+    return { error: preparedResult.error };
   }
 
   await connectDB();
@@ -267,14 +80,10 @@ export async function createLandscapeVideo(
         throw new Error("LANDSCAPE_VIDEO_SECTION_NOT_FOUND");
       }
 
-      if (!board || !section) {
-        throw new Error("LANDSCAPE_VIDEO_SECTION_NOT_FOUND");
-      }
-
       const duplicate = await LandscapeVideo.findOne({
         landscapeVideoSectionId: input.landscapeVideoSectionId,
         userId: session.user.id,
-        youtubeUrl: metadataResult.data.youtubeUrl,
+        youtubeUrl: preparedResult.data.youtubeUrl,
       }).session(mongoSession);
 
       if (duplicate) {
@@ -289,9 +98,7 @@ export async function createLandscapeVideo(
             userId: session.user.id,
             order: section.landscapeVideos.length,
             isFeatured: false,
-            title: normalizeTitle(input.title),
-            fromYoutube: true,
-            ...metadataResult.data,
+            ...preparedResult.data,
           },
         ],
         {
@@ -361,16 +168,13 @@ export async function updateLandscapeVideo(
     return { error: "Unauthorized" };
   }
 
-  const titleError = validateTitle(input.title);
+  const preparedResult = await prepareLandscapeVideo(
+    input,
+    getYouTubeVideoMetadata,
+  );
 
-  if (titleError) {
-    return { error: titleError };
-  }
-
-  const metadataResult = await getYouTubeMetadata(input.youtubeUrl);
-
-  if ("error" in metadataResult) {
-    return { error: metadataResult.error };
+  if ("error" in preparedResult) {
+    return { error: preparedResult.error };
   }
 
   await connectDB();
@@ -391,7 +195,7 @@ export async function updateLandscapeVideo(
       _id: { $ne: videoId },
       landscapeVideoSectionId: currentVideo.landscapeVideoSectionId,
       userId: session.user.id,
-      youtubeUrl: metadataResult.data.youtubeUrl,
+      youtubeUrl: preparedResult.data.youtubeUrl,
     });
 
     if (duplicate) {
@@ -406,11 +210,7 @@ export async function updateLandscapeVideo(
         userId: session.user.id,
       },
       {
-        $set: {
-          title: normalizeTitle(input.title),
-          fromYoutube: true,
-          ...metadataResult.data,
-        },
+        $set: preparedResult.data,
       },
       {
         returnDocument: "after",

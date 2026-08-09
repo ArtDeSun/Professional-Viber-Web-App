@@ -73,11 +73,6 @@ export default function LandscapeVideoDialog({
     const trimmedTitle = title.trim();
     const trimmedUrl = youtubeUrl.trim();
 
-    if (!trimmedTitle) {
-      setError("Enter a video title.");
-      return;
-    }
-
     if (!trimmedUrl) {
       setError("Enter a YouTube URL.");
       return;
@@ -90,13 +85,13 @@ export default function LandscapeVideoDialog({
       const result =
         editing && video
           ? await updateLandscapeVideo(video._id, {
-              title: trimmedTitle,
+              title: trimmedTitle || undefined,
               youtubeUrl: trimmedUrl,
             })
           : await createLandscapeVideo({
               landscapeVideoBoardId: landscapeVideoBoard._id,
               landscapeVideoSectionId: section._id,
-              title: trimmedTitle,
+              title: trimmedTitle || undefined,
               youtubeUrl: trimmedUrl,
             });
 
@@ -203,7 +198,10 @@ export default function LandscapeVideoDialog({
                   sm:text-lg
                 "
               >
-                Video title
+                Video title{" "}
+                <span className="font-redHatDisplay text-xs text-gray-500">
+                  (optional)
+                </span>
               </label>
 
               <Input
@@ -308,7 +306,7 @@ export default function LandscapeVideoDialog({
 
             <Button
               type="submit"
-              disabled={submitting || !title.trim() || !youtubeUrl.trim()}
+              disabled={submitting || !youtubeUrl.trim()}
               className="
                 h-10 flex-1 cursor-pointer rounded-xl
                 bg-amber-500 px-4

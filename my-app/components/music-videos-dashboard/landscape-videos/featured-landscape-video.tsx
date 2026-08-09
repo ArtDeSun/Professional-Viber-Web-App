@@ -144,7 +144,6 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                     transition-all duration-300
                     hover:-translate-y-0.5
                     active:transition-none active:bg-red-500/80
-                    hover:shadow-[0_0_24px_rgba(239,68,68,0.6)]
                     sm:h-12 sm:w-fit sm:rounded-2xl
                     sm:px-5 sm:text-base
                     lg:text-lg
@@ -191,7 +190,6 @@ function FeaturedHeader() {
       <div
         className="
           shrink-0 rounded-xl
-          border border-white/10
           bg-white/10 p-2.5
           shadow-[0_0_12px_rgba(245,158,11,0.16)]
           sm:rounded-2xl sm:p-3
