@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -6,46 +8,103 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit3, EllipsisVertical, Trash2, Upload } from "lucide-react";
-import { ElementType, useState } from "react";
+import {
+  Edit3,
+  EllipsisVertical,
+  Loader2,
+  Star,
+  Trash2,
+  Upload,
+} from "lucide-react";
+import { ElementType, useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import type { LandscapeVideo } from "./landscape-video-types";
 import { VideoFrame } from "./video-frame";
 
-import type { LandscapeVideoSection } from "@/lib/models/models.types";
+import { setFeaturedLandscapeVideo } from "@/lib/actions/landscape-videos";
+import type {
+  LandscapeVideo,
+  LandscapeVideoBoard,
+  LandscapeVideoSection,
+} from "@/lib/models/models.types";
+import DeleteLandscapeVideoDialog from "./delete-landscape-video-dialog";
+import LandscapeVideoDialog from "./landscape-video-dialog";
+
+/* function formatUploadedAt(createdAt: Date): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(createdAt));
+} */
+
+function formatTimeAgo(value: Date, now: number): string {
+  const seconds = Math.max(
+    0,
+    Math.floor((now - new Date(value).getTime()) / 1000),
+  );
+
+  if (seconds < 60) return `${seconds}s ago`;
+
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}min ago`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) return `${weeks}w ago`;
+
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months}mo ago`;
+
+  return `${Math.floor(days / 365)}y ago`;
+}
 
 type LandscapeVideoSectionProps = {
   section: LandscapeVideoSection;
+  landscapeVideoBoard: LandscapeVideoBoard;
   icon: ElementType;
+  onLandscapeVideoAdded: (sectionId: string, video: LandscapeVideo) => void;
+  onLandscapeVideoUpdated: (videoId: string, video: LandscapeVideo) => void;
+  onLandscapeVideoDeleted: (videoId: string) => void;
+  onLandscapeVideoFeatured: (videoId: string, video: LandscapeVideo) => void;
 };
 
 export function DashboardLandscapeVideoSection({
   section,
+  landscapeVideoBoard,
   icon,
+  onLandscapeVideoAdded,
+  onLandscapeVideoUpdated,
+  onLandscapeVideoDeleted,
+  onLandscapeVideoFeatured,
 }: LandscapeVideoSectionProps) {
-  const [videoResetSignals, setVideoResetSignals] = useState<
-    Record<string, number>
-  >({});
+  const [now, setNow] = useState<number | null>(null);
 
-  function resetVideoFrame(videoId: string) {
-    setVideoResetSignals((current) => ({
-      ...current,
-      [videoId]: (current[videoId] ?? 0) + 1,
-    }));
-  }
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editingVideo, setEditingVideo] = useState<LandscapeVideo | null>(null);
+  const [deletingVideo, setDeletingVideo] = useState<LandscapeVideo | null>(
+    null,
+  );
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  //Upon clicking Add Video in LandscapeSectionHeader
-  function resetSectionVideoFrames(videos: LandscapeVideo[]) {
-    setVideoResetSignals((current) => {
-      const next = { ...current };
+  useEffect(() => {
+    setNow(Date.now());
 
-      for (const video of videos) {
-        next[video.id] = (next[video.id] ?? 0) + 1;
-      }
+    const interval = window.setInterval(() => {
+      setNow(Date.now());
+    }, 60_000);
 
-      return next;
-    });
-  }
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const videos = [...(section.landscapeVideos ?? [])].sort(
+    (a, b) => a.order - b.order,
+  );
 
   return (
     <section
@@ -67,11 +126,11 @@ export function DashboardLandscapeVideoSection({
       <LandscapeSectionHeader
         icon={icon}
         title={section.label}
-        //section={section}
-        //resetSectionVideoFrames={resetSectionVideoFrames}
+        videoCount={videos.length}
+        onAddVideo={() => setAddDialogOpen(true)}
       />
 
-      {/* {section.videos.length === 0 ? (
+      {videos.length === 0 ? (
         <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
           <CardContent
             className="
@@ -93,28 +152,66 @@ export function DashboardLandscapeVideoSection({
             xl:gap-5
           "
         >
-          {section.videos.map((video) => (
+          {videos.map((video, index) => (
             <LandscapeVideoCard
-              key={video.id}
+              key={video._id}
               video={video}
-              resetSignal={videoResetSignals[video.id] ?? 0}
-              resetVideoFrame={resetVideoFrame}
+              now={now}
+              eager={false}
+              onEdit={() => {
+                setEditingVideo(video);
+                setEditDialogOpen(true);
+              }}
+              onDelete={() => {
+                setDeletingVideo(video);
+                setDeleteDialogOpen(true);
+              }}
+              onFeatured={onLandscapeVideoFeatured}
             />
           ))}
         </div>
-      )} */}
+      )}
+      <LandscapeVideoDialog
+        open={addDialogOpen}
+        onOpenChange={setAddDialogOpen}
+        landscapeVideoBoard={landscapeVideoBoard}
+        section={section}
+        icon={icon}
+        onSaved={(sectionId, video) => {
+          setAddDialogOpen(false);
+          window.setTimeout(() => {
+            onLandscapeVideoAdded(sectionId, video);
+          }, 200);
+        }}
+      />
 
-      <Card className="rounded-2xl border-white/10 bg-black/30 sm:rounded-3xl">
-        <CardContent
-          className="
-              p-5 text-center
-              text-sm leading-6 text-gray-400
-              sm:p-8 sm:text-base
-            "
-        >
-          No videos in this section yet.
-        </CardContent>
-      </Card>
+      <LandscapeVideoDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        landscapeVideoBoard={landscapeVideoBoard}
+        section={section}
+        icon={icon}
+        video={editingVideo}
+        onSaved={(_, updatedVideo) => {
+          setEditDialogOpen(false);
+          window.setTimeout(() => {
+            onLandscapeVideoUpdated(updatedVideo._id, updatedVideo);
+          }, 200);
+        }}
+      />
+
+      <DeleteLandscapeVideoDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        video={deletingVideo}
+        sectionLabel={section.label}
+        onDeleted={(videoId) => {
+          setDeleteDialogOpen(false);
+          window.setTimeout(() => {
+            onLandscapeVideoDeleted(videoId);
+          }, 200);
+        }}
+      />
     </section>
   );
 }
@@ -122,31 +219,37 @@ export function DashboardLandscapeVideoSection({
 function LandscapeSectionHeader({
   icon: Icon,
   title,
-  //section,
-  //resetSectionVideoFrames,
+  videoCount,
+  onAddVideo,
 }: {
   icon: ElementType;
   title: string;
-  //section: LandscapeVideoSectionData;
-  //resetSectionVideoFrames: (videos: LandscapeVideo[]) => void;
+  videoCount: number;
+  onAddVideo: () => void;
 }) {
   return (
     <header
       className="
-        flex min-w-0 flex-col
-        gap-3
+                  sticky top-18 z-20
+                  -mx-1 flex min-w-0
+                  flex-col gap-4
+                  rounded-xl
+                  px-3 py-3
+                  
+                  bg-gradient-to-b
+                  from-black via-black/80 via-80% to-transparent
+                  backdrop-blur-md
 
-        sm:flex-row
-        sm:items-center
-        sm:justify-between
-        sm:gap-4
-      "
+                  sm:top-19 lg:top-23
+                  sm:flex-row sm:items-center
+                  sm:justify-between sm:gap-5
+                  sm:px-4 sm:py-3.5
+                "
     >
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 items-center gap-3 justify-end sm:justify-start">
         <div
           className="
             shrink-0 rounded-xl
-            border border-white/10
             bg-white/10 p-2.5
             shadow-[0_0_12px_rgba(245,158,11,0.16)]
 
@@ -157,35 +260,42 @@ function LandscapeSectionHeader({
           <Icon className="h-5 w-5 text-amber-300 sm:h-6 sm:w-6" />
         </div>
 
-        <h2
-          className="
-            min-w-0 break-words
-            font-marcellus
-            text-2xl leading-tight text-white
+        <div className="flex min-w-0 items-center gap-2.5">
+          <h2
+            className="
+                        min-w-0 break-words
+                        font-marcellus text-2xl
+                        leading-tight text-white
+                        sm:text-3xl lg:text-4xl
+                      "
+          >
+            {title}
+          </h2>
 
-            sm:text-3xl
-            lg:text-4xl
-          "
-        >
-          {title}
-        </h2>
+          <span
+            className="
+                        shrink-0 rounded-md
+                        bg-white/20 px-2 py-0.5
+                        text-sm font-semibold text-gray-200
+                      "
+          >
+            {videoCount}
+          </span>
+        </div>
       </div>
 
       <Button
         type="button"
-        variant="outline"
+        onClick={onAddVideo}
         className="
           group h-10 w-full
           cursor-pointer rounded-xl
-          border-amber-400/25
-          bg-black/30 px-3
+          bg-neutral-800/60 px-3
           text-sm font-bold text-amber-200
           transition-all duration-300
 
-          hover:-translate-y-0.5
-          hover:bg-amber-400/10 active:transition-none active:bg-amber-400/10
-          hover:text-white active:text-white
-          hover:shadow-[0_0_16px_rgba(245,158,11,0.28)]
+          hover:bg-neutral-800 active:transition-none active:bg-neutral-800
+          hover:text-amber-400 active:text-amber-400
 
           sm:h-11
           sm:w-fit
@@ -197,16 +307,12 @@ function LandscapeSectionHeader({
           lg:px-5
           lg:text-lg
         "
-        onClick={() => {
-          //resetSectionVideoFrames(section.videos);
-        }}
       >
         <Upload
           className="
             mr-2 h-4 w-4
             shrink-0
             transition-transform duration-300
-            group-hover:-translate-y-0.5
             group-hover:scale-110
 
             sm:h-5 sm:w-5
@@ -221,121 +327,148 @@ function LandscapeSectionHeader({
 
 function LandscapeVideoCard({
   video,
-  resetSignal,
-  resetVideoFrame,
+  now,
+  eager,
+  onEdit,
+  onDelete,
+  onFeatured,
 }: {
   video: LandscapeVideo;
-  resetSignal: number;
-  resetVideoFrame: (videoId: string) => void;
+  now: number | null;
+  eager: boolean;
+  onEdit: () => void;
+  onDelete: () => void;
+  onFeatured: (videoId: string, video: LandscapeVideo) => void;
 }) {
   return (
     <Card
       className="
         group min-w-0
-        rounded-2xl
-        border border-gray-300/15
-        bg-neutral-800/70
-        p-1.5
-        transition-all duration-300
-
-        hover:border-amber-300/30
-        hover:shadow-[0_0_18px_rgba(245,158,11,0.18)]
-
-        sm:rounded-3xl
-        sm:p-3
+        border-0 bg-transparent p-0
+        shadow-none
       "
     >
       <CardContent
         className="
-          relative min-w-0
+          relative flex min-w-0
           overflow-hidden
           rounded-[1rem]
-          border border-gray-300/10
           bg-neutral-900 p-0
 
+          sm:block
           sm:rounded-[1.35rem]
         "
       >
-        <VideoFrame video={video} resetSignal={resetSignal} />
+        <div className="w-[42%] min-w-0 shrink-0 self-stretch sm:w-full">
+          <VideoFrame video={video} eager={eager} />
+        </div>
 
         <div
-          className=" 
-            relative min-w-0
-            min-h-28 p-3
+          className="
+            relative flex min-w-0
+            flex-1 flex-col
+            justify-between
+            px-2
+            py-1
 
             sm:min-h-32
+            sm:block
             sm:p-4
           "
         >
-          <div
-            className="
-              absolute
-              -top-4 left-3
-              rounded-lg
-              border border-gray-300/15
-              bg-neutral-800
-              px-2 py-1.5
-              shadow-[0_6px_18px_rgba(0,0,0,0.45)]
+          {video.fromYoutube && (
+            <div
+              className="
+                absolute hidden
+                border border-gray-300/15
+                bg-neutral-800
+                shadow-[0_6px_18px_rgba(0,0,0,0.45)]
 
-              sm:-top-5
-              sm:left-6
-              sm:rounded-xl
-              sm:px-3
-              sm:py-2
+                sm:block
+                sm:-top-5
+                sm:left-6
+                sm:rounded-xl
+                sm:px-3
+                sm:py-2
 
-              lg:left-24
-            "
-          >
-            <FaYoutube className="h-4 w-4 text-red-500 sm:h-5 sm:w-5" />
-          </div>
+                lg:left-24
+              "
+            >
+              <FaYoutube className="h-5 w-5 text-red-500" />
+            </div>
+          )}
 
-          <div
-            className="
-              mt-4 flex min-w-0
-              items-start justify-between
-              gap-2
-
-              sm:gap-4
-            "
-          >
-            <div className="min-w-0 flex-1">
+          {/* Title + menu */}
+          <div className="relative min-w-0">
+            <div className="pr-7 sm:pr-0">
               <h3
+                title={video.title}
                 className="
-                  line-clamp-2 break-words
+                  pt-1
+                  min-w-0
+                  line-clamp-2 
                   font-marcellus
-                  text-lg leading-tight text-white
+                  text-xs leading-tight text-white
                   transition-colors duration-300
                   group-hover:text-amber-200
 
-                  sm:text-xl
-                  lg:line-clamp-1
+                  sm:text-lg
                   lg:text-2xl
                 "
               >
                 {video.title}
               </h3>
-
-              {video.duration && video.uploadedAt && (
-                <p
-                  className="
-                    mt-2 line-clamp-2
-                    break-words
-                    text-xs leading-5 text-gray-400
-
-                    sm:mt-3
-                    sm:line-clamp-1
-                    sm:text-sm
-                  "
-                >
-                  {video.duration} • Uploaded {video.uploadedAt}
-                </p>
-              )}
             </div>
 
-            <LandscapeVideoMenu
-              video={video}
-              resetVideoFrame={resetVideoFrame}
-            />
+            <div className="absolute right-0 top-0">
+              <LandscapeVideoMenu
+                video={video}
+                onEdit={onEdit}
+                onDelete={onDelete}
+                onFeatured={onFeatured}
+              />
+            </div>
+          </div>
+
+          {/* Duration + timestamps */}
+          <div className="mt-auto flex items-end justify-between gap-2 pt-2 sm:pt-3">
+            <span
+              className="
+                inline-flex shrink-0 whitespace-nowrap
+                rounded-xl bg-white/10
+                px-1.5 py-1
+                text-[11px] font-bold text-gray-300
+
+                sm:rounded-2xl
+                sm:px-2 sm:py-2
+                sm:text-base
+                lg:text-lg
+              "
+            >
+              {video.duration}
+            </span>
+
+            <div className="space-y-0.5 text-right sm:space-y-1">
+              <div className="flex items-center justify-end gap-1 whitespace-nowrap sm:gap-2">
+                <span className="text-[8px] text-gray-500 sm:text-[10px] lg:text-[12px]">
+                  Uploaded:
+                </span>
+
+                <span className="text-[11px] font-semibold text-gray-300 sm:text-sm lg:text-base">
+                  {now ? formatTimeAgo(video.createdAt, now) : "—"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-end gap-1 whitespace-nowrap sm:gap-2">
+                <span className="text-[8px] text-gray-500 sm:text-[10px] lg:text-[12px]">
+                  Updated:
+                </span>
+
+                <span className="text-[11px] font-semibold text-gray-300 sm:text-sm lg:text-base">
+                  {now ? formatTimeAgo(video.updatedAt, now) : "—"}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </CardContent>
@@ -345,122 +478,213 @@ function LandscapeVideoCard({
 
 function LandscapeVideoMenu({
   video,
-  resetVideoFrame,
+  onEdit,
+  onDelete,
+  onFeatured,
 }: {
   video: LandscapeVideo;
-  resetVideoFrame: (videoId: string) => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onFeatured: (videoId: string, video: LandscapeVideo) => void;
 }) {
+  const [featuring, setFeaturing] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function handleScroll() {
+      setMenuOpen(false);
+    }
+
+    window.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [menuOpen]);
+
+  async function handleSetFeatured() {
+    if (video.isFeatured || featuring) return;
+
+    setFeaturing(true);
+
+    try {
+      const result = await setFeaturedLandscapeVideo(video._id);
+
+      if ("error" in result) {
+        console.error(result.error);
+        return;
+      }
+
+      onFeatured(video._id, result.data);
+    } finally {
+      setFeaturing(false);
+    }
+  }
+
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen} modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           type="button"
           size="icon"
           aria-label={`Open options for ${video.title}`}
           className="
-            h-9 w-9 shrink-0
+            h-5 w-5 shrink-0
             cursor-pointer rounded-full
-            border-none bg-black/40
+            border-none
             text-gray-200
             transition-all duration-300
 
-            hover:-translate-y-0.5
-            hover:bg-amber-400/80 active:transition-none active:bg-amber-400/80
-            hover:text-black active:text-black
-            hover:shadow-[0_0_18px_rgba(245,158,11,0.45)]
+            hover:bg-amber-400/70
+            hover:text-black
+            active:bg-amber-400/70
+            active:text-black
 
-            data-[state=open]:bg-amber-400/80
+            data-[state=open]:bg-amber-400/70
             data-[state=open]:text-black
-            data-[state=open]:shadow-[0_0_18px_rgba(245,158,11,0.45)]
 
-            sm:h-10 sm:w-10
+            sm:h-8 sm:w-8
           "
-          onClick={() => {
-            resetVideoFrame(video.id);
-            //setOpenMenuVideoId(video.id);
-          }}
         >
-          <EllipsisVertical className="h-4 w-4 sm:h-5 sm:w-5" />
+          <EllipsisVertical className="h-3 w-3 sm:h-6 sm:w-6" />
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
-        sideOffset={8}
-        collisionPadding={12}
+        sideOffset={4}
+        collisionPadding={6}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+        }}
         className="
-          w-[calc(100vw-2rem)]
-          max-w-60
-          rounded-2xl
+          w-auto min-w-36 max-w-40
+          rounded-lg
           border border-amber-300/20
           bg-neutral-950/95
-          p-1.5
+          p-0.5
           font-redHatDisplay
           text-gray-100
           shadow-[0_0_24px_rgba(245,158,11,0.28)]
           backdrop-blur-xl
 
-          sm:rounded-3xl
-          sm:p-2
+          sm:min-w-48 sm:max-w-52
+          sm:rounded-2xl
+          sm:p-1.5
         "
       >
         <DropdownMenuItem
+          disabled={video.isFeatured || featuring}
+          onSelect={handleSetFeatured}
           className="
             group cursor-pointer
-            rounded-xl
-            px-3 py-2.5
-            text-sm font-medium
-            transition-colors duration-200
-            focus:bg-amber-400/80 active:bg-amber-400/80
-            focus:text-black active:text-black
+            rounded-lg
+            px-2 py-1.5
+            text-[10px] font-bold
+
+            focus:bg-amber-400/80
+            focus:text-black
+            disabled:cursor-default
 
             sm:rounded-2xl
-            sm:py-3
-            sm:text-base
+            sm:px-3
+            sm:py-2.5
+            sm:text-sm
+          "
+        >
+          {featuring ? (
+            <Loader2
+              className="
+                mr-1.5 h-3 w-3 animate-spin
+                sm:mr-3 sm:h-4 sm:w-4
+              "
+            />
+          ) : (
+            <Star
+              className="
+                mr-1.5 h-3.5 w-3.5
+                text-amber-300
+
+                sm:mr-3
+                sm:h-5 sm:w-5
+              "
+            />
+          )}
+
+          <span className="truncate">
+            {video.isFeatured ? "Featured Video" : "Set as Featured"}
+          </span>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          onSelect={onEdit}
+          className="
+            group cursor-pointer
+            rounded-lg
+            px-2 py-1.5
+            text-[10px] font-bold
+            transition-colors duration-200
+
+            focus:bg-amber-400/80
+            focus:text-black
+            active:bg-amber-400/80
+            active:text-black
+
+            sm:rounded-xl
+            sm:px-3
+            sm:py-2.5
+            sm:text-sm
           "
         >
           <Edit3
             className="
-              mr-2 h-4 w-4 shrink-0
+              mr-1.5 h-3 w-3 shrink-0
               text-amber-300
               transition-transform duration-300
               group-hover:rotate-6
               group-focus:text-black
 
               sm:mr-3
-              sm:h-5 sm:w-5
+              sm:h-4 sm:w-4
             "
           />
 
           <span className="min-w-0 truncate">Edit Video Details</span>
         </DropdownMenuItem>
 
-        <div className="my-1 h-px bg-white/10" />
+        <div className="my-0.5 h-px bg-white/10 sm:my-1" />
 
         <DropdownMenuItem
+          onSelect={onDelete}
           className="
             group cursor-pointer
-            rounded-xl
-            px-3 py-2.5
-            text-sm font-medium
+            rounded-lg
+            px-2 py-1.5
+            text-[10px] font-bold
             text-red-300
             transition-colors duration-200
-            focus:bg-red-600/80 active:bg-red-600/80
-            focus:text-white active:text-white
 
-            sm:rounded-2xl
-            sm:py-3
-            sm:text-base
+            focus:bg-red-500/80
+            focus:text-white
+            active:bg-red-500/80
+            active:text-white
+
+            sm:rounded-xl
+            sm:px-3
+            sm:py-2.5
+            sm:text-sm
           "
         >
           <Trash2
             className="
-              mr-2 h-4 w-4 shrink-0
+              mr-1.5 h-3 w-3 shrink-0
               transition-transform duration-300
               group-hover:scale-110
 
               sm:mr-3
-              sm:h-5 sm:w-5
+              sm:h-4 sm:w-4
             "
           />
 

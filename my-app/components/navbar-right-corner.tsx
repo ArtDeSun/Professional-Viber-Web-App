@@ -147,8 +147,8 @@ export default function NavbarRightCorner() {
               sideOffset={8}
               collisionPadding={8}
               className="
-                w-[calc(100vw-1rem)]
-                max-w-72
+                w-[calc(100vw-6rem)]
+                max-w-56
                 rounded-xl
                 border border-white/5
                 bg-black/80
@@ -157,7 +157,7 @@ export default function NavbarRightCorner() {
                 shadow-[0_0_20px_rgba(245,158,11,0.25)]
                 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2
                 duration-300
-                sm:w-72
+                sm:max-w-72
                 sm:rounded-2xl
               "
             >
@@ -274,8 +274,8 @@ export default function NavbarRightCorner() {
               sideOffset={8}
               collisionPadding={8}
               className="
-                w-[calc(100vw-1rem)]
-                max-w-56
+                w-[calc(100vw-7rem)]
+                max-w-48
                 rounded-xl
                 border border-white/5
                 bg-black/80
@@ -284,7 +284,7 @@ export default function NavbarRightCorner() {
                 shadow-[0_0_20px_rgba(245,158,11,0.25)]
                 animate-in fade-in-0 zoom-in-95 slide-in-from-top-2
                 duration-300
-                sm:w-56
+                sm:max-w-56
                 sm:rounded-2xl
               "
             >

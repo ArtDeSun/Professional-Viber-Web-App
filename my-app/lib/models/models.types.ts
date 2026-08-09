@@ -41,8 +41,8 @@ export interface LandscapeVideo {
   youtubeEmbedUrl?: string;
   thumbnailUrl?: string;
   duration: string;
-  //createdAt: Date;
-  //updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface LandscapeVideoSection {
@@ -52,8 +52,8 @@ export interface LandscapeVideoSection {
   userId: string;
   order: number;
   label: string;
-  //createdAt: Date;
-  //updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface LandscapeVideoBoard {
@@ -61,6 +61,6 @@ export interface LandscapeVideoBoard {
   landscapeVideoSections: LandscapeVideoSection[];
   userId: string;
   name: string;
-  //createdAt: Date;
-  //updatedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

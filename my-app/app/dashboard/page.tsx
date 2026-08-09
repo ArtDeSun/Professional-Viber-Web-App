@@ -25,11 +25,12 @@ async function getBoard(userId: string) {
 
 async function DashboardPage() {
   const session = await getSession();
-  const board = await getBoard(session?.user.id ?? "");
 
   if (!session?.user) {
     redirect("/");
   }
+
+  const board = await getBoard(session?.user.id ?? "");
 
   return (
     <div className="container mx-auto px-6 py-32">

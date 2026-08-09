@@ -1,69 +1,71 @@
 import { Button } from "@/components/ui/button";
+import type { LandscapeVideo } from "@/lib/models/models.types";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
-import type { LandscapeVideo } from "./landscape-video-types";
 
 type VideoFrameProps = {
   video: LandscapeVideo;
   featured?: boolean;
-  resetSignal?: number;
   eager?: boolean;
 };
 
 export function VideoFrame({
   video,
   featured = false,
-  resetSignal = 0,
   eager = false,
 }: VideoFrameProps) {
   type ThumbnailPhase = "hydrating" | "loading" | "loaded";
+
   const [phase, setPhase] = useState<ThumbnailPhase>("hydrating");
-  const progressLabel =
-    phase === "hydrating" ? "Initializing" : "Loading thumbnail";
   const [showPlayer, setShowPlayer] = useState(false);
   const [thumbnailProgress, setThumbnailProgress] = useState(10);
 
-  const youtubeThumbnail =
-    video.sourceType === "youtube"
-      ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
-      : null;
+  const progressLabel =
+    phase === "hydrating" ? "Initializing" : "Loading thumbnail";
 
   const previewImage =
-    video.sourceType === "youtube"
-      ? (youtubeThumbnail ?? video.thumbnailUrl)
-      : video.thumbnailUrl;
+    video.thumbnailUrl ??
+    (video.fromYoutube
+      ? getYouTubeThumbnail(video.youtubeUrl ?? video.youtubeEmbedUrl ?? "")
+      : null);
+
+  const imageSizes = featured
+    ? "(max-width: 639px) calc(100vw - 2rem), 50vw"
+    : `
+      (max-width: 639px) 42vw,
+      (max-width: 767px) calc(100vw - 2rem),
+      (max-width: 1279px) calc(50vw - 3rem),
+      calc(33vw - 3rem)
+    `;
 
   useEffect(() => {
     setPhase("loading");
     setShowPlayer(false);
     setThumbnailProgress(25);
 
-    const interval = setInterval(() => {
-      //setThumbnailProgress((current) => Math.min(current + 5, 85));
+    const interval = window.setInterval(() => {
       setThumbnailProgress((current) => {
         if (current >= 85) return current;
-        return current + Math.max(1, (85 - current) * 0.08);
+
+        return Math.min(85, current + Math.max(1, (85 - current) * 0.08));
       });
     }, 200);
 
-    return () => clearInterval(interval);
-  }, [video.id, resetSignal, previewImage]);
+    return () => window.clearInterval(interval);
+  }, [video._id, previewImage]);
 
   return (
     <div
       className={`
-        relative min-w-0 aspect-video w-full
-        overflow-hidden bg-black
+                  relative aspect-video h-auto
+                  min-h-0 w-full min-w-0
+                  overflow-hidden
 
-        ${
-          featured
-            ? "rounded-xl sm:rounded-2xl"
-            : "rounded-t-xl sm:rounded-t-2xl"
-        }
-      `}
+                  sm:rounded-2xl
+                `}
     >
-      {video.sourceType === "youtube" && video.youtubeEmbedUrl && showPlayer ? (
+      {video.fromYoutube && video.youtubeEmbedUrl && showPlayer ? (
         <iframe
           src={getPrivacyEnhancedEmbedUrl(video.youtubeEmbedUrl)}
           title={video.title}
@@ -71,9 +73,7 @@ export function VideoFrame({
           allowFullScreen
           className="absolute inset-0 block h-full w-full border-0"
         />
-      ) : previewImage &&
-        video.sourceType === "youtube" &&
-        video.youtubeEmbedUrl ? (
+      ) : previewImage && video.fromYoutube && video.youtubeEmbedUrl ? (
         <Button
           type="button"
           aria-label={`Play ${video.title}`}
@@ -82,6 +82,8 @@ export function VideoFrame({
             group relative block h-full w-full
             min-w-0 cursor-pointer
             overflow-hidden rounded-none p-0
+            border-0 bg-transparent shadow-none
+            hover:bg-transparent
           "
         >
           <Image
@@ -90,30 +92,27 @@ export function VideoFrame({
             fill
             //either this:
             loading={eager ? "eager" : "lazy"}
-            fetchPriority={eager ? "high" : "auto"}
+            //fetchPriority={eager ? "high" : "auto"}
             //or this:
             //preload={eager}
+            quality={65}
             onLoad={() => {
-              setThumbnailProgress(90);
-              requestAnimationFrame(() => {
-                setThumbnailProgress(100);
-                setPhase("loaded");
-              });
+              setThumbnailProgress(100);
+              setPhase("loaded");
+            }}
+            onError={() => {
+              setThumbnailProgress(100);
+              setPhase("loaded");
             }}
             className={`
-              object-cover
-              transition-transform duration-500
-              group-hover:scale-[1.02]
+              scale-[1.005] object-cover
+              transition-[opacity] duration-500
               ${thumbnailProgress === 100 ? "opacity-100" : "opacity-0"}
-            "
-            sizes="
-              (max-width: 639px) calc(100vw - 6rem),
-              (max-width: 1023px) calc(100vw - 8rem),
-              50vw
-            "`}
+            `}
+            sizes={imageSizes}
           />
 
-          <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/25" />
+          <span className="absolute inset-0 bg-black/15 transition-colors duration-300 group-hover:bg-black/35" />
 
           {phase !== "loaded" ? (
             <span className="absolute left-1/2 top-1/2 w-32 -translate-x-1/2 -translate-y-1/2">
@@ -131,38 +130,38 @@ export function VideoFrame({
             </span>
           ) : (
             <span
-              className="absolute left-1/2 top-1/2
-                  flex h-11 w-16
-                  -translate-x-1/2 -translate-y-1/2
-                  items-center justify-center
-                  rounded-2xl bg-red-600/90
-                  shadow-[0_0_18px_rgba(239,68,68,0.45)]
-                  transition-[scale,background-color] duration-300
-                  group-hover:scale-105
-                  group-hover:bg-red-500
-                  sm:h-12 sm:w-18"
+              className="
+                          absolute left-1/2 top-1/2
+                          flex h-7 w-10
+                          -translate-x-1/2 -translate-y-1/2
+                          items-center justify-center
+                          rounded-xl bg-red-600/50
+                          shadow-[0_0_18px_rgba(239,68,68,0.45)]
+                          transition-[scale,background-color] duration-300
+                          group-hover:bg-red-500
+
+                          sm:h-12 sm:w-18
+                          sm:rounded-2xl
+                        "
             >
-              <FaYoutube className="h-6 w-6 text-white sm:h-7 sm:w-7" />
+              <FaYoutube className="h-4 w-4 text-white sm:h-7 sm:w-7" />
             </span>
           )}
         </Button>
       ) : previewImage ? (
-        <div className="relative h-full w-full min-w-0 overflow-hidden">
+        <div className="relative h-full w-full min-w-0">
           <Image
             src={previewImage}
             alt={video.title}
             fill
             //either this:
             loading={eager ? "eager" : "lazy"}
-            fetchPriority={eager ? "high" : "auto"}
+            //fetchPriority={eager ? "high" : "auto"}
             //or this:
             //preload={eager}
-            className="object-cover"
-            sizes="
-              (max-width: 639px) calc(100vw - 6rem),
-              (max-width: 1023px) calc(100vw - 8rem),
-              50vw
-            "
+            quality={65}
+            className="scale-[1.005] object-cover"
+            sizes={imageSizes}
           />
         </div>
       ) : (

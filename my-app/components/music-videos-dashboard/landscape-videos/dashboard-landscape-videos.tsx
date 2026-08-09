@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useLandscapeVideoBoard } from "@/lib/hooks/useLandscapeVideoBoard";
 import {
+  LandscapeVideo,
   LandscapeVideoBoard,
   LandscapeVideoSection,
 } from "@/lib/models/models.types";
@@ -23,7 +24,6 @@ import CreateLandscapeVideoSectionDialog, {
   SidebarFooterFallback,
 } from "./create-landscape-video-section-dialog";
 import { FeaturedLandscapeVideo } from "./featured-landscape-video";
-import { featuredLandscapeVideo } from "./landscape-video-data";
 import { DashboardLandscapeVideoSection } from "./landscape-video-section";
 import {
   DEFAULT_LANDSCAPE_SECTION_ICON_KEYS,
@@ -136,9 +136,14 @@ function DashboardLandscapeVideosWithData({
   const {
     landscapeVideoBoard,
     landscapeVideoSections,
+    landscapeVideos,
+    featuredLandscapeVideo,
     addLandscapeVideoSection,
     modifyLandscapeVideoSection,
     removeLandscapeVideoSection,
+    addLandscapeVideo,
+    modifyLandscapeVideo,
+    removeLandscapeVideo,
   } = useLandscapeVideoBoard(initialLandscapeVideoBoard);
 
   const landscapeBoardId = landscapeVideoBoard._id;
@@ -223,9 +228,11 @@ function DashboardLandscapeVideosWithData({
     }));
 
     requestAnimationFrame(() => {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "smooth",
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth",
+        });
       });
     });
   }
@@ -286,11 +293,40 @@ function DashboardLandscapeVideosWithData({
     }
   }
 
+  function handleLandscapeVideoAdded(sectionId: string, video: LandscapeVideo) {
+    addLandscapeVideo(sectionId, video);
+  }
+
+  function handleLandscapeVideoUpdated(videoId: string, video: LandscapeVideo) {
+    modifyLandscapeVideo(videoId, video);
+  }
+
+  function handleLandscapeVideoDeleted(videoId: string) {
+    removeLandscapeVideo(videoId);
+  }
+
+  function handleLandscapeVideoFeatured(
+    videoId: string,
+    video: LandscapeVideo,
+  ) {
+    modifyLandscapeVideo(videoId, {
+      ...video,
+      isFeatured: true,
+    });
+
+    requestAnimationFrame(() => {
+      document.getElementById("featured")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }
+
   //Derive the featured landscape video separately
   //use the react hook's landscapeVideoBoard and/or landscapeVideoSections to derive landscapeVideos
   /* const featuredLandscapeVideo = landscapeVideos.find((video) => video.isFeatured); */
 
-  const hasVideos = Boolean(featuredLandscapeVideo);
+  const hasVideos = landscapeVideos.length > 0;
 
   const videoSectionIds = landscapeVideoSections
     .map((section) => section._id)
@@ -303,6 +339,7 @@ function DashboardLandscapeVideosWithData({
     ];
 
     let animationFrameId: number | null = null;
+    let previousScrollY = window.scrollY;
 
     const updateActiveSection = () => {
       const sectionElements = sectionIds
@@ -312,6 +349,19 @@ function DashboardLandscapeVideosWithData({
       if (sectionElements.length === 0) {
         return;
       }
+
+      const currentScrollY = window.scrollY;
+
+      // If the user reverses direction while we're automatically
+      // scrolling toward a newly created section, release the lock.
+      if (
+        scrollingToCreatedSectionRef.current &&
+        currentScrollY < previousScrollY
+      ) {
+        scrollingToCreatedSectionRef.current = null;
+      }
+
+      previousScrollY = currentScrollY;
 
       const isAtBottom =
         window.scrollY + window.innerHeight >=
@@ -331,6 +381,11 @@ function DashboardLandscapeVideosWithData({
         return;
       }
 
+      /* if (isAtBottom) {
+        setActiveSection(sectionElements.at(-1)!.id);
+        return;
+      } */
+
       let nextActiveSectionId = sectionElements[0].id;
 
       for (const sectionElement of sectionElements) {
@@ -348,30 +403,32 @@ function DashboardLandscapeVideosWithData({
         }
       }
 
-      setActiveSection(
-        (current) => {
-          const createdSectionId = scrollingToCreatedSectionRef.current;
+      setActiveSection((current) => {
+        const createdSectionId = scrollingToCreatedSectionRef.current;
 
-          if (createdSectionId) {
-            const currentIndex = sectionIds.indexOf(current);
-            const nextIndex = sectionIds.indexOf(nextActiveSectionId);
+        if (createdSectionId) {
+          const currentIndex = sectionIds.indexOf(current);
+          const nextIndex = sectionIds.indexOf(nextActiveSectionId);
 
-            // Prevent a temporary backward jump, such as B → A.
-            if (nextIndex < currentIndex) {
-              return current;
-            }
+          if (
+            currentIndex !== -1 &&
+            nextIndex !== -1 &&
+            nextIndex < currentIndex
+          ) {
+            return current;
           }
+        }
 
-          if (nextActiveSectionId === createdSectionId) {
-            scrollingToCreatedSectionRef.current = null;
-          }
+        if (nextActiveSectionId === createdSectionId) {
+          scrollingToCreatedSectionRef.current = null;
+        }
 
-          return current === nextActiveSectionId
-            ? current
-            : nextActiveSectionId;
-        },
-        //current === nextActiveSectionId ? current : nextActiveSectionId,
-      );
+        return current === nextActiveSectionId ? current : nextActiveSectionId;
+      });
+
+      /* setActiveSection((current) =>
+        current === nextActiveSectionId ? current : nextActiveSectionId,
+      ); */
     };
 
     const scheduleActiveSectionUpdate = () => {
@@ -385,7 +442,7 @@ function DashboardLandscapeVideosWithData({
       });
     };
 
-    //scheduleActiveSectionUpdate();
+    scheduleActiveSectionUpdate();
 
     window.addEventListener("scroll", scheduleActiveSectionUpdate, {
       passive: true,
@@ -495,7 +552,12 @@ function DashboardLandscapeVideosWithData({
             <DashboardLandscapeVideoSection
               key={section._id}
               section={section}
+              landscapeVideoBoard={landscapeVideoBoard}
               icon={getLandscapeSectionIcon(section)}
+              onLandscapeVideoAdded={handleLandscapeVideoAdded}
+              onLandscapeVideoUpdated={handleLandscapeVideoUpdated}
+              onLandscapeVideoDeleted={handleLandscapeVideoDeleted}
+              onLandscapeVideoFeatured={handleLandscapeVideoFeatured}
             />
           ))}
         </div>
@@ -554,8 +616,9 @@ function DashboardContentFallback() {
     <div
       aria-hidden="true"
       className="
+        lg:ml-10
         min-h-[60vh] animate-pulse
-        rounded-2xl bg-white/5
+        rounded-2xl bg-white/10
         sm:rounded-3xl
       "
     />
@@ -576,7 +639,7 @@ function DashboardLandscapeHeader() {
         lg:flex-row lg:items-end lg:p-8
       "
     >
-      <div className="min-w-0 max-w-4xl space-y-3 sm:space-y-4">
+      <div className="flex flex-col min-w-0 max-w-4xl space-y-3 sm:space-y-4 items-center text-center sm:items-start sm:text-start">
         <h1
           className="
             break-words font-marcellus
@@ -596,8 +659,7 @@ function DashboardLandscapeHeader() {
             lg:text-lg lg:leading-8
           "
         >
-          Manage long-form videos, covers, performances, tutorials, and featured
-          uploads.
+          Manage Youtube videos, tutorials, and set your featured video.
         </p>
       </div>
 
@@ -606,11 +668,9 @@ function DashboardLandscapeHeader() {
         className="
           group relative h-10 w-full
           cursor-pointer overflow-hidden
-          rounded-xl bg-amber-400
+          rounded-2xl bg-amber-500
           px-3 text-sm font-bold text-black
-          shadow-[0_0_14px_rgba(245,158,11,0.35)]
           transition-shadow duration-300
-          hover:shadow-[0_0_22px_rgba(245,158,11,0.6)]
           sm:h-11 sm:w-fit sm:px-5 sm:text-base
           lg:text-xl
         "
@@ -621,7 +681,7 @@ function DashboardLandscapeHeader() {
               absolute inset-0 origin-right bg-amber-600
               transition-transform duration-500
               ease-[cubic-bezier(0.22,1,0.36,1)]
-              group-hover:scale-x-0 active:bg-amber-400
+              group-hover:scale-x-0 active:bg-amber-500
             "
           />
 
@@ -680,7 +740,8 @@ function EmptyLandscapeState() {
             sm:text-base sm:leading-7
           "
         >
-          Upload your first long-form video or add a YouTube embed.
+          {/* Upload your first long-form video or add a YouTube embed. */}
+          Upload your first Youtube Video.
         </p>
       </div>
     </section>
