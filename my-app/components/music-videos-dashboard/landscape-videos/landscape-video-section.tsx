@@ -350,31 +350,53 @@ function LandscapeVideoCard({
     >
       <CardContent
         className="
-          relative flex min-w-0
+          relative grid min-w-0
+          grid-cols-[42%_1fr]
           overflow-hidden
           rounded-[1rem]
           bg-neutral-900 p-0
 
+          transition-[grid-template-columns] duration-300 ease-out
+
+          [&:has(iframe)]:grid-cols-[100%_0fr]
+          [&:has(iframe)_h3]:text-sm
+          [&:has(iframe)_.video-details]:opacity-0
+          [&:has(iframe)_.video-details]:px-0
+
           sm:block
           sm:rounded-[1.35rem]
+          sm:[&:has(iframe)_.video-details]:opacity-100
+          sm:[&:has(iframe)_.video-details]:px-4
         "
       >
-        <div className="w-[42%] min-w-0 shrink-0 self-stretch sm:w-full">
+        <div
+          className="
+                      min-w-0 overflow-hidden
+                      rounded-l-[1rem]
+
+                      [&:has(iframe)]:rounded-[1rem]
+
+                      sm:w-full
+                      sm:rounded-none
+                    "
+        >
           <VideoFrame video={video} eager={eager} />
         </div>
 
         <div
-          className="
-            relative flex min-w-0
-            flex-1 flex-col
-            justify-between
-            px-2
-            py-1
+          className=" video-details
+                      relative flex min-w-0
+                      overflow-hidden
+                      flex-col justify-between
+                      px-2 py-1
 
-            sm:min-h-32
-            sm:block
-            sm:p-4
-          "
+                      transition-[opacity,padding] duration-300 ease-out
+
+                      sm:min-h-32
+                      sm:block
+                      sm:overflow-visible
+                      sm:p-4
+                    "
         >
           {video.fromYoutube && (
             <div
@@ -406,7 +428,7 @@ function LandscapeVideoCard({
                 className="
                   pt-1
                   min-w-0
-                  line-clamp-2 
+                  line-clamp-1
                   font-marcellus
                   text-xs leading-tight text-white
                   transition-colors duration-300

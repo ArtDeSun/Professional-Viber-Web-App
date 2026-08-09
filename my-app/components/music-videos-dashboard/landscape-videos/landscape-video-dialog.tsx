@@ -124,6 +124,9 @@ export default function LandscapeVideoDialog({
             handleOpenChange(false);
           }
         }}
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+        }}
         className="
           data-[state=closed]:animate-none
           data-[state=closed]:duration-0

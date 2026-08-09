@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { LandscapeVideo } from "@/lib/models/models.types";
+import { ChevronLeft, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FaYoutube } from "react-icons/fa";
@@ -58,21 +59,81 @@ export function VideoFrame({
   return (
     <div
       className={`
-                  relative aspect-video h-auto
+                  relative
                   min-h-0 w-full min-w-0
                   overflow-hidden
 
                   sm:rounded-2xl
+
+                  ${showPlayer && !featured ? "h-auto" : "aspect-video h-auto"}
                 `}
     >
       {video.fromYoutube && video.youtubeEmbedUrl && showPlayer ? (
-        <iframe
-          src={getPrivacyEnhancedEmbedUrl(video.youtubeEmbedUrl)}
-          title={video.title}
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="absolute inset-0 block h-full w-full border-0"
-        />
+        <div className="w-full">
+          <div className="relative aspect-video w-full">
+            <iframe
+              src={getPrivacyEnhancedEmbedUrl(video.youtubeEmbedUrl)}
+              title={video.title}
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 block h-full w-full border-0"
+            />
+          </div>
+
+          {!featured && (
+            <div className="flex justify-between bg-neutral-900 px-2 py-1.5">
+              {/* Left: collapse up */}
+              <button
+                type="button"
+                onClick={() => setShowPlayer(false)}
+                aria-label="Collapse video up"
+                className="
+                            flex h-6 w-6
+                            cursor-pointer
+                            items-center justify-center
+                            rounded-full
+                            bg-white/10
+                            text-gray-300
+                            transition-colors duration-200
+
+                            hover:bg-neutral-400
+                            hover:text-black
+
+                            active:bg-neutral-400
+                            active:text-black
+                            active:transition-none
+                          "
+              >
+                <ChevronUp className="h-4 w-4" />
+              </button>
+
+              {/* Right: collapse left */}
+              <button
+                type="button"
+                onClick={() => setShowPlayer(false)}
+                aria-label="Collapse video left"
+                className="
+                  flex h-6 w-6
+                  cursor-pointer
+                  items-center justify-center
+                  rounded-full
+                  bg-white/10
+                  text-gray-300
+                  transition-colors duration-200
+
+                  hover:bg-neutral-400
+                  hover:text-black
+
+                  active:bg-neutral-400
+                  active:text-black
+                  active:transition-none
+                "
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+        </div>
       ) : previewImage && video.fromYoutube && video.youtubeEmbedUrl ? (
         <Button
           type="button"
@@ -130,21 +191,29 @@ export function VideoFrame({
             </span>
           ) : (
             <span
-              className="
+              className={`
                           absolute left-1/2 top-1/2
-                          flex h-7 w-10
-                          -translate-x-1/2 -translate-y-1/2
+                          flex -translate-x-1/2 -translate-y-1/2
                           items-center justify-center
-                          rounded-xl bg-red-600/50
+                          bg-red-600/50
                           shadow-[0_0_18px_rgba(239,68,68,0.45)]
                           transition-[scale,background-color] duration-300
                           group-hover:bg-red-500
 
-                          sm:h-12 sm:w-18
-                          sm:rounded-2xl
-                        "
+                          ${
+                            featured
+                              ? "h-10 w-14 rounded-2xl sm:h-14 sm:w-20"
+                              : "h-7 w-10 rounded-xl sm:h-12 sm:w-18 sm:rounded-2xl"
+                          }
+                        `}
             >
-              <FaYoutube className="h-4 w-4 text-white sm:h-7 sm:w-7" />
+              <FaYoutube
+                className={
+                  featured
+                    ? "h-6 w-6 text-white sm:h-8 sm:w-8"
+                    : "h-4 w-4 text-white sm:h-7 sm:w-7"
+                }
+              />
             </span>
           )}
         </Button>
@@ -181,10 +250,17 @@ export function VideoFrame({
 }
 
 function getPrivacyEnhancedEmbedUrl(url: string) {
-  return url.replace(
-    "https://www.youtube.com/embed/",
-    "https://www.youtube-nocookie.com/embed/",
+  const embedUrl = new URL(
+    url.replace(
+      "https://www.youtube.com/embed/",
+      "https://www.youtube-nocookie.com/embed/",
+    ),
   );
+
+  embedUrl.searchParams.set("autoplay", "1");
+  embedUrl.searchParams.set("playsinline", "1");
+
+  return embedUrl.toString();
 }
 
 function getYouTubeThumbnail(url: string) {
