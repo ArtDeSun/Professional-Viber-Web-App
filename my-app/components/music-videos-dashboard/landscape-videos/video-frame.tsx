@@ -58,11 +58,9 @@ export function VideoFrame({
   return (
     <div
       className={`
-                  relative h-full min-h-0 w-full min-w-0
+                  relative aspect-video h-auto
+                  min-h-0 w-full min-w-0
                   overflow-hidden
-
-                  sm:aspect-video
-                  sm:h-auto
 
                   sm:rounded-2xl
                 `}

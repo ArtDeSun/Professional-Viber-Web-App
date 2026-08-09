@@ -15,6 +15,7 @@ import {
   use,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { createPortal } from "react-dom";
@@ -130,7 +131,7 @@ function DashboardLandscapeVideosWithData({
 
   const [activeSection, setActiveSection] = useState("featured");
 
-  //const scrollingToCreatedSectionRef = useRef<string | null>(null);
+  const scrollingToCreatedSectionRef = useRef<string | null>(null);
 
   const {
     landscapeVideoBoard,
@@ -215,7 +216,7 @@ function DashboardLandscapeVideosWithData({
     landscapeVideoSection: LandscapeVideoSection;
     iconKey: LandscapeSectionIconKey;
   }) {
-    //scrollingToCreatedSectionRef.current = landscapeVideoSection._id;
+    scrollingToCreatedSectionRef.current = landscapeVideoSection._id;
 
     addLandscapeVideoSection(landscapeVideoSection);
 
@@ -338,6 +339,7 @@ function DashboardLandscapeVideosWithData({
     ];
 
     let animationFrameId: number | null = null;
+    let previousScrollY = window.scrollY;
 
     const updateActiveSection = () => {
       const sectionElements = sectionIds
@@ -348,11 +350,24 @@ function DashboardLandscapeVideosWithData({
         return;
       }
 
+      const currentScrollY = window.scrollY;
+
+      // If the user reverses direction while we're automatically
+      // scrolling toward a newly created section, release the lock.
+      if (
+        scrollingToCreatedSectionRef.current &&
+        currentScrollY < previousScrollY
+      ) {
+        scrollingToCreatedSectionRef.current = null;
+      }
+
+      previousScrollY = currentScrollY;
+
       const isAtBottom =
         window.scrollY + window.innerHeight >=
         document.documentElement.scrollHeight - 2;
 
-      /* if (isAtBottom) {
+      if (isAtBottom) {
         const lastSection = sectionElements.at(-1);
 
         if (lastSection) {
@@ -364,12 +379,12 @@ function DashboardLandscapeVideosWithData({
         }
 
         return;
-      } */
+      }
 
-      if (isAtBottom) {
+      /* if (isAtBottom) {
         setActiveSection(sectionElements.at(-1)!.id);
         return;
-      }
+      } */
 
       let nextActiveSectionId = sectionElements[0].id;
 
@@ -388,32 +403,32 @@ function DashboardLandscapeVideosWithData({
         }
       }
 
-      /* setActiveSection(
-        (current) => {
-          const createdSectionId = scrollingToCreatedSectionRef.current;
+      setActiveSection((current) => {
+        const createdSectionId = scrollingToCreatedSectionRef.current;
 
-          if (createdSectionId) {
-            const currentIndex = sectionIds.indexOf(current);
-            const nextIndex = sectionIds.indexOf(nextActiveSectionId);
+        if (createdSectionId) {
+          const currentIndex = sectionIds.indexOf(current);
+          const nextIndex = sectionIds.indexOf(nextActiveSectionId);
 
-            // Prevent a temporary backward jump, such as B → A.
-            if (nextIndex < currentIndex) {
-              return current;
-            }
+          if (
+            currentIndex !== -1 &&
+            nextIndex !== -1 &&
+            nextIndex < currentIndex
+          ) {
+            return current;
           }
+        }
 
-          if (nextActiveSectionId === createdSectionId) {
-            scrollingToCreatedSectionRef.current = null;
-          }
+        if (nextActiveSectionId === createdSectionId) {
+          scrollingToCreatedSectionRef.current = null;
+        }
 
-          return current === nextActiveSectionId
-            ? current
-            : nextActiveSectionId;
-        },
-      ); */
-      setActiveSection((current) =>
+        return current === nextActiveSectionId ? current : nextActiveSectionId;
+      });
+
+      /* setActiveSection((current) =>
         current === nextActiveSectionId ? current : nextActiveSectionId,
-      );
+      ); */
     };
 
     const scheduleActiveSectionUpdate = () => {
@@ -644,8 +659,7 @@ function DashboardLandscapeHeader() {
             lg:text-lg lg:leading-8
           "
         >
-          Manage Youtube videos, covers, performances, tutorials, and
-          Highlights.
+          Manage Youtube videos, tutorials, and set your featured video.
         </p>
       </div>
 

@@ -94,7 +94,7 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                 >
                   <FaYoutube className="h-4 w-4 shrink-0 text-red-500 sm:h-5 sm:w-5" />
 
-                  <span className="truncate">Favourite</span>
+                  <span className="truncate">Featured</span>
                 </p>
 
                 <h3

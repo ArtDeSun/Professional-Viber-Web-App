@@ -31,9 +31,9 @@ export async function prepareLandscapeVideo(
 ): Promise<PrepareLandscapeVideoResult> {
   const customTitle = normalizeTitle(input.title ?? "");
 
-  if (customTitle.length > 20) {
+  if (customTitle.length > 40) {
     return {
-      error: "The video title must be 20 characters or fewer.",
+      error: "The video title must be 40 characters or fewer.",
     };
   }
 
@@ -43,9 +43,12 @@ export async function prepareLandscapeVideo(
     return metadataResult;
   }
 
+  const normalizedTitle = normalizeTitle(metadataResult.data.title);
   const title = customTitle
     ? customTitle
-    : `${normalizeTitle(metadataResult.data.title).slice(0, 20)}...`;
+    : normalizedTitle.length > 37
+      ? `${normalizedTitle.slice(0, 37)}...`
+      : normalizedTitle;
 
   return {
     data: {
