@@ -174,6 +174,9 @@ export default function CreateLandscapeVideoSectionDialog({
           sm:rounded-3xl
           sm:p-7
         "
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+        }}
       >
         <div className="relative overflow-hidden rounded-xl bg-neutral-800 sm:rounded-2xl">
           <div

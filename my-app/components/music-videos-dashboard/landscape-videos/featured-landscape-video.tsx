@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import type { LandscapeVideo } from "@/lib/models/models.types";
-import { ExternalLink, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import Link from "next/link";
 import { FaYoutube } from "react-icons/fa";
 import { VideoFrame } from "./video-frame";
@@ -164,14 +164,6 @@ export function FeaturedLandscapeVideo({ video }: FeaturedLandscapeVideoProps) {
                       "
                       />
                       <span className="truncate">Watch on YouTube</span>
-
-                      <ExternalLink
-                        className="
-                        ml-2 h-3.5 w-3.5 shrink-0
-                        transition-transform duration-300
-                        sm:h-4 sm:w-4
-                      "
-                      />
                     </Link>
                   </Button>
                 )}
