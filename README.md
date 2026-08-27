@@ -12,7 +12,7 @@ The main purpose of this project is to develop, manage, and expand the online pr
 
 Personalization, customization, and accessibility are paramount to the design philosophy of the solo content creator who also performs site reliability engineering.
 
-Consequently, the proposed features need to adapt to the operating bandwidth of a solo developer. If complex features are to be implemented, then they should be maintainable by an individual at all times. The static contents and interactive components within webpages need to render responsively. When uploading music videos to the website, the developer will be a special end user who receives administrative privileges to write to the database. Therefore for unauthenticated users and developers alike, the UI navigation must be intuitive and free of contradictions.
+Consequently, the proposed features need to adapt to the operating bandwidth of a solo developer. If complex features are to be implemented, then they should be maintainable by an individual at all times, with or without AI. The static contents and interactive components within webpages need to render responsively. When uploading music videos to the website, the developer will be a special end user who receives administrative privileges to write to the database. Therefore for unauthenticated users and developers alike, the UI navigation must be intuitive and free of contradictions.
 
 During the early stages of running the app post-deployment, only a small database will be necessary while handling a smaller number of signed-up users. Scaling will be considered only after site traffic reaches a critical threshold beyond the carrying capacity of the application.
 
