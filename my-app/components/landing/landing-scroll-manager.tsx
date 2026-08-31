@@ -26,6 +26,15 @@ export default function LandingScrollManager() {
     }
 
     function restoreScrollPosition() {
+      if (
+        new URLSearchParams(window.location.search).get("destination") ===
+        "signup"
+      ) {
+        document
+          .getElementById("signup")
+          ?.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
       const savedY = sessionStorage.getItem(SCROLL_KEY);
       if (!savedY) return;
 
